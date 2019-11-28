@@ -1,18 +1,11 @@
 package com.alco.pubslist.security;
 
-
 import com.alco.pubslist.entities.User;
-import com.alco.pubslist.security.exceptions.JwtTokenMissingException;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-
-import jdk.nashorn.internal.parser.JSONParser;
 import org.apache.commons.io.IOUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,54 +14,55 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 
 import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.security.Principal;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
-    AuthenticationManager authenticationManager;
+	AuthenticationManager authenticationManager;
 
-    public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
-        super("/login");
-        this.authenticationManager = authenticationManager;
-    }
+	public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
 
-    @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        User user = new ObjectMapper().readValue(IOUtils.toString(request.getReader()), User.class);
-        AbstractAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
+		super("/login");
+		this.authenticationManager = authenticationManager;
+	}
 
-        return authenticationManager.authenticate(authenticationToken);
-    }
+	@Override
+	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
+			throws IOException {
 
+		User user = new ObjectMapper().readValue(IOUtils.toString(request.getReader()), User.class);
+		AbstractAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getUsername(),
+				user.getPassword());
 
-    @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
-                                            FilterChain filterChain, Authentication authentication) {
+		return authenticationManager.authenticate(authenticationToken);
+	}
 
-        List<String> roles =  authentication.getAuthorities()
-                .stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.toList());
+	@Override
+	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
+			FilterChain filterChain, Authentication authentication) {
 
-        byte[] signingKey = SecurityConstants.JWT_SECRET.getBytes();
+		List<String> roles = authentication.getAuthorities()
+				.stream()
+				.map(GrantedAuthority::getAuthority)
+				.collect(Collectors.toList());
 
-        String token = Jwts.builder()
-                .signWith(SignatureAlgorithm.HS512, Keys.hmacShaKeyFor(signingKey))
-                .setHeaderParam("typ", SecurityConstants.TOKEN_TYPE)
-                .setIssuer(SecurityConstants.TOKEN_ISSUER)
-                .setAudience(SecurityConstants.TOKEN_AUDIENCE)
-                .setSubject(authentication.getName())
-                .setExpiration(new Date(System.currentTimeMillis() + 864000000))
-                .claim("rol", roles)
-                .compact();
+		byte[] signingKey = SecurityConstants.JWT_SECRET.getBytes();
 
-        response.addHeader(SecurityConstants.TOKEN_HEADER, SecurityConstants.TOKEN_PREFIX + token);
-    }
+		String token = Jwts.builder()
+				.signWith(SignatureAlgorithm.HS512, Keys.hmacShaKeyFor(signingKey))
+				.setHeaderParam("typ", SecurityConstants.TOKEN_TYPE)
+				.setIssuer(SecurityConstants.TOKEN_ISSUER)
+				.setAudience(SecurityConstants.TOKEN_AUDIENCE)
+				.setSubject(authentication.getName())
+				.setExpiration(new Date(System.currentTimeMillis() + 864000000))
+				.claim("rol", roles)
+				.compact();
+
+		response.addHeader(SecurityConstants.TOKEN_HEADER, SecurityConstants.TOKEN_PREFIX + token);
+	}
 }

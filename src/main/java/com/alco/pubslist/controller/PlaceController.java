@@ -9,18 +9,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class  PlaceController {
+public class PlaceController {
 
-    @Autowired
-    PlaceRepository repository;
+	@Autowired
+	PlaceRepository repository;
 
-    @GetMapping("/places")
-    Iterable<Place> all() {
-        return repository.findAll();
-    }
+	@GetMapping("/places")
+	Iterable<Place> all() {
 
-    @PostMapping("/places")
-    Place save(@RequestBody Place newPlace) {
-        return repository.save(newPlace);
-    }
+		return repository.findAll();
+	}
+
+	@PostMapping("/places")
+	Place save(@RequestBody Place newPlace) {
+
+		return repository.save(newPlace);
+	}
 }

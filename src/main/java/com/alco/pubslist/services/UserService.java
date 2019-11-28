@@ -9,15 +9,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserService {
 
-    @Autowired
-    UserRepository repository;
+	@Autowired
+	UserRepository repository;
 
-    public User save(User user) {
-        user.setPassword(Helper.cacheData(user.getPassword()));
-        return repository.save(user);
-    }
+	public User save(User user) {
 
-    public Iterable<User> findAll() {
-        return repository.findAll();
-    }
+		user.setPassword(Helper.cacheData(user.getPassword()));
+		return repository.save(user);
+	}
+
+	public Iterable<User> findAll() {
+
+		return repository.findAll();
+	}
 }

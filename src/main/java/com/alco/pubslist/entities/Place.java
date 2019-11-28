@@ -1,7 +1,5 @@
 package com.alco.pubslist.entities;
 
-import org.springframework.stereotype.Component;
-
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -11,42 +9,50 @@ import java.util.UUID;
 @Table(name = "places")
 public class Place {
 
-    @Id
-    private String id;
-    private String name;
-    private String address;
+	@Id
+	private String id;
+	private String name;
+	private String address;
 
-    Place() {
-        this.id = UUID.randomUUID().toString();
-    }
+	Place() {
 
-    public Place(String name, String address) {
-        this.id = UUID.randomUUID().toString();
-        this.name = name;
-        this.address = address;
-    }
+		this.id = UUID.randomUUID().toString();
+	}
 
-    public String getId() {
-        return id;
-    }
+	public Place(String name, String address) {
 
-    public void setId(String id) {
-        this.id = id;
-    }
+		this.id = UUID.randomUUID().toString();
+		this.name = name;
+		this.address = address;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getId() {
 
-    public void setName(String name) {
-        this.name = name;
-    }
+		return id;
+	}
 
-    public String getAddress() {
-        return address;
-    }
+	public void setId(String id) {
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
+		this.id = id;
+	}
+
+	public String getName() {
+
+		return name;
+	}
+
+	public void setName(String name) {
+
+		this.name = name;
+	}
+
+	public String getAddress() {
+
+		return address;
+	}
+
+	public void setAddress(String address) {
+
+		this.address = address;
+	}
 }

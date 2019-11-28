@@ -19,28 +19,32 @@ import org.springframework.session.web.http.HttpSessionStrategy;
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private CachedAuthenticationProvider authenticationProvider;
+	@Autowired
+	private CachedAuthenticationProvider authenticationProvider;
 
-    @Bean
-    public HttpSessionStrategy httpSessionStrategy() {
-        return new HeaderHttpSessionStrategy();
-    }
+	@Bean
+	public HttpSessionStrategy httpSessionStrategy() {
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(authenticationProvider);
-    }
+		return new HeaderHttpSessionStrategy();
+	}
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.cors().disable()
-            .csrf().disable()
-            .authorizeRequests()
-            .anyRequest().authenticated()
-            .and()
-            .addFilterBefore(new JwtAuthorizationFilter(authenticationManager()), UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(new JwtAuthenticationFilter(authenticationManager()),JwtAuthorizationFilter.class)
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-    }
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) {
+
+		auth.authenticationProvider(authenticationProvider);
+	}
+
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+
+		http.cors().disable()
+				.csrf().disable()
+				.authorizeRequests()
+				.anyRequest().authenticated()
+				.and()
+				.addFilterBefore(new JwtAuthorizationFilter(authenticationManager()),
+						UsernamePasswordAuthenticationFilter.class)
+				.addFilterBefore(new JwtAuthenticationFilter(authenticationManager()), JwtAuthorizationFilter.class)
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+	}
 }
