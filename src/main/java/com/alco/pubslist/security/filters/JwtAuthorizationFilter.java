@@ -1,4 +1,4 @@
-package com.alco.pubslist.security.exceptions;
+package com.alco.pubslist.security.filters;
 
 import com.alco.pubslist.security.SecurityConstants;
 import io.jsonwebtoken.Claims;

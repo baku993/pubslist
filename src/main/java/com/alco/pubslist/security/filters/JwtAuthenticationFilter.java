@@ -1,7 +1,7 @@
 package com.alco.pubslist.security.filters;
 
-import com.alco.pubslist.entities.User;
 import com.alco.pubslist.security.SecurityConstants;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -11,6 +11,7 @@ import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 
@@ -39,12 +40,23 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
 
-		// TODO: Don't map to object entirely, get username and password, try to make auth
-		User user = new ObjectMapper().readValue(IOUtils.toString(request.getReader()), User.class);
-		AbstractAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getUsername(),
-				user.getPassword());
+		JsonNode jsonNode = new ObjectMapper().readTree(IOUtils.toString(request.getReader()));
+
+		String username = jsonNode.get("username").asText();
+		String password = jsonNode.get("password").asText();
+
+		AbstractAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username,
+				password);
 
 		return authenticationManager.authenticate(authenticationToken);
+	}
+
+	@Override
+	protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
+			AuthenticationException failed) throws IOException {
+
+		response.sendError(HttpServletResponse.SC_UNAUTHORIZED,
+				"Authentication Failed");
 	}
 
 	@Override
@@ -65,9 +77,8 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
 				.setAudience(SecurityConstants.TOKEN_AUDIENCE)
 				.setSubject(authentication.getName())
 				.setExpiration(new Date(System.currentTimeMillis() + expirationTime))
-				.claim("rol", roles)
+				.claim("role", roles)
 				.compact();
-
 		response.addHeader(SecurityConstants.TOKEN_HEADER, SecurityConstants.TOKEN_PREFIX + token);
 	}
 }

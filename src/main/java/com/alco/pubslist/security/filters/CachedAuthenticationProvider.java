@@ -1,5 +1,6 @@
-package com.alco.pubslist;
+package com.alco.pubslist.security.filters;
 
+import com.alco.pubslist.Helper;
 import com.alco.pubslist.entities.User;
 import com.alco.pubslist.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -33,7 +35,7 @@ public class CachedAuthenticationProvider implements AuthenticationProvider {
 		User user = userRepository.findDistinctFirstByUsername(name);
 
 		if (user == null) {
-			throw new BadCredentialsException("Authentication failed for " + name);
+			throw new UsernameNotFoundException("Authentication failed for " + name);
 		}
 
 		if (isAuthenticated(password, user)) {
@@ -43,7 +45,7 @@ public class CachedAuthenticationProvider implements AuthenticationProvider {
 			return new UsernamePasswordAuthenticationToken(name, password, grantedAuthorities);
 		}
 		else {
-			return null;
+			throw new BadCredentialsException("Username/Password combination is incorect");
 		}
 
 	}

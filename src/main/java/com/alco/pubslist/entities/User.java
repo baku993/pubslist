@@ -2,16 +2,19 @@ package com.alco.pubslist.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.util.UUID;
+
+import static javax.persistence.GenerationType.SEQUENCE;
 
 @Entity
 @Table(name = "users")
 public class User {
 
 	@Id
-	private String id;
+	@GeneratedValue(strategy = SEQUENCE)
+	private Integer id;
 
 	@Column(name = "username")
 	private String username;
@@ -30,10 +33,9 @@ public class User {
 
 	User() {
 
-		id = UUID.randomUUID().toString();
 	}
 
-	public void setId(String id) {
+	public void setId(Integer id) {
 
 		this.id = id;
 	}
@@ -53,7 +55,7 @@ public class User {
 		this.role = role;
 	}
 
-	public String getId() {
+	public Integer getId() {
 
 		return id;
 	}
