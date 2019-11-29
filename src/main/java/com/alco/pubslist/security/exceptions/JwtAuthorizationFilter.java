@@ -9,45 +9,26 @@ import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.util.StringUtils;
+import org.springframework.web.filter.GenericFilterBean;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
+public class JwtAuthorizationFilter extends GenericFilterBean {
 
 	private static final Logger log = LoggerFactory.getLogger(JwtAuthorizationFilter.class);
-
-	public JwtAuthorizationFilter(AuthenticationManager authenticationManager) {
-
-		super(authenticationManager);
-	}
-
-	@Override
-	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
-			FilterChain filterChain) throws IOException, ServletException {
-
-		Authentication authentication = getAuthentication(request);
-		if (authentication == null) {
-			filterChain.doFilter(request, response);
-			return;
-		}
-
-		SecurityContextHolder.getContext().setAuthentication(authentication);
-		filterChain.doFilter(request, response);
-	}
 
 	private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
 
@@ -60,12 +41,10 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 						.setSigningKey(signingKey)
 						.parseClaimsJws(token.replace("Bearer ", ""));
 
-				String username = parsedToken
-						.getBody()
-						.getSubject();
+				String username = parsedToken.getBody().getSubject();
 
 				List<GrantedAuthority> authorities = ((List<?>) parsedToken.getBody()
-						.get("rol")).stream().map(role -> (String) role)
+						.get("role")).stream().map(role -> (String) role)
 						.map(SimpleGrantedAuthority::new)
 						.collect(Collectors.toList());
 
@@ -88,5 +67,20 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 		}
 
 		return null;
+	}
+
+	@Override
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+			throws IOException, ServletException {
+
+		Authentication authentication = getAuthentication((HttpServletRequest) request);
+		if (authentication == null) {
+			chain.doFilter(request, response);
+			return;
+		}
+
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+		chain.doFilter(request, response);
+
 	}
 }

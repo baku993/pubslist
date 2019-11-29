@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UsersController {
 
 	@Autowired
-	UserService userService;
+	private UserService userService;
 
 	@Secured(value = "ROLE_ADMIN")
 	@GetMapping("/users")

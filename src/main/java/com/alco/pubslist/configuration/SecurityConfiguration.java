@@ -1,9 +1,10 @@
 package com.alco.pubslist.configuration;
 
 import com.alco.pubslist.CachedAuthenticationProvider;
-import com.alco.pubslist.security.JwtAuthenticationFilter;
 import com.alco.pubslist.security.exceptions.JwtAuthorizationFilter;
+import com.alco.pubslist.security.filters.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -18,6 +19,9 @@ import org.springframework.session.web.http.HttpSessionStrategy;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+	@Value("${pubslist.expirationTime}")
+	private String expirationTime;
 
 	@Autowired
 	private CachedAuthenticationProvider authenticationProvider;
@@ -42,9 +46,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.authorizeRequests()
 				.anyRequest().authenticated()
 				.and()
-				.addFilterBefore(new JwtAuthorizationFilter(authenticationManager()),
-						UsernamePasswordAuthenticationFilter.class)
-				.addFilterBefore(new JwtAuthenticationFilter(authenticationManager()), JwtAuthorizationFilter.class)
+				.addFilterBefore(new JwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
+				.addFilterBefore(new JwtAuthenticationFilter(authenticationManager(), Long.parseLong(expirationTime)),
+						JwtAuthorizationFilter.class)
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 	}
 }
