@@ -27,6 +27,7 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
 
 	private AuthenticationManager authenticationManager;
 	private Long expirationTime;
+	private ObjectMapper mapper = new ObjectMapper();
 
 	public JwtAuthenticationFilter(AuthenticationManager authenticationManager, Long expirationTime) {
 
@@ -40,7 +41,7 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
 
-		JsonNode jsonNode = new ObjectMapper().readTree(IOUtils.toString(request.getReader()));
+		JsonNode jsonNode = mapper.readTree(IOUtils.toString(request.getReader()));
 
 		String username = jsonNode.get("username").asText();
 		String password = jsonNode.get("password").asText();
@@ -60,7 +61,7 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
 
 	@Override
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
-			FilterChain filterChain, Authentication authentication) {
+			FilterChain filterChain, Authentication authentication) throws IOException {
 
 		List<String> roles = authentication.getAuthorities()
 				.stream()
@@ -78,6 +79,7 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
 				.setExpiration(new Date(System.currentTimeMillis() + expirationTime))
 				.claim("role", roles)
 				.compact();
-		response.addHeader(SecurityConstants.TOKEN_HEADER, SecurityConstants.TOKEN_PREFIX + token);
+
+		response.getWriter().write(token);
 	}
 }
