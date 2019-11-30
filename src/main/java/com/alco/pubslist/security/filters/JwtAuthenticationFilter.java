@@ -1,12 +1,14 @@
 package com.alco.pubslist.security.filters;
 
+import com.alco.pubslist.Helper;
 import com.alco.pubslist.security.SecurityConstants;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.stream.MalformedJsonException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import org.apache.commons.io.IOUtils;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,11 +25,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.alco.pubslist.security.SecurityConstants.AUTHENTICATION_FAILED;
+import static com.alco.pubslist.security.SecurityConstants.MALFORMED_JSON;
+import static com.alco.pubslist.security.SecurityConstants.MISSING_USERNAME_OR_PASSWORD;
+
 public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
 	private AuthenticationManager authenticationManager;
 	private Long expirationTime;
-	private ObjectMapper mapper = new ObjectMapper();
 
 	public JwtAuthenticationFilter(AuthenticationManager authenticationManager, Long expirationTime) {
 
@@ -41,22 +46,36 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
 
-		JsonNode jsonNode = mapper.readTree(IOUtils.toString(request.getReader()));
+		try {
 
-		String username = jsonNode.get("username").asText();
-		String password = jsonNode.get("password").asText();
+			JsonObject json = JsonParser.parseReader(request.getReader()).getAsJsonObject();
+			String username = json.getAsJsonPrimitive("username").getAsString();
+			String password = json.getAsJsonPrimitive("password").getAsString();
 
-		AbstractAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username,
-				password);
+			if (username.isEmpty() || password.isEmpty()) {
+				Helper.createErrorResponse(response, 400, MISSING_USERNAME_OR_PASSWORD);
+				return null;
+			}
+			AbstractAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username,
+					password);
+			return authenticationManager.authenticate(authenticationToken);
 
-		return authenticationManager.authenticate(authenticationToken);
+		}
+		catch (NullPointerException e) {
+			Helper.createErrorResponse(response, 400, MISSING_USERNAME_OR_PASSWORD);
+		}
+		catch (MalformedJsonException | JsonSyntaxException e) {
+			Helper.createErrorResponse(response, 400, MALFORMED_JSON);
+		}
+
+		return null;
 	}
 
 	@Override
 	protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException failed) throws IOException {
 
-		response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Authentication Failed");
+		Helper.createErrorResponse(response, 401, AUTHENTICATION_FAILED);
 	}
 
 	@Override
@@ -80,6 +99,6 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
 				.claim("role", roles)
 				.compact();
 
-		response.getWriter().write(token);
+		Helper.createAuthenticationSuccessResponse(response, 200, token);
 	}
 }

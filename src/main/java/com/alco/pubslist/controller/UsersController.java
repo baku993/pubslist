@@ -16,7 +16,7 @@ public class UsersController {
 	@Autowired
 	private UserService userService;
 
-	@Secured(value = "ROLE_ADMIN")
+	@Secured("ROLE_ADMIN")
 	@GetMapping("/users")
 	@ResponseBody
 	Iterable<User> all() {
