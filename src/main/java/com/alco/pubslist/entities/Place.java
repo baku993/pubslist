@@ -1,27 +1,28 @@
 package com.alco.pubslist.entities;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.util.UUID;
+
+import static javax.persistence.GenerationType.SEQUENCE;
 
 @Entity
 @Table(name = "places")
 public class Place {
 
 	@Id
+	@GeneratedValue(strategy = SEQUENCE)
 	private String id;
 	private String name;
 	private String address;
 
 	Place() {
 
-		this.id = UUID.randomUUID().toString();
 	}
 
 	public Place(String name, String address) {
 
-		this.id = UUID.randomUUID().toString();
 		this.name = name;
 		this.address = address;
 	}

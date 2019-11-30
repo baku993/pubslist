@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet author="Tieimur" id="1">
+        <createTable tableName="users">
+            <column name="username" type="varchar(255)"/>
+            <column name="password" type="varchar(255)"/>
+            <column name="name" type="varchar(255)"/>
+            <column name="surname" type="varchar(255)"/>
+            <column name="role" type="varchar(255)"/>
+            <column name="id" type="integer" autoIncrement="true"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Tieimur" id="2">
+        <addPrimaryKey columnNames="id" tableName="users"/>
+        <createTable tableName="places">
+            <column name="name" type="varchar(255)"/>
+            <column name="address" type="varchar(255)"/>
+            <column name="coordinate_1" type="varchar(255)"/>
+            <column name="coordinate_2" type="varchar(255)"/>
+            <column name="id" type="integer" autoIncrement="true"/>
+        </createTable>
+        <addPrimaryKey columnNames="id" tableName="places"/>
+    </changeSet>
+
+    <changeSet author="Tieimur" id="3">
+        <createSequence sequenceName="hibernate_sequence" startValue="1"/>
+    </changeSet>
+</databaseChangeLog>

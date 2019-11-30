@@ -1,6 +1,7 @@
-package com.alco.pubslist.security;
+package com.alco.pubslist.security.filters;
 
-import com.alco.pubslist.entities.User;
+import com.alco.pubslist.security.SecurityConstants;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -10,6 +11,7 @@ import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 
@@ -23,28 +25,43 @@ import java.util.stream.Collectors;
 
 public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
-	AuthenticationManager authenticationManager;
+	private AuthenticationManager authenticationManager;
+	private Long expirationTime;
+	private ObjectMapper mapper = new ObjectMapper();
 
-	public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
+	public JwtAuthenticationFilter(AuthenticationManager authenticationManager, Long expirationTime) {
 
-		super("/login");
+		super(SecurityConstants.LOGIN_URL);
 		this.authenticationManager = authenticationManager;
+		this.expirationTime = expirationTime;
+
 	}
 
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
 
-		User user = new ObjectMapper().readValue(IOUtils.toString(request.getReader()), User.class);
-		AbstractAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getUsername(),
-				user.getPassword());
+		JsonNode jsonNode = mapper.readTree(IOUtils.toString(request.getReader()));
+
+		String username = jsonNode.get("username").asText();
+		String password = jsonNode.get("password").asText();
+
+		AbstractAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username,
+				password);
 
 		return authenticationManager.authenticate(authenticationToken);
 	}
 
 	@Override
+	protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
+			AuthenticationException failed) throws IOException {
+
+		response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Authentication Failed");
+	}
+
+	@Override
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
-			FilterChain filterChain, Authentication authentication) {
+			FilterChain filterChain, Authentication authentication) throws IOException {
 
 		List<String> roles = authentication.getAuthorities()
 				.stream()
@@ -54,15 +71,15 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
 		byte[] signingKey = SecurityConstants.JWT_SECRET.getBytes();
 
 		String token = Jwts.builder()
-				.signWith(SignatureAlgorithm.HS512, Keys.hmacShaKeyFor(signingKey))
+				.signWith(Keys.hmacShaKeyFor(signingKey), SignatureAlgorithm.HS512)
 				.setHeaderParam("typ", SecurityConstants.TOKEN_TYPE)
 				.setIssuer(SecurityConstants.TOKEN_ISSUER)
 				.setAudience(SecurityConstants.TOKEN_AUDIENCE)
 				.setSubject(authentication.getName())
-				.setExpiration(new Date(System.currentTimeMillis() + 864000000))
-				.claim("rol", roles)
+				.setExpiration(new Date(System.currentTimeMillis() + expirationTime))
+				.claim("role", roles)
 				.compact();
 
-		response.addHeader(SecurityConstants.TOKEN_HEADER, SecurityConstants.TOKEN_PREFIX + token);
+		response.getWriter().write(token);
 	}
 }

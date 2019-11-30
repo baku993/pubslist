@@ -1,8 +1,10 @@
-package com.alco.pubslist;
+package com.alco.pubslist.security.filters;
 
+import com.alco.pubslist.Helper;
 import com.alco.pubslist.entities.User;
 import com.alco.pubslist.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -10,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -19,7 +22,10 @@ import java.util.List;
 public class CachedAuthenticationProvider implements AuthenticationProvider {
 
 	@Autowired
-	UserRepository userRepository;
+	private UserRepository userRepository;
+
+	@Value("pubslist.salt")
+	private String salt;
 
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -29,18 +35,17 @@ public class CachedAuthenticationProvider implements AuthenticationProvider {
 		User user = userRepository.findDistinctFirstByUsername(name);
 
 		if (user == null) {
-			throw new BadCredentialsException("Authentication failed for " + name);
+			throw new UsernameNotFoundException("Authentication failed for " + name);
 		}
 
 		if (isAuthenticated(password, user)) {
 			List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
 			grantedAuthorities.add(new SimpleGrantedAuthority(user.getRole()));
 
-			return new UsernamePasswordAuthenticationToken(
-					name, password, grantedAuthorities);
+			return new UsernamePasswordAuthenticationToken(name, password, grantedAuthorities);
 		}
 		else {
-			return null;
+			throw new BadCredentialsException("Username/Password combination is incorect");
 		}
 
 	}
@@ -53,7 +58,7 @@ public class CachedAuthenticationProvider implements AuthenticationProvider {
 
 	private boolean isAuthenticated(String password, User user) {
 
-		return user.getPassword().equals(Helper.cacheData(password));
+		return user.getPassword().equals(Helper.cacheData(password, salt));
 	}
 
 }

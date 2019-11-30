@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class PlaceController {
 
 	@Autowired
-	PlaceRepository repository;
+	private PlaceRepository repository;
 
 	@GetMapping("/places")
 	Iterable<Place> all() {
