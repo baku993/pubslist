@@ -2,7 +2,7 @@ package com.alco.pubslist.security;
 
 public final class SecurityConstants {
 
-	public static final String AUTH_LOGIN_URL = "/login";
+	public static final String LOGIN_URL = "/login";
 
 	// Signing key for HS512 algorithm
 	// You can use the page http://www.allkeysgenerator.com/ to generate all kinds of keys

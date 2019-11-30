@@ -39,7 +39,7 @@ public class JwtAuthorizationFilter extends GenericFilterBean {
 
 				Jws<Claims> parsedToken = Jwts.parser()
 						.setSigningKey(signingKey)
-						.parseClaimsJws(token.replace("Bearer ", ""));
+						.parseClaimsJws(token.replace(SecurityConstants.TOKEN_PREFIX, ""));
 
 				String username = parsedToken.getBody().getSubject();
 

@@ -1,5 +1,6 @@
 package com.alco.pubslist.configuration;
 
+import com.alco.pubslist.security.SecurityConstants;
 import com.alco.pubslist.security.filters.CachedAuthenticationProvider;
 import com.alco.pubslist.security.filters.JwtAuthenticationFilter;
 import com.alco.pubslist.security.filters.JwtAuthorizationFilter;
@@ -46,7 +47,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.csrf().disable()
 				.authorizeRequests()
 				.antMatchers(HttpMethod.POST, "/users").permitAll()
-				.antMatchers(HttpMethod.POST, "/login").permitAll()
+				.antMatchers(HttpMethod.POST, SecurityConstants.LOGIN_URL).permitAll()
 				.anyRequest().authenticated()
 				.and()
 				.addFilterBefore(new JwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
