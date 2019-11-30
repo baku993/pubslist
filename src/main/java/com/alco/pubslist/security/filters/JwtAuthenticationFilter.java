@@ -30,7 +30,7 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
 
 	public JwtAuthenticationFilter(AuthenticationManager authenticationManager, Long expirationTime) {
 
-		super("/login");
+		super(SecurityConstants.LOGIN_URL);
 		this.authenticationManager = authenticationManager;
 		this.expirationTime = expirationTime;
 
@@ -55,8 +55,7 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
 	protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException failed) throws IOException {
 
-		response.sendError(HttpServletResponse.SC_UNAUTHORIZED,
-				"Authentication Failed");
+		response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Authentication Failed");
 	}
 
 	@Override
