@@ -1,12 +1,15 @@
 package com.alco.pubslist.security.filters;
 
+import com.alco.pubslist.Helper;
+import com.alco.pubslist.security.RestResponses;
 import com.alco.pubslist.security.SecurityConstants;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.stream.MalformedJsonException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import org.apache.commons.io.IOUtils;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -27,7 +30,6 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
 
 	private AuthenticationManager authenticationManager;
 	private Long expirationTime;
-	private ObjectMapper mapper = new ObjectMapper();
 
 	public JwtAuthenticationFilter(AuthenticationManager authenticationManager, Long expirationTime) {
 
@@ -41,22 +43,36 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
 
-		JsonNode jsonNode = mapper.readTree(IOUtils.toString(request.getReader()));
+		try {
 
-		String username = jsonNode.get("username").asText();
-		String password = jsonNode.get("password").asText();
+			JsonObject json = JsonParser.parseReader(request.getReader()).getAsJsonObject();
+			String username = json.getAsJsonPrimitive("username").getAsString();
+			String password = json.getAsJsonPrimitive("password").getAsString();
 
-		AbstractAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username,
-				password);
+			if (username.isEmpty() || password.isEmpty()) {
+				Helper.formResponse(response, RestResponses.MISSING_USERNAME_OR_PASSWORD);
+				return null;
+			}
+			AbstractAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username,
+					password);
+			return authenticationManager.authenticate(authenticationToken);
 
-		return authenticationManager.authenticate(authenticationToken);
+		}
+		catch (NullPointerException e) {
+			Helper.formResponse(response, RestResponses.MISSING_USERNAME_OR_PASSWORD);
+		}
+		catch (MalformedJsonException | JsonSyntaxException e) {
+			Helper.formResponse(response, RestResponses.MALFORMED_JSON);
+		}
+
+		return null;
 	}
 
 	@Override
 	protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException failed) throws IOException {
 
-		response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Authentication Failed");
+		Helper.formResponse(response, RestResponses.AUTHENTICATION_FAILED);
 	}
 
 	@Override
@@ -80,6 +96,6 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
 				.claim("role", roles)
 				.compact();
 
-		response.getWriter().write(token);
+		Helper.formResponse(response, RestResponses.AUTHENTICATION_SUCCESS, token);
 	}
 }

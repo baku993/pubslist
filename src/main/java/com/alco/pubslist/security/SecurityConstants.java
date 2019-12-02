@@ -3,9 +3,8 @@ package com.alco.pubslist.security;
 public final class SecurityConstants {
 
 	public static final String LOGIN_URL = "/login";
+	public static final String SING_UP_URL = "/users";
 
-	// Signing key for HS512 algorithm
-	// You can use the page http://www.allkeysgenerator.com/ to generate all kinds of keys
 	public static final String JWT_SECRET = "@NcQfTjWnZr4u7x!A%D*G-KaPdSgUkXp2s5v8y/B?E(H+MbQeThWmYq3t6w9z$C&";
 
 	// JWT token defaults
