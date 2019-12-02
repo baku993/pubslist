@@ -1,5 +1,7 @@
 package com.alco.pubslist.entities;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -28,6 +30,7 @@ public class User {
 	@Column(name = "role")
 	private String role;
 
+	@JsonInclude(JsonInclude.Include.NON_NULL)
 	@Column(name = "password")
 	private String password;
 

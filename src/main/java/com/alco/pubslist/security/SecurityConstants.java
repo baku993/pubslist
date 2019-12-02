@@ -3,7 +3,7 @@ package com.alco.pubslist.security;
 public final class SecurityConstants {
 
 	public static final String LOGIN_URL = "/login";
-	public static final String SING_UP_URL = "/users";
+	public static final String SING_UP_URL = "/signup";
 
 	public static final String JWT_SECRET = "@NcQfTjWnZr4u7x!A%D*G-KaPdSgUkXp2s5v8y/B?E(H+MbQeThWmYq3t6w9z$C&";
 
