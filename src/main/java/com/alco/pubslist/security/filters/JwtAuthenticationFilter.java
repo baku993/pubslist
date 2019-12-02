@@ -1,6 +1,7 @@
 package com.alco.pubslist.security.filters;
 
 import com.alco.pubslist.Helper;
+import com.alco.pubslist.security.RestResponses;
 import com.alco.pubslist.security.SecurityConstants;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -24,10 +25,6 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static com.alco.pubslist.security.SecurityConstants.AUTHENTICATION_FAILED;
-import static com.alco.pubslist.security.SecurityConstants.MALFORMED_JSON;
-import static com.alco.pubslist.security.SecurityConstants.MISSING_USERNAME_OR_PASSWORD;
 
 public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
@@ -53,7 +50,7 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
 			String password = json.getAsJsonPrimitive("password").getAsString();
 
 			if (username.isEmpty() || password.isEmpty()) {
-				Helper.createErrorResponse(response, 400, MISSING_USERNAME_OR_PASSWORD);
+				Helper.formResponse(response, RestResponses.MISSING_USERNAME_OR_PASSWORD);
 				return null;
 			}
 			AbstractAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username,
@@ -62,10 +59,10 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
 
 		}
 		catch (NullPointerException e) {
-			Helper.createErrorResponse(response, 400, MISSING_USERNAME_OR_PASSWORD);
+			Helper.formResponse(response, RestResponses.MISSING_USERNAME_OR_PASSWORD);
 		}
 		catch (MalformedJsonException | JsonSyntaxException e) {
-			Helper.createErrorResponse(response, 400, MALFORMED_JSON);
+			Helper.formResponse(response, RestResponses.MALFORMED_JSON);
 		}
 
 		return null;
@@ -75,7 +72,7 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
 	protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException failed) throws IOException {
 
-		Helper.createErrorResponse(response, 401, AUTHENTICATION_FAILED);
+		Helper.formResponse(response, RestResponses.AUTHENTICATION_FAILED);
 	}
 
 	@Override
@@ -99,6 +96,6 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
 				.claim("role", roles)
 				.compact();
 
-		Helper.createAuthenticationSuccessResponse(response, 200, token);
+		Helper.formResponse(response, RestResponses.AUTHENTICATION_SUCCESS, token);
 	}
 }

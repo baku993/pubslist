@@ -1,6 +1,7 @@
 package com.alco.pubslist.security.filters;
 
 import com.alco.pubslist.Helper;
+import com.alco.pubslist.security.RestResponses;
 import com.alco.pubslist.security.SecurityConstants;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -84,7 +85,7 @@ public class JwtAuthorizationFilter extends GenericFilterBean {
 					&& ((HttpServletRequest) request).getMethod().equals("POST"))
 				chain.doFilter(request, response);
 			else {
-				Helper.createErrorResponse(response, 401, SecurityConstants.AUTHORIZATION_FAILED);
+				Helper.formResponse(response, RestResponses.AUTHORIZATION_FAILED);
 			}
 			return;
 		}

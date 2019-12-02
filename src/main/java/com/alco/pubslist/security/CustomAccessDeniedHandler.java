@@ -16,6 +16,6 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 			HttpServletResponse response,
 			AccessDeniedException exception) throws IOException {
 
-		Helper.createErrorResponse(response, 403, SecurityConstants.ACCESS_DENIED);
+		Helper.formResponse(response, RestResponses.ACCESS_DENIED);
 	}
 }
