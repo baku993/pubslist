@@ -17,13 +17,14 @@ public class LoggingFilter extends GenericFilterBean {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 
-		logRequest((HttpServletRequest) request);
+		if (logger.isDebugEnabled()) {
+			logRequest((HttpServletRequest) request);
+		}
 		chain.doFilter(request, response);
 	}
 
-	protected void logRequest(HttpServletRequest request) {
+	private void logRequest(HttpServletRequest request) {
 
-		logger.isDebugEnabled();
 		ContentCachingRequestWrapper requestWrapper = new ContentCachingRequestWrapper(request);
 		StringBuffer msg = new StringBuffer().append("\n");
 
@@ -42,6 +43,7 @@ public class LoggingFilter extends GenericFilterBean {
 		msg.append(headers)
 				.append("Body: \n")
 				.append(new String(requestWrapper.getContentAsByteArray()));
+
 		logger.debug(msg);
 	}
 
