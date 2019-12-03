@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.alco.pubslist.security.SecurityConstants.SING_UP_URL;
+import static com.alco.pubslist.security.SecurityConstants.SIGN_UP_URL;
 
 @RestController
 public class UsersController {
@@ -26,7 +26,7 @@ public class UsersController {
 		return userService.findAll();
 	}
 
-	@PostMapping(SING_UP_URL)
+	@PostMapping(SIGN_UP_URL)
 	User save(@RequestBody User newUser) {
 
 		return userService.save(newUser);
