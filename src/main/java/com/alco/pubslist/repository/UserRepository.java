@@ -9,5 +9,5 @@ public interface UserRepository extends CrudRepository<User, UUID> {
 
 	User findDistinctFirstByUsername(String username);
 
-	Integer countUsersByUsername(String username);
+	boolean existsByUsername(String username);
 }

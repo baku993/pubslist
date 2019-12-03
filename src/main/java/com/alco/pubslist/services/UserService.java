@@ -9,9 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
 @Component
 public class UserService {
 
@@ -26,20 +23,17 @@ public class UserService {
 		if (user.getUsername() == null || user.getPassword() == null) {
 			throw new BaseException(RestResponses.MISSING_USERNAME_OR_PASSWORD);
 		}
-		else if (repository.countUsersByUsername(user.getUsername()) > 0) {
+		else if (repository.existsByUsername(user.getUsername())) {
 			throw new BaseException(RestResponses.USERNAME_IS_ALREADY_USED);
 		}
 
 		user.setPassword(Helper.cacheData(user.getPassword(), salt));
 
-		User newUser = repository.save(user);
-		newUser.setPassword(null);
-		return newUser;
+		return repository.save(user);
 	}
 
 	public Iterable<User> findAll() {
 
-		return StreamSupport.stream(repository.findAll().spliterator(), false)
-				.peek(user -> user.setPassword(null)).collect(Collectors.toList());
+		return repository.findAll();
 	}
 }
