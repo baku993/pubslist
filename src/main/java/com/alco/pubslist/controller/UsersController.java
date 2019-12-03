@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import static com.alco.pubslist.security.SecurityConstants.SIGN_UP_URL;
+
 @RestController
 public class UsersController {
 
@@ -17,14 +19,14 @@ public class UsersController {
 	private UserService userService;
 
 	@Secured("ROLE_ADMIN")
-	@GetMapping("/users")
+	@GetMapping("users")
 	@ResponseBody
 	Iterable<User> all() {
 
 		return userService.findAll();
 	}
 
-	@PostMapping("/users")
+	@PostMapping(SIGN_UP_URL)
 	User save(@RequestBody User newUser) {
 
 		return userService.save(newUser);

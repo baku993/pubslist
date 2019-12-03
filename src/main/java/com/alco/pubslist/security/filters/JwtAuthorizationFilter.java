@@ -79,10 +79,11 @@ public class JwtAuthorizationFilter extends GenericFilterBean {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 
-		Authentication authentication = getAuthentication((HttpServletRequest) request);
+		HttpServletRequest servletRequest = (HttpServletRequest) request;
+		Authentication authentication = getAuthentication(servletRequest);
 		if (authentication == null) {
-			if (((HttpServletRequest) request).getServletPath().equals(SecurityConstants.SING_UP_URL)
-					&& ((HttpServletRequest) request).getMethod().equals("POST"))
+			if (servletRequest.getServletPath().equals(SecurityConstants.SIGN_UP_URL)
+					&& servletRequest.getMethod().equals("POST"))
 				chain.doFilter(request, response);
 			else {
 				Helper.formResponse(response, RestResponses.AUTHORIZATION_FAILED);
@@ -93,4 +94,5 @@ public class JwtAuthorizationFilter extends GenericFilterBean {
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		chain.doFilter(request, response);
 	}
+
 }
