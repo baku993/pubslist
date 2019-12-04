@@ -19,7 +19,7 @@ docker rm postgres
 ```
 
 ## Front end Project setup
-### /src/main/webapp
+### <path_to_project>/src/main/webapp
 ```
 npm install
 ```
