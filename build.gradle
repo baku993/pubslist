@@ -56,3 +56,11 @@ test {
     useJUnitPlatform()
 }
 
+task frontend(type: Exec) {
+    inputs.file("package-lock.json").withPathSensitivity(PathSensitivity.RELATIVE)
+    inputs.dir("src/main/webapp").withPathSensitivity(PathSensitivity.RELATIVE)
+    outputs.cacheIf { true }
+
+    commandLine "npm", "run", "build"
+}
+
