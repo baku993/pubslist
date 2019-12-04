@@ -39,5 +39,9 @@
       "vue-cli-service lint",
       "git add"
     ]
+  },
+  "engines": {
+    "node": "13.2.x",
+    "npm": "6.13.x"
   }
 }
