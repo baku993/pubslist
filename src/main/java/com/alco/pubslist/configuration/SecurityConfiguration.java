@@ -1,9 +1,11 @@
 package com.alco.pubslist.configuration;
 
+import com.alco.pubslist.security.CachedAuthenticationProvider;
+import com.alco.pubslist.security.CustomAccessDeniedHandler;
 import com.alco.pubslist.security.SecurityConstants;
-import com.alco.pubslist.security.filters.CachedAuthenticationProvider;
 import com.alco.pubslist.security.filters.JwtAuthenticationFilter;
 import com.alco.pubslist.security.filters.JwtAuthorizationFilter;
+import com.alco.pubslist.security.filters.LoggingFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -46,13 +48,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		http.cors().disable()
 				.csrf().disable()
 				.authorizeRequests()
-				.antMatchers(HttpMethod.POST, "/users").permitAll()
+				.antMatchers(HttpMethod.POST, SecurityConstants.SIGN_UP_URL).permitAll()
 				.antMatchers(HttpMethod.POST, SecurityConstants.LOGIN_URL).permitAll()
 				.anyRequest().authenticated()
 				.and()
 				.addFilterBefore(new JwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
 				.addFilterBefore(new JwtAuthenticationFilter(authenticationManager(), Long.parseLong(expirationTime)),
 						JwtAuthorizationFilter.class)
+				.addFilterBefore(new LoggingFilter(), JwtAuthenticationFilter.class)
+				.exceptionHandling().accessDeniedHandler(new CustomAccessDeniedHandler())
+				.and()
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 	}
 }

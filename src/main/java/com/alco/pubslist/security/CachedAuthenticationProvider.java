@@ -1,4 +1,4 @@
-package com.alco.pubslist.security.filters;
+package com.alco.pubslist.security;
 
 import com.alco.pubslist.Helper;
 import com.alco.pubslist.entities.User;

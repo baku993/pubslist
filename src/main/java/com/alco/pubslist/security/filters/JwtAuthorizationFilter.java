@@ -1,5 +1,7 @@
 package com.alco.pubslist.security.filters;
 
+import com.alco.pubslist.Helper;
+import com.alco.pubslist.security.RestResponses;
 import com.alco.pubslist.security.SecurityConstants;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -7,6 +9,7 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.security.SignatureException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -64,6 +67,9 @@ public class JwtAuthorizationFilter extends GenericFilterBean {
 			catch (IllegalArgumentException exception) {
 				log.warn("Request to parse empty or null JWT : {} failed : {}", token, exception.getMessage());
 			}
+			catch (SignatureException exception) {
+				log.warn("Request to parse JWT with wrong signature : {} failed : {}", token, exception.getMessage());
+			}
 		}
 
 		return null;
@@ -73,14 +79,20 @@ public class JwtAuthorizationFilter extends GenericFilterBean {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 
-		Authentication authentication = getAuthentication((HttpServletRequest) request);
+		HttpServletRequest servletRequest = (HttpServletRequest) request;
+		Authentication authentication = getAuthentication(servletRequest);
 		if (authentication == null) {
-			chain.doFilter(request, response);
+			if (servletRequest.getServletPath().equals(SecurityConstants.SIGN_UP_URL)
+					&& servletRequest.getMethod().equals("POST"))
+				chain.doFilter(request, response);
+			else {
+				Helper.formResponse(response, RestResponses.AUTHORIZATION_FAILED);
+			}
 			return;
 		}
 
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		chain.doFilter(request, response);
-
 	}
+
 }

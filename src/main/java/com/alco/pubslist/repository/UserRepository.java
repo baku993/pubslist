@@ -8,4 +8,6 @@ import java.util.UUID;
 public interface UserRepository extends CrudRepository<User, UUID> {
 
 	User findDistinctFirstByUsername(String username);
+
+	boolean existsByUsername(String username);
 }
