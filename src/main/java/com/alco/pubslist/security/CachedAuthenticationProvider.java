@@ -45,7 +45,7 @@ public class CachedAuthenticationProvider implements AuthenticationProvider {
 			return new UsernamePasswordAuthenticationToken(name, password, grantedAuthorities);
 		}
 		else {
-			throw new BadCredentialsException("Username/Password combination is incorect");
+			throw new BadCredentialsException("Username/Password combination is incorrect");
 		}
 
 	}

@@ -1,0 +1,19 @@
+image: java:8
+
+stages:
+  - build
+  - deploy
+
+build:
+  stage: build
+  script: ./gradlew bootJar
+  artifacts:
+    paths:
+      - build/libs/pubslist-0.0.1-SNAPSHOT.jar
+
+production:
+  stage: deploy
+  script:
+    - dpl --provider=heroku --app=$HEROKU_APP --api-key=$HEROKU_API_KEY
+  only:
+    - master

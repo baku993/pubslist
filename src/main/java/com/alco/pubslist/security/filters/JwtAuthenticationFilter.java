@@ -28,8 +28,8 @@ import java.util.stream.Collectors;
 
 public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
-	private AuthenticationManager authenticationManager;
-	private Long expirationTime;
+	private final AuthenticationManager authenticationManager;
+	private final Long expirationTime;
 
 	public JwtAuthenticationFilter(AuthenticationManager authenticationManager, Long expirationTime) {
 
