@@ -59,10 +59,8 @@ test {
 task frontend(type: Exec) {
     inputs.file("package-lock.json").withPathSensitivity(PathSensitivity.RELATIVE)
     inputs.dir("src/main/webapp").withPathSensitivity(PathSensitivity.RELATIVE)
-    outputs.dir("$buildDir/resources/main")
     outputs.cacheIf { true }
 
-    commandLine "npm", "run", "lint"
     commandLine "npm", "run", "build"
 }
 
