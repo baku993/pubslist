@@ -3,6 +3,7 @@ image: openjdk:8
 before_script:
   - apt-get update -qy
   - apt-get install -y ruby-dev
+  - apt-get install -y nodejs
   - gem install dpl
 
 stages:
