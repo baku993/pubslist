@@ -11,7 +11,8 @@ variables:
   POSTGRES_DB: drums
 
 services:
-  - postgres:9.5.0
+  - name: postgres:latest
+    alias: postgres
 
 stages:
   - build
