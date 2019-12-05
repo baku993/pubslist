@@ -29,4 +29,11 @@
     <changeSet author="Tieimur" id="3">
         <createSequence sequenceName="hibernate_sequence" startValue="1"/>
     </changeSet>
+
+    <changeSet author="Tieimur" id="4">
+        <addColumn tableName="places">
+            <column name="approved" type = "boolean"/>
+            <column name="enabled" type = "boolean"/>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>

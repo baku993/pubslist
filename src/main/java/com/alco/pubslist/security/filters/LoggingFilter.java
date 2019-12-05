@@ -36,7 +36,8 @@ public class LoggingFilter extends GenericFilterBean {
 		StringBuffer headers = new StringBuffer();
 		Collections.list(request.getHeaderNames())
 				.forEach(name ->
-						headers.append(name)
+						headers.append("   ")
+								.append(name)
 								.append(":	")
 								.append(request.getHeader(name))
 								.append("\n"));

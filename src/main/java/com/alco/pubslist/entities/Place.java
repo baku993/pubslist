@@ -13,26 +13,26 @@ public class Place {
 
 	@Id
 	@GeneratedValue(strategy = SEQUENCE)
-	private String id;
+	private Integer id;
 	private String name;
 	private String address;
+	private String coordinate_1;
+	private String coordinate_2;
 
-	Place() {
+	private boolean approved;
+
+	private boolean enabled;
+
+	public Place() {
 
 	}
 
-	public Place(String name, String address) {
-
-		this.name = name;
-		this.address = address;
-	}
-
-	public String getId() {
+	public Integer getId() {
 
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Integer id) {
 
 		this.id = id;
 	}
@@ -55,5 +55,45 @@ public class Place {
 	public void setAddress(String address) {
 
 		this.address = address;
+	}
+
+	public String getCoordinate_1() {
+
+		return coordinate_1;
+	}
+
+	public void setCoordinate_1(String coordinate_1) {
+
+		this.coordinate_1 = coordinate_1;
+	}
+
+	public String getCoordinate_2() {
+
+		return coordinate_2;
+	}
+
+	public void setCoordinate_2(String coordinate_2) {
+
+		this.coordinate_2 = coordinate_2;
+	}
+
+	public boolean isApproved() {
+
+		return approved;
+	}
+
+	public void setApproved(boolean approved) {
+
+		this.approved = approved;
+	}
+
+	public boolean isEnabled() {
+
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+
+		this.enabled = enabled;
 	}
 }
