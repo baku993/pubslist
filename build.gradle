@@ -56,7 +56,15 @@ test {
     useJUnitPlatform()
 }
 
+task installFrontend(type: Exec) {
+    inputs.file("package-lock.json").withPathSensitivity(PathSensitivity.RELATIVE)
+    outputs.cacheIf { true }
+
+    commandLine "npm", "install"
+}
+
 task frontend(type: Exec) {
+    dependsOn installFrontend
     inputs.file("package-lock.json").withPathSensitivity(PathSensitivity.RELATIVE)
     inputs.dir("src/main/webapp").withPathSensitivity(PathSensitivity.RELATIVE)
     outputs.cacheIf { true }

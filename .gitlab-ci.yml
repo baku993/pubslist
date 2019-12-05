@@ -1,10 +1,17 @@
-image: openjdk:8
+image: timbru31/java-node:8-jdk
 
 before_script:
   - apt-get update -qy
   - apt-get install -y ruby-dev
-  - apt-get install -y nodejs
   - gem install dpl
+
+variables:
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: password
+  POSTGRES_DB: drums
+
+services:
+  - postgres:9.5.0
 
 stages:
   - build
@@ -12,7 +19,8 @@ stages:
 
 build:
   stage: build
-  script: ./gradlew frontend bootJar
+  script:
+    - ./gradlew frontend bootJar
   artifacts:
     paths:
       - build/libs/pubslist-0.0.1-SNAPSHOT.jar
@@ -20,6 +28,6 @@ build:
 production:
   stage: deploy
   script:
-    - dpl --provider=heroku --app=$HEROKU_APP --api-key=$HEROKU_API_KEY
+    - dpl --provider=heroku --app=pubslist --api-key=38c02116-1b82-40d8-8d3c-1fc039ee1e00
   only:
     - master
