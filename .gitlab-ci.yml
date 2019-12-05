@@ -28,6 +28,6 @@ build:
 production:
   stage: deploy
   script:
-    - dpl --provider=heroku --app=pubslist --api-key=38c02116-1b82-40d8-8d3c-1fc039ee1e00
+    - dpl --provider=heroku --app=$HEROKU_APP --api-key=$HEROKU_API_KEY
   only:
     - master
