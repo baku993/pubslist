@@ -21,7 +21,7 @@ stages:
 build:
   stage: build
   script:
-    - ./gradlew frontend bootJar
+    - ./gradlew build
   artifacts:
     paths:
       - build/libs/pubslist-0.0.1-SNAPSHOT.jar
