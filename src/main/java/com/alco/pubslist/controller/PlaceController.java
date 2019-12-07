@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
 import static com.alco.pubslist.security.SecurityConstants.PLACES_URL;
 
@@ -35,10 +36,10 @@ public class PlaceController {
 	}
 
 	@PatchMapping(PLACES_URL + "/{id}")
-	public ResponseEntity<?> partialUpdate(@RequestBody Map<String, Object> partialUpdate,
-			@PathVariable("id") Integer id) {
+	public ResponseEntity<?> partialUpdate(@PathVariable("id") Integer id, HttpServletRequest request)
+			throws IOException {
 
-		service.update(partialUpdate, id);
+		service.update(request.getReader(), id);
 		return ResponseEntity.ok("Place updated");
 	}
 
