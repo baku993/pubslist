@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import static com.alco.pubslist.security.SecurityConstants.SIGN_UP_URL;
+import static com.alco.pubslist.security.SecurityConstants.USERS_URL;
 
 @RestController
 public class UsersController {
@@ -19,7 +20,7 @@ public class UsersController {
 	private UserService userService;
 
 	@Secured("ROLE_ADMIN")
-	@GetMapping("users")
+	@GetMapping(USERS_URL)
 	@ResponseBody
 	Iterable<User> all() {
 

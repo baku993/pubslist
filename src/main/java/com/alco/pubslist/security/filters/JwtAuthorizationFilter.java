@@ -46,13 +46,19 @@ public class JwtAuthorizationFilter extends GenericFilterBean {
 
 				String username = parsedToken.getBody().getSubject();
 
+				String userId = parsedToken.getHeader().get("user_id").toString();
+
 				List<GrantedAuthority> authorities = ((List<?>) parsedToken.getBody()
 						.get("role")).stream().map(role -> (String) role)
 						.map(SimpleGrantedAuthority::new)
 						.collect(Collectors.toList());
 
 				if (!StringUtils.isEmpty(username)) {
-					return new UsernamePasswordAuthenticationToken(username, null, authorities);
+
+					UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(username, null
+							, authorities);
+					auth.setDetails(userId);
+					return auth;
 				}
 			}
 			catch (ExpiredJwtException exception) {

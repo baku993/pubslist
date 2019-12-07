@@ -40,7 +40,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	public void configure(WebSecurity web) {
 
-		web.ignoring().mvcMatchers("/**", "/favicon.ico", "/img/**");
+		web.ignoring().mvcMatchers("/*", "/favicon.ico", "/img/**");
 	}
 
 	@Override
