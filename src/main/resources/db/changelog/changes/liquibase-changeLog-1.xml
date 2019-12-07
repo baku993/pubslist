@@ -32,8 +32,23 @@
 
     <changeSet author="Tieimur" id="4">
         <addColumn tableName="places">
-            <column name="approved" type = "boolean"/>
-            <column name="enabled" type = "boolean"/>
+            <column name="approved" type="boolean"/>
+            <column name="enabled" type="boolean"/>
         </addColumn>
+    </changeSet>
+
+    <changeSet author="Tieimur" id="5">
+        <renameColumn tableName="places" oldColumnName="coordinate_1" newColumnName="latitude"/>
+        <renameColumn tableName="places" oldColumnName="coordinate_2" newColumnName="longitude"/>
+        <addColumn tableName="places">
+            <column name="owner_id" type="integer"/>
+        </addColumn>
+        <addForeignKeyConstraint baseColumnNames="owner_id"
+                                 baseTableName="places"
+                                 constraintName="owner_id_constraint"
+                                 deferrable="true"
+                                 initiallyDeferred="true"
+                                 referencedColumnNames="id"
+                                 referencedTableName="users"/>
     </changeSet>
 </databaseChangeLog>

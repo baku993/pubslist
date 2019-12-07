@@ -21,9 +21,12 @@ public class PlaceService {
 
 	public Place suggestPlace(Place place) {
 
-		if (place.getName() == null || place.getAddress() == null) {
-			throw new BaseException(RestResponses.MISSING_PLACE_NAME_OR_ADDRESS);
+		if (place.getName() == null
+				|| place.getAddress() == null
+				|| place.getOwnerId() == null) {
+			throw new BaseException(RestResponses.MISSING_REQUIRED_FIELD);
 		}
+
 		place.setEnabled(true);
 		place.setApproved(false);
 		return repository.save(place);
@@ -43,16 +46,19 @@ public class PlaceService {
 			// Read and map JSON to entity from DB, merged object as output
 			Place updatedPlace = objectMapper.readerForUpdating(place).readValue(reader);
 
-			// Only admin or user who owns this place can update
-			// TODO: Add check for user owner
-			if (!UserContext.isAdmin()) {
+			// Only admin or user who owns this place can update in case
+			// if the place is not approved yet
+			if (!UserContext.isAdmin()
+					&& (place.isApproved() || !isPlaceOwnedByUser(place))) {
 				throw new BaseException(RestResponses.ACCESS_DENIED);
 			}
 
 			// Required fields should be filled
-			// TODO: Other fields should be checked, everything can can be changed on UI
-			if (updatedPlace.getName() == null || updatedPlace.getAddress() == null) {
-				throw new BaseException(RestResponses.MISSING_PLACE_NAME_OR_ADDRESS);
+			if (updatedPlace.getName() == null
+					|| updatedPlace.getAddress() == null
+					|| updatedPlace.getId() == null
+					|| updatedPlace.getOwnerId() == null) {
+				throw new BaseException(RestResponses.MISSING_REQUIRED_FIELD);
 			}
 
 			repository.save(updatedPlace);
@@ -66,9 +72,10 @@ public class PlaceService {
 
 		Place place = findPlaceById(id);
 
-		// Only admin or user who owns this place can update
-		// TODO: Add check for user owner
-		if (!UserContext.isAdmin()) {
+		// Only admin or user who owns this place can update in case
+		// if the place is not approved yet
+		if (!UserContext.isAdmin()
+				&& (place.isApproved() || !isPlaceOwnedByUser(place))) {
 			throw new BaseException(RestResponses.ACCESS_DENIED);
 		}
 
@@ -79,10 +86,11 @@ public class PlaceService {
 
 		Optional<Place> optionalPlace = repository.findById(id);
 
-		if (!optionalPlace.isPresent()) {
-			throw new BaseException(RestResponses.NO_PLACE_FOUND);
-		}
+		return optionalPlace.orElseThrow(() -> new BaseException(RestResponses.NO_PLACE_FOUND));
+	}
 
-		return optionalPlace.get();
+	private boolean isPlaceOwnedByUser(Place place) {
+
+		return place.getOwnerId().toString().equals(UserContext.getUserId());
 	}
 }

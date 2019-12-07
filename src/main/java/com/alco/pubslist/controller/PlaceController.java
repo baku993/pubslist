@@ -29,7 +29,7 @@ public class PlaceController {
 		return service.findAll();
 	}
 
-	@PostMapping("PLACES_URL")
+	@PostMapping(PLACES_URL)
 	Place save(@RequestBody Place newPlace) {
 
 		return service.suggestPlace(newPlace);
@@ -47,7 +47,7 @@ public class PlaceController {
 	public ResponseEntity<?> delete(@PathVariable("id") Integer id) {
 
 		service.delete(id);
-		return ResponseEntity.ok("Place updated");
+		return ResponseEntity.ok("");
 	}
 
 }

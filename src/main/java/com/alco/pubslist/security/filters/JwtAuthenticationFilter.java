@@ -92,6 +92,7 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
 				.setIssuer(SecurityConstants.TOKEN_ISSUER)
 				.setAudience(SecurityConstants.TOKEN_AUDIENCE)
 				.setSubject(authentication.getName())
+				.setHeaderParam("user_id",authentication.getDetails())
 				.setExpiration(new Date(System.currentTimeMillis() + expirationTime))
 				.claim("role", roles)
 				.compact();

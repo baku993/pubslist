@@ -4,7 +4,7 @@ public enum RestResponses {
 
 	MALFORMED_JSON(400, "Json is malformed"),
 	MISSING_USERNAME_OR_PASSWORD(400, "Username or Password is not provided"),
-	MISSING_PLACE_NAME_OR_ADDRESS(400, "Name or Address is not provided"),
+	MISSING_REQUIRED_FIELD(400, "One or several required fields are not provided"),
 	NO_PLACE_FOUND(406, "No place with following ID found"),
 	AUTHENTICATION_FAILED(401, "Authentication failed for provided credentials"),
 	AUTHORIZATION_FAILED(401, "Authorization failed"),

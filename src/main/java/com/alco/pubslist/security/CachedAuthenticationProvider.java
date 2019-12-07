@@ -42,7 +42,11 @@ public class CachedAuthenticationProvider implements AuthenticationProvider {
 			List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
 			grantedAuthorities.add(new SimpleGrantedAuthority(user.getRole()));
 
-			return new UsernamePasswordAuthenticationToken(name, password, grantedAuthorities);
+			UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(name, password,
+					grantedAuthorities);
+			auth.setDetails(user.getId());
+
+			return auth;
 		}
 		else {
 			throw new BadCredentialsException("Username/Password combination is incorrect");

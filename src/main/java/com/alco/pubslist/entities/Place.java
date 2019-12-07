@@ -1,5 +1,6 @@
 package com.alco.pubslist.entities;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -16,8 +17,11 @@ public class Place {
 	private Integer id;
 	private String name;
 	private String address;
-	private String coordinate_1;
-	private String coordinate_2;
+	private String latitude;
+	private String longitude;
+
+	@Column(name = "owner_id")
+	private Integer ownerId;
 
 	private boolean approved;
 
@@ -57,24 +61,24 @@ public class Place {
 		this.address = address;
 	}
 
-	public String getCoordinate_1() {
+	public String getLatitude() {
 
-		return coordinate_1;
+		return latitude;
 	}
 
-	public void setCoordinate_1(String coordinate_1) {
+	public void setLatitude(String coordinate_1) {
 
-		this.coordinate_1 = coordinate_1;
+		this.latitude = coordinate_1;
 	}
 
-	public String getCoordinate_2() {
+	public String getLongitude() {
 
-		return coordinate_2;
+		return longitude;
 	}
 
-	public void setCoordinate_2(String coordinate_2) {
+	public void setLongitude(String coordinate_2) {
 
-		this.coordinate_2 = coordinate_2;
+		this.longitude = coordinate_2;
 	}
 
 	public boolean isApproved() {
@@ -95,5 +99,15 @@ public class Place {
 	public void setEnabled(boolean enabled) {
 
 		this.enabled = enabled;
+	}
+
+	public Integer getOwnerId() {
+
+		return ownerId;
+	}
+
+	public void setOwnerId(Integer owner_id) {
+
+		this.ownerId = owner_id;
 	}
 }
