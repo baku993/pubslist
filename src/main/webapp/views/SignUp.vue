@@ -144,7 +144,7 @@ export default {
           })
           .then(
             () => {
-              this.$router.replace("home");
+              this.$router.replace("login");
             },
             err => {
               console.error("Oops. " + err.message);

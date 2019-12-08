@@ -32,13 +32,13 @@
                   </v-form>
                 </v-card-text>
                 <v-card-actions>
-                  <v-btn text color="green darken-2" @click="goToSignUp"
-                    >New? Sign up</v-btn
-                  >
+                  <v-btn text color="green darken-2" @click="goToSignUp">
+                    New? Sign up
+                  </v-btn>
                   <v-spacer />
-                  <v-btn :class="{ grey: !valid, blue: valid }" @click="login"
-                    >Login</v-btn
-                  >
+                  <v-btn :class="{ grey: !valid, blue: valid }" @click="login">
+                    Login
+                  </v-btn>
                 </v-card-actions>
               </v-card>
             </v-col>
@@ -64,6 +64,7 @@ export default {
   methods: {
     login: function() {
       this.$refs.form.validate();
+      const self = this;
 
       if (this.valid) {
         axios
@@ -72,8 +73,9 @@ export default {
             password: this.password
           })
           .then(
-            () => {
-              this.$router.replace("home");
+            response => {
+              self.$store.dispatch("setUserToken", response.data.token);
+              self.$router.replace("home");
             },
             err => {
               console.error("Oops. " + err.message);
