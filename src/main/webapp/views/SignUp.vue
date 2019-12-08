@@ -137,7 +137,7 @@ export default {
       if (this.valid) {
         axios
           .post("api/signup", {
-            username: this.email,
+            username: this.username,
             password: this.password,
             name: this.firstName,
             surname: this.lastName
