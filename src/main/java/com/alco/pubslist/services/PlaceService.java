@@ -49,7 +49,7 @@ public class PlaceService {
 			// Only admin or user who owns this place can update in case
 			// if the place is not approved yet
 			if (!UserContext.isAdmin()
-					&& (place.isApproved() || !isPlaceOwnedByUser(place))) {
+					&& (place.isApproved() || !place.isPlaceOwnedByUser(UserContext.getUserId()))) {
 				throw new BaseException(RestResponses.ACCESS_DENIED);
 			}
 
@@ -75,7 +75,7 @@ public class PlaceService {
 		// Only admin or user who owns this place can update in case
 		// if the place is not approved yet
 		if (!UserContext.isAdmin()
-				&& (place.isApproved() || !isPlaceOwnedByUser(place))) {
+				&& (place.isApproved() || !place.isPlaceOwnedByUser(UserContext.getUserId()))) {
 			throw new BaseException(RestResponses.ACCESS_DENIED);
 		}
 
@@ -87,10 +87,5 @@ public class PlaceService {
 		Optional<Place> optionalPlace = repository.findById(id);
 
 		return optionalPlace.orElseThrow(() -> new BaseException(RestResponses.NO_PLACE_FOUND));
-	}
-
-	private boolean isPlaceOwnedByUser(Place place) {
-
-		return place.getOwnerId().toString().equals(UserContext.getUserId());
 	}
 }

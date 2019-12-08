@@ -110,4 +110,9 @@ public class Place {
 
 		this.ownerId = owner_id;
 	}
+
+	public boolean isPlaceOwnedByUser(String userId) {
+
+		return getOwnerId().toString().equals(userId);
+	}
 }
