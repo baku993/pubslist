@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -28,7 +30,8 @@ public class User {
 	private String surname;
 
 	@Column(name = "role")
-	private String role;
+	@Enumerated(EnumType.STRING)
+	private UserRole role = UserRole.USER;
 
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	@Column(name = "password")
@@ -53,7 +56,7 @@ public class User {
 		this.surname = surname;
 	}
 
-	public void setRole(String role) {
+	public void setRole(UserRole role) {
 
 		this.role = role;
 	}
@@ -73,7 +76,7 @@ public class User {
 		return surname;
 	}
 
-	public String getRole() {
+	public UserRole getRole() {
 
 		return role;
 	}

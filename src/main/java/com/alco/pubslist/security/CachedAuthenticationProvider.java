@@ -40,7 +40,7 @@ public class CachedAuthenticationProvider implements AuthenticationProvider {
 
 		if (isAuthenticated(password, user)) {
 			List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-			grantedAuthorities.add(new SimpleGrantedAuthority(user.getRole()));
+			grantedAuthorities.add(new SimpleGrantedAuthority(user.getRole().getRoleName()));
 
 			UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(name, password,
 					grantedAuthorities);

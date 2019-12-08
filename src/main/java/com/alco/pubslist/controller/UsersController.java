@@ -29,7 +29,7 @@ public class UsersController {
 	}
 
 	@PostMapping(SIGN_UP_URL)
-	ResponseEntity<?> save(@RequestBody User newUser) {
+	ResponseEntity save(@RequestBody User newUser) {
 
 		userService.save(newUser);
 
