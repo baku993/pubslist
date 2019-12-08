@@ -36,4 +36,6 @@ public class UserService {
 
 		return repository.findAll();
 	}
+
+	public User findByUsername(String username) {return repository.findDistinctFirstByUsername(username);}
 }
