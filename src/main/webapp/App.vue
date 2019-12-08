@@ -32,6 +32,7 @@
 import "material-design-icons-iconfont/dist/material-design-icons.css";
 import "@mdi/font/css/materialdesignicons.css";
 import { mapActions, mapGetters } from "vuex";
+import { IS_LOGGED, SET_LOGGED_ACTION } from "./constants";
 
 export default {
   data() {
@@ -39,9 +40,9 @@ export default {
       items: ["Logout"]
     };
   },
-  computed: mapGetters(["isUserLogged"]),
+  computed: mapGetters([IS_LOGGED]),
   methods: {
-    ...mapActions(["setUserLogged"]),
+    ...mapActions([SET_LOGGED_ACTION]),
     logout() {
       this.setUserLogged(false);
       this.$router.push("/");

@@ -1,5 +1,10 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import {
+  SET_LOGGED_ACTION,
+  SET_TOKEN_ACTION,
+  USER_TOKEN_KEY
+} from "../constants";
 
 Vue.use(Vuex);
 
@@ -27,8 +32,23 @@ const mutations = {
 // actions are functions that cause side effects and can involve
 // asynchronous operations.
 const actions = {
-  setUserLogged: ({ commit }, value) => commit("setUserLogged", value),
-  setUserToken: ({ commit }, userToken) => commit("setUserToken", userToken)
+  setUserLogged: ({ commit }, value) => {
+    commit(SET_LOGGED_ACTION, value);
+    if (!value) {
+      store.dispatch(SET_TOKEN_ACTION, undefined);
+    }
+  },
+  setUserToken: ({ commit }, userToken) => {
+    // Check token in session storage
+    const isStorageSupported = window.sessionStorage;
+    if (!userToken) {
+      if (isStorageSupported) sessionStorage.removeItem(USER_TOKEN_KEY);
+      else commit(SET_TOKEN_ACTION, undefined);
+    } else {
+      if (isStorageSupported) sessionStorage.setItem(USER_TOKEN_KEY, userToken);
+      commit(SET_TOKEN_ACTION, userToken);
+    }
+  }
 };
 
 // getters are functions
