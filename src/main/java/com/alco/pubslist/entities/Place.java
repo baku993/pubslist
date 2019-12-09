@@ -27,10 +27,6 @@ public class Place {
 
 	private boolean enabled;
 
-	public Place() {
-
-	}
-
 	public Integer getId() {
 
 		return id;
@@ -66,9 +62,9 @@ public class Place {
 		return latitude;
 	}
 
-	public void setLatitude(String coordinate_1) {
+	public void setLatitude(String latitude) {
 
-		this.latitude = coordinate_1;
+		this.latitude = latitude;
 	}
 
 	public String getLongitude() {
@@ -76,9 +72,9 @@ public class Place {
 		return longitude;
 	}
 
-	public void setLongitude(String coordinate_2) {
+	public void setLongitude(String longitude) {
 
-		this.longitude = coordinate_2;
+		this.longitude = longitude;
 	}
 
 	public boolean isApproved() {
@@ -106,8 +102,13 @@ public class Place {
 		return ownerId;
 	}
 
-	public void setOwnerId(Integer owner_id) {
+	public void setOwnerId(Integer ownerId) {
 
-		this.ownerId = owner_id;
+		this.ownerId = ownerId;
+	}
+
+	public boolean isPlaceOwnedByUser(String userId) {
+
+		return getOwnerId().toString().equals(userId);
 	}
 }

@@ -1,12 +1,33 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view />
+    <v-app>
+      <v-content>
+        <navbar v-if="isUserLogged" @logout="logout"></navbar>
+        <router-view />
+      </v-content>
+    </v-app>
   </div>
 </template>
+
+<script>
+import "material-design-icons-iconfont/dist/material-design-icons.css";
+import "@mdi/font/css/materialdesignicons.css";
+import { mapActions, mapGetters } from "vuex";
+import { IS_LOGGED, SET_LOGGED_ACTION } from "./constants";
+import Navbar from "./components/Navbar";
+
+export default {
+  components: { Navbar },
+  computed: mapGetters([IS_LOGGED]),
+  methods: {
+    ...mapActions([SET_LOGGED_ACTION]),
+    logout() {
+      this.setUserLogged(false);
+      this.$router.push("/");
+    }
+  }
+};
+</script>
 
 <style lang="scss">
 #app {
@@ -15,18 +36,5 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
 }
 </style>

@@ -3,6 +3,15 @@ const FileManagerPlugin = require("filemanager-webpack-plugin");
 module.exports = {
   lintOnSave: false,
   outputDir: __dirname + "/src/main/webapp/dist",
+  devServer: {
+    proxy: {
+      "^/api": {
+        target: "http://localhost:80",
+        ws: true,
+        changeOrigin: true
+      }
+    }
+  },
   configureWebpack: {
     resolve: {
       alias: {

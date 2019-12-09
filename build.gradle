@@ -72,5 +72,5 @@ task frontend(type: Exec) {
     commandLine "npm", "run", "build"
 }
 
-rootProject.tasks.getByName('build').dependsOn frontend
+rootProject.tasks.getByName('processResources').dependsOn frontend
 

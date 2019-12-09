@@ -3,6 +3,7 @@ package com.alco.pubslist.controller;
 import com.alco.pubslist.entities.User;
 import com.alco.pubslist.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,8 +29,10 @@ public class UsersController {
 	}
 
 	@PostMapping(SIGN_UP_URL)
-	User save(@RequestBody User newUser) {
+	ResponseEntity save(@RequestBody User newUser) {
 
-		return userService.save(newUser);
+		userService.save(newUser);
+
+		return ResponseEntity.ok("");
 	}
 }
