@@ -2,7 +2,7 @@
   <div id="app">
     <v-app>
       <v-content>
-        <navbar :is-user-logged="isUserLogged" @logout="logout"></navbar>
+        <navbar v-if="isUserLogged" @logout="logout"></navbar>
         <router-view />
       </v-content>
     </v-app>
@@ -36,28 +36,5 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-
-  .toolbar {
-    justify-content: space-between;
-    margin: 10px 10px;
-  }
-
-  .account {
-    cursor: pointer;
-  }
-}
-
-#nav {
-  padding: 20px;
-  flex: 1;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
 }
 </style>
