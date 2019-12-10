@@ -51,4 +51,27 @@
                                  referencedColumnNames="id"
                                  referencedTableName="users"/>
     </changeSet>
+
+    <changeSet author="Tieimur" id="6">
+    <createTable tableName="comments">
+        <column name="id" type="integer" autoIncrement="true"/>
+        <column name="text" type="text"/>
+        <column name="user_id" type="integer"/>
+        <column name="place_id" type="integer"/>
+    </createTable>
+    <addForeignKeyConstraint baseColumnNames="user_id"
+                             baseTableName="comments"
+                             constraintName="user_id_constraint"
+                             deferrable="true"
+                             initiallyDeferred="true"
+                             referencedColumnNames="id"
+                             referencedTableName="users"/>
+    <addForeignKeyConstraint baseColumnNames="place_id"
+                             baseTableName="comments"
+                             constraintName="place_id_constraint"
+                             deferrable="true"
+                             initiallyDeferred="true"
+                             referencedColumnNames="id"
+                             referencedTableName="places"/>
+    </changeSet>
 </databaseChangeLog>

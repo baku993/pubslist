@@ -1,10 +1,18 @@
 package com.alco.pubslist.entities;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.List;
 
 import static javax.persistence.GenerationType.SEQUENCE;
 
@@ -23,9 +31,21 @@ public class Place {
 	@Column(name = "owner_id")
 	private Integer ownerId;
 
+	@OneToMany(fetch = FetchType.LAZY)
+	@Cascade(value = CascadeType.DELETE)
+	@JoinColumn(name = "place_id")
+	private List<Comment> comments;
+
 	private boolean approved;
 
 	private boolean enabled;
+
+	@Embedded
+	private Audit audit = new Audit();
+
+	public Place() {
+
+	}
 
 	public Integer getId() {
 
@@ -107,8 +127,18 @@ public class Place {
 		this.ownerId = ownerId;
 	}
 
-	public boolean isPlaceOwnedByUser(String userId) {
+	public Audit getAudit() {
 
-		return getOwnerId().toString().equals(userId);
+		return audit;
+	}
+
+	public void setAudit(Audit audit) {
+
+		this.audit = audit;
+	}
+
+	public boolean isPlaceOwnedByUser(Integer userId) {
+
+		return getOwnerId().equals(userId);
 	}
 }

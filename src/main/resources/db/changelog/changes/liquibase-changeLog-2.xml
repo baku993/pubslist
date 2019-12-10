@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet author="Tieimur" id="7">
+        <addColumn tableName="comments">
+            <column name="created_by" type="integer"/>
+            <column name="created_on" type="timestamp"/>
+            <column name="updated_by" type="integer"/>
+            <column name="updated_on" type="timestamp"/>
+        </addColumn>
+        <addColumn tableName="places">
+            <column name="created_by" type="integer"/>
+            <column name="created_on" type="timestamp"/>
+            <column name="updated_by" type="integer"/>
+            <column name="updated_on" type="timestamp"/>
+        </addColumn>
+    </changeSet>
+</databaseChangeLog>

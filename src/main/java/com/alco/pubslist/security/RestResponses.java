@@ -6,6 +6,7 @@ public enum RestResponses {
 	MISSING_USERNAME_OR_PASSWORD(400, "Username or Password is not provided"),
 	MISSING_REQUIRED_FIELD(400, "One or several required fields are not provided"),
 	NO_PLACE_FOUND(406, "No place with following ID found"),
+	NO_COMMENT_FOUND(406, "No comment with following ID found"),
 	AUTHENTICATION_FAILED(401, "Authentication failed for provided credentials"),
 	AUTHORIZATION_FAILED(401, "Authorization failed"),
 	USERNAME_IS_ALREADY_USED(400, "Username is already in use"),
