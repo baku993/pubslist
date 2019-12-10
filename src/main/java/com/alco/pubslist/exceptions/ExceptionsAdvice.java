@@ -38,7 +38,6 @@ public class ExceptionsAdvice extends ResponseEntityExceptionHandler {
 				request);
 	}
 
-
 	@ExceptionHandler({JpaSystemException.class})
 	public ResponseEntity<Object> handlePSQLException(JpaSystemException ex, WebRequest request) {
 

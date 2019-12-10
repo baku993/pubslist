@@ -3,10 +3,8 @@ package com.alco.pubslist.entities;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import static javax.persistence.GenerationType.SEQUENCE;
@@ -20,8 +18,8 @@ public class Comment {
 	private Integer id;
 	private String text;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	private Place place;
+	@Column(name = "place_id")
+	private Integer placeId;
 
 	@Column(name = "user_id")
 	private Integer userId;
@@ -59,14 +57,14 @@ public class Comment {
 		this.text = text;
 	}
 
-	public Place getPlace() {
+	public Integer getPlaceId() {
 
-		return place;
+		return placeId;
 	}
 
-	public void setPlace(Place place) {
+	public void setPlaceId(Integer placeId) {
 
-		this.place = place;
+		this.placeId = placeId;
 	}
 
 	public Audit getAudit() {
