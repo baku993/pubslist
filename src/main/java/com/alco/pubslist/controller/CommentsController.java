@@ -1,7 +1,7 @@
 package com.alco.pubslist.controller;
 
-import com.alco.pubslist.entities.Place;
-import com.alco.pubslist.services.PlaceService;
+import com.alco.pubslist.entities.Comment;
+import com.alco.pubslist.services.CommentsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,35 +15,35 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
-import static com.alco.pubslist.security.SecurityConstants.PLACES_URL;
+import static com.alco.pubslist.security.SecurityConstants.COMMENTS_URL;
 
 @RestController
-public class PlaceController {
+public class CommentsController {
 
 	@Autowired
-	private PlaceService service;
+	private CommentsService service;
 
-	@GetMapping(PLACES_URL)
-	Iterable<Place> all() {
+	@GetMapping(COMMENTS_URL + "/{id}")
+	public Iterable<Comment> allCommentsForPlace(@PathVariable("id") Integer id) {
 
-		return service.findAll();
+		return service.findAllCommentsOnPlace(id);
 	}
 
-	@PostMapping(PLACES_URL)
-	Place save(@RequestBody Place newPlace) {
+	@PostMapping(COMMENTS_URL)
+	Comment save(@RequestBody Comment newComment) {
 
-		return service.suggestPlace(newPlace);
+		return service.addComment(newComment);
 	}
 
-	@PatchMapping(PLACES_URL + "/{id}")
+	@PatchMapping(COMMENTS_URL + "/{id}")
 	public ResponseEntity<?> partialUpdate(@PathVariable("id") Integer id, HttpServletRequest request)
 			throws IOException {
 
-		service.update(request.getReader(), id);
+		service.edit(request.getReader(), id);
 		return ResponseEntity.ok("");
 	}
 
-	@DeleteMapping(PLACES_URL + "/{id}")
+	@DeleteMapping(COMMENTS_URL + "/{id}")
 	public ResponseEntity<?> delete(@PathVariable("id") Integer id) {
 
 		service.delete(id);

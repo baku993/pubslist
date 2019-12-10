@@ -1,6 +1,7 @@
 package com.alco.pubslist.entities;
 
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -26,6 +27,13 @@ public class Place {
 	private boolean approved;
 
 	private boolean enabled;
+
+	@Embedded
+	private Audit audit = new Audit();
+
+	public Place() {
+
+	}
 
 	public Integer getId() {
 
@@ -111,4 +119,15 @@ public class Place {
 
 		return getOwnerId().toString().equals(userId);
 	}
+
+	public Audit getAudit() {
+
+		return audit;
+	}
+
+	public void setAudit(Audit audit) {
+
+		this.audit = audit;
+	}
+
 }
