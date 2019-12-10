@@ -23,7 +23,7 @@ public class CommentsService {
 
 		if (comment.getText() == null
 				|| comment.getUserId() == null
-				|| comment.getPlaceId() == null) {
+				|| comment.getPlace() == null) {
 			throw new BaseException(RestResponses.MISSING_REQUIRED_FIELD);
 		}
 

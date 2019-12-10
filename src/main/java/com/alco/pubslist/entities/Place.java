@@ -1,11 +1,18 @@
 package com.alco.pubslist.entities;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.List;
 
 import static javax.persistence.GenerationType.SEQUENCE;
 
@@ -23,6 +30,11 @@ public class Place {
 
 	@Column(name = "owner_id")
 	private Integer ownerId;
+
+	@OneToMany(fetch = FetchType.LAZY)
+	@Cascade(value = CascadeType.DELETE)
+	@JoinColumn(name = "place_id")
+	private List<Comment> comments;
 
 	private boolean approved;
 
