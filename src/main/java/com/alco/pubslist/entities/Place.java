@@ -127,11 +127,6 @@ public class Place {
 		this.ownerId = ownerId;
 	}
 
-	public boolean isPlaceOwnedByUser(String userId) {
-
-		return getOwnerId().toString().equals(userId);
-	}
-
 	public Audit getAudit() {
 
 		return audit;
@@ -142,4 +137,8 @@ public class Place {
 		this.audit = audit;
 	}
 
+	public boolean isPlaceOwnedByUser(Integer userId) {
+
+		return getOwnerId().equals(userId);
+	}
 }

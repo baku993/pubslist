@@ -1,5 +1,7 @@
 package com.alco.pubslist.entities;
 
+import com.alco.pubslist.configuration.UserContext;
+
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -9,7 +11,7 @@ import javax.persistence.Table;
 
 import static javax.persistence.GenerationType.SEQUENCE;
 
-@Entity(name = "comment")
+@Entity
 @Table(name = "comments")
 public class Comment {
 
@@ -77,4 +79,8 @@ public class Comment {
 		this.audit = audit;
 	}
 
+	public boolean isCommentWrittenByUser(Integer userId) {
+
+		return userId.equals(UserContext.getUserId());
+	}
 }

@@ -18,6 +18,7 @@ public class CommentsService {
 
 	@Autowired
 	private CommentRepository repository;
+	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
 	public Comment addComment(Comment comment) {
 
@@ -37,15 +38,14 @@ public class CommentsService {
 	public void edit(BufferedReader reader, Integer id) {
 
 		Comment comment = findCommentById(id);
-		ObjectMapper objectMapper = new ObjectMapper();
 
 		try {
 			// Read and map JSON to entity from DB, merged object as output
-			Comment editedComment = objectMapper.readerForUpdating(comment).readValue(reader);
+			Comment editedComment = OBJECT_MAPPER.readerForUpdating(comment).readValue(reader);
 
 			// Only admin or user who owns this place can update in case
 			// if the place is not approved yet
-			if (!isCommentWrittenByUser(comment)) {
+			if (!comment.isCommentWrittenByUser(UserContext.getUserId())) {
 				throw new BaseException(RestResponses.ACCESS_DENIED);
 			}
 
@@ -69,7 +69,7 @@ public class CommentsService {
 
 		// Only admin or user who owns the comment can delete it
 		if (!UserContext.isAdmin()
-				&& !isCommentWrittenByUser(comment)) {
+				&& !comment.isCommentWrittenByUser(UserContext.getUserId())) {
 			throw new BaseException(RestResponses.ACCESS_DENIED);
 		}
 
@@ -83,8 +83,4 @@ public class CommentsService {
 		return optionalPlace.orElseThrow(() -> new BaseException(RestResponses.NO_COMMENT_FOUND));
 	}
 
-	private boolean isCommentWrittenByUser(Comment comment) {
-
-		return comment.getUserId().toString().equals(UserContext.getUserId());
-	}
 }

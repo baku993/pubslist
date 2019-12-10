@@ -26,9 +26,9 @@ public class UserContext {
 	/**
 	 * Can be used to get current user id
 	 */
-	public static String getUserId() {
+	public static Integer getUserId() {
 
-		return SecurityContextHolder
-				.getContext().getAuthentication().getDetails().toString();
+		return Integer.parseInt(SecurityContextHolder
+				.getContext().getAuthentication().getDetails().toString());
 	}
 }

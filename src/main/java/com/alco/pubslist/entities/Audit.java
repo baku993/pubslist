@@ -27,13 +27,14 @@ public class Audit {
 	public void setCreatedOn() {
 
 		this.setCreatedOn(LocalDateTime.now());
-		this.setCreatedBy(Integer.parseInt(UserContext.getUserId()));
+		this.setCreatedBy(UserContext.getUserId());
 	}
 
 	@PreUpdate
 	public void setUpdatedOn() {
+
 		this.setUpdatedOn(LocalDateTime.now());
-		this.setUpdatedBy(Integer.parseInt(UserContext.getUserId()));
+		this.setUpdatedBy(UserContext.getUserId());
 	}
 
 	public LocalDateTime getCreatedOn() {
