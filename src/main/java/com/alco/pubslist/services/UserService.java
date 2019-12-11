@@ -37,5 +37,10 @@ public class UserService {
 		return repository.findAll();
 	}
 
+	public User findById(Integer userId) {
+
+		return repository.findById(userId).orElseThrow(() -> new BaseException(RestResponses.NO_USER_FOUND));
+	}
+
 	public User findByUsername(String username) {return repository.findDistinctFirstByUsername(username);}
 }
