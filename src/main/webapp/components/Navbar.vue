@@ -1,6 +1,9 @@
 <template>
   <v-row class="toolbar">
     <div id="nav">
+      <div class="nav__logo">
+        <img alt="Vue logo" src="../assets/logo.png" />
+      </div>
       <div class="nav__menu">
         <router-link to="/">Home</router-link>
         |
@@ -57,6 +60,15 @@ export default {
   flex: 1;
   display: flex;
   flex-direction: row;
+  justify-content: center;
+
+  &__logo img {
+    left: 10px;
+    width: 60px;
+    top: 10px;
+    height: 60px;
+    position: absolute;
+  }
 
   &__menu {
     flex: 1;
