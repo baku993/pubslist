@@ -1,5 +1,6 @@
 package com.alco.pubslist.controller;
 
+import com.alco.pubslist.configuration.UserContext;
 import com.alco.pubslist.entities.User;
 import com.alco.pubslist.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static com.alco.pubslist.security.SecurityConstants.SIGN_UP_URL;
 import static com.alco.pubslist.security.SecurityConstants.USERS_URL;
+import static com.alco.pubslist.security.SecurityConstants.USER_URL;
 
 @RestController
 public class UsersController {
@@ -26,6 +28,13 @@ public class UsersController {
 	Iterable<User> all() {
 
 		return userService.findAll();
+	}
+
+	@GetMapping(USER_URL)
+	@ResponseBody
+	User getCurrentUser() {
+
+		return userService.findById(UserContext.getUserId());
 	}
 
 	@PostMapping(SIGN_UP_URL)
