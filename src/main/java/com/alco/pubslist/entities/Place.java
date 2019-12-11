@@ -31,6 +31,9 @@ public class Place {
 	@Column(name = "owner_id")
 	private Integer ownerId;
 
+	@Column(name = "description")
+	private String description;
+
 	@OneToMany(fetch = FetchType.LAZY)
 	@Cascade(value = CascadeType.DELETE)
 	@JoinColumn(name = "place_id")
@@ -38,14 +41,10 @@ public class Place {
 
 	private boolean approved;
 
-	private boolean enabled;
+	private boolean disabled;
 
 	@Embedded
 	private Audit audit = new Audit();
-
-	public Place() {
-
-	}
 
 	public Integer getId() {
 
@@ -107,14 +106,14 @@ public class Place {
 		this.approved = approved;
 	}
 
-	public boolean isEnabled() {
+	public boolean isDisabled() {
 
-		return enabled;
+		return disabled;
 	}
 
-	public void setEnabled(boolean enabled) {
+	public void setDisabled(boolean disabled) {
 
-		this.enabled = enabled;
+		this.disabled = disabled;
 	}
 
 	public Integer getOwnerId() {
@@ -140,5 +139,15 @@ public class Place {
 	public boolean isPlaceOwnedByUser(Integer userId) {
 
 		return getOwnerId().equals(userId);
+	}
+
+	public String getDescription() {
+
+		return description;
+	}
+
+	public void setDescription(String description) {
+
+		this.description = description;
 	}
 }

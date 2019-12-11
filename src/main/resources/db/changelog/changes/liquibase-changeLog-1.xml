@@ -74,4 +74,10 @@
                              referencedColumnNames="id"
                              referencedTableName="places"/>
     </changeSet>
+    <changeSet author="Victor" id="8">
+        <renameColumn tableName="places" oldColumnName="enabled" newColumnName="disabled"/>
+        <addColumn tableName="places">
+            <column name="description" type="varchar(255)" />
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>

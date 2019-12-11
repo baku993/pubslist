@@ -27,8 +27,6 @@ public class PlaceService {
 			throw new BaseException(RestResponses.MISSING_REQUIRED_FIELD);
 		}
 
-		place.setEnabled(true);
-		place.setApproved(false);
 		return repository.save(place);
 	}
 

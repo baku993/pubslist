@@ -3,6 +3,7 @@ import Vuex from "vuex";
 import {
   SET_LOGGED_ACTION,
   SET_TOKEN_ACTION,
+  SET_USER_ACTION,
   USER_TOKEN_KEY
 } from "../constants";
 
@@ -10,7 +11,8 @@ Vue.use(Vuex);
 
 const state = {
   isUserLogged: false,
-  userToken: ""
+  userToken: "",
+  user: {}
 };
 
 // mutations are operations that actually mutates the state.
@@ -21,7 +23,12 @@ const state = {
 const mutations = {
   setUserLogged(state, newValue) {
     state.isUserLogged = newValue;
-    if (!newValue) state.userToken = "";
+    if (!newValue) {
+      state.userToken = "";
+    }
+  },
+  setUser(state, user) {
+    state.user = user;
   },
   setUserToken(state, userToken) {
     state.userToken = userToken;
@@ -38,14 +45,22 @@ const actions = {
       store.dispatch(SET_TOKEN_ACTION, undefined);
     }
   },
+  setUser: ({ commit }, value) => {
+    commit(SET_USER_ACTION, value);
+  },
   setUserToken: ({ commit }, userToken) => {
     // Check token in session storage
     const isStorageSupported = window.sessionStorage;
     if (!userToken) {
-      if (isStorageSupported) sessionStorage.removeItem(USER_TOKEN_KEY);
-      else commit(SET_TOKEN_ACTION, undefined);
+      if (isStorageSupported) {
+        sessionStorage.removeItem(USER_TOKEN_KEY);
+      } else {
+        commit(SET_TOKEN_ACTION, undefined);
+      }
     } else {
-      if (isStorageSupported) sessionStorage.setItem(USER_TOKEN_KEY, userToken);
+      if (isStorageSupported) {
+        sessionStorage.setItem(USER_TOKEN_KEY, userToken);
+      }
       commit(SET_TOKEN_ACTION, userToken);
     }
   }
@@ -54,7 +69,8 @@ const actions = {
 // getters are functions
 const getters = {
   isUserLogged: state => state.isUserLogged,
-  getUserToken: state => state.userToken
+  getUserToken: state => state.userToken,
+  getUser: state => state.user
 };
 
 const store = new Vuex.Store({

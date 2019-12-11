@@ -1,6 +1,6 @@
 <template>
   <v-row class="toolbar">
-    <div id="nav">
+    <div class="nav">
       <div class="nav__logo">
         <img alt="Vue logo" src="../assets/logo.png" />
       </div>
@@ -45,7 +45,10 @@ export default {
 <style lang="scss" scoped>
 .toolbar {
   justify-content: space-between;
-  margin: 10px 10px;
+  padding: 10px 10px;
+  box-shadow: 0 3px 5px 0 rgba(36, 50, 66, 0.2);
+  margin-bottom: 20px;
+  border-radius: 2px;
 }
 
 .account {
@@ -55,7 +58,7 @@ export default {
   top: 10px;
 }
 
-#nav {
+.nav {
   padding: 20px;
   flex: 1;
   display: flex;
