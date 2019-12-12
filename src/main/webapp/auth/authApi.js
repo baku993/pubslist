@@ -5,16 +5,16 @@
  * @project: pubslist
  */
 
-import axios from "axios";
-import store from "./../store/index";
+import axios from 'axios';
+import store from './../store/index';
 
 const authInstance = axios.create({});
 
 authInstance.interceptors.request.use(config => {
-  config.headers.common["Authorization"] =
-    "Bearer " + store.getters["getUserToken"];
+	config.headers.common['Authorization'] =
+    'Bearer ' + store.getters['getUserToken'];
 
-  return config;
+	return config;
 });
 
 export default authInstance;
