@@ -3,8 +3,8 @@
 		<div class='headline'>Your favorite places</div>
 		<div class='tabs'>
 			<v-tabs class='tabs__elem d-flex'>
-				<v-tab @click='tabSelected = 0'>All places</v-tab>
-				<v-tab @click='tabSelected = 1'>Your Places</v-tab>
+				<v-tab @click='tabSelected = 0'>All</v-tab>
+				<v-tab @click='tabSelected = 1'>My</v-tab>
 				<v-tab @click='tabSelected = 2'>Pending</v-tab>
 			</v-tabs>
 		</div>
@@ -38,18 +38,15 @@
 				switch (this.tabSelected) {
 					case 0:
 					default:
-						filtered = this.places;
+						filtered = this.places.filter(p => p.approved);
 						break;
 					case 1:
-						filtered = this.places.filter(
-							p => p.createdBy === this.getUser.username
-						);
+						filtered = this.places.filter(p => p.audit.createdBy === this.getUser.id && p.approved);
 						break;
 					case 2:
-						filtered = this.places.filter(
-							p =>
-								(p.createdBy === this.getUser.username && !p.approved) ||
-								(!p.approved && this.getUser.role.includes('ADMIN'))
+						filtered = this.places.filter(p =>
+							!p.approved && ((p.createdBy === this.getUser.id) ||
+							this.getUser.role.includes('ADMIN'))
 						);
 						break;
 				}
