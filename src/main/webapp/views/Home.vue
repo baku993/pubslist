@@ -19,7 +19,7 @@
 <script>
 	import PlacesList from '../components/PlacesList';
 	import authApi from '../auth/authApi';
-	import {GET_USER, SET_USER_ACTION} from '../constants';
+	import {GET_USER} from '../constants';
 	import {mapGetters} from 'vuex';
 
 	export default {
@@ -62,18 +62,12 @@
 			}
 		},
 		created() {
-			authApi
-				.get('/api/user')
-				.then(async response => {
-					await this.$store.dispatch(SET_USER_ACTION, response.data);
-					await authApi.get('/api/places').then(resp => {
-						this.places = resp.data;
-					});
-				})
-				.catch(error => {
-					// Add user notification here
-					console.log(error);
-				});
+			authApi.get('/api/places').then(resp => {
+				this.places = resp.data;
+			}).catch(error => {
+				// Add user notification here
+				console.log(error);
+			});
 		}
 	};
 </script>
