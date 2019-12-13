@@ -41,7 +41,7 @@
 						filtered = this.places.filter(p => p.approved);
 						break;
 					case 1:
-						filtered = this.places.filter(p => p.audit.createdBy === this.getUser.id && p.approved);
+						filtered = this.places.filter(p => p.createdBy === this.getUser.id && p.approved);
 						break;
 					case 2:
 						filtered = this.places.filter(p =>

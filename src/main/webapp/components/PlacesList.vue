@@ -17,7 +17,7 @@
             p.name
           }}</v-list-item-title>
           <div class='overline mb-4'>
-            Created by: <span>{{ p.audit.createdBy }}</span>
+            Created by: <span>{{ p.createdBy }}</span>
           </div>
           <v-list-item-subtitle>{{ p.description }}</v-list-item-subtitle>
         </v-list-item-content>

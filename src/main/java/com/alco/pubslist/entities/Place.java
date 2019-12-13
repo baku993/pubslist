@@ -4,7 +4,6 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -18,7 +17,7 @@ import static javax.persistence.GenerationType.SEQUENCE;
 
 @Entity
 @Table(name = "places")
-public class Place {
+public class Place extends Auditable {
 
 	@Id
 	@GeneratedValue(strategy = SEQUENCE)
@@ -27,10 +26,7 @@ public class Place {
 	private String address;
 	private String latitude;
 	private String longitude;
-
-	@Column(name = "owner_id")
-	private Integer ownerId;
-
+	private Integer votes;
 	@Column(name = "description")
 	private String description;
 
@@ -42,9 +38,6 @@ public class Place {
 	private boolean approved;
 
 	private boolean disabled;
-
-	@Embedded
-	private Audit audit = new Audit();
 
 	public Integer getId() {
 
@@ -116,29 +109,9 @@ public class Place {
 		this.disabled = disabled;
 	}
 
-	public Integer getOwnerId() {
-
-		return ownerId;
-	}
-
-	public void setOwnerId(Integer ownerId) {
-
-		this.ownerId = ownerId;
-	}
-
-	public Audit getAudit() {
-
-		return audit;
-	}
-
-	public void setAudit(Audit audit) {
-
-		this.audit = audit;
-	}
-
 	public boolean isPlaceOwnedByUser(Integer userId) {
 
-		return getOwnerId().equals(userId);
+		return getCreatedBy().equals(userId);
 	}
 
 	public String getDescription() {
@@ -150,4 +123,20 @@ public class Place {
 
 		this.description = description;
 	}
+
+	public Integer getVotes() {
+
+		return votes;
+	}
+
+	public void setVotes(Integer votes) {
+
+		this.votes = votes;
+	}
+
+	public List<Comment> getComments() {
+
+		return comments;
+	}
+
 }

@@ -17,4 +17,15 @@
             <column name="updated_on" type="timestamp"/>
         </addColumn>
     </changeSet>
+    <changeSet author="Tieimur" id="9">
+        <dropColumn tableName="comments" columnName="user_id"/>
+    </changeSet>
+    <changeSet author="Tieimur" id="10">
+        <addColumn tableName="places">
+            <column name="votes" type="integer"/>
+        </addColumn>
+        <addColumn tableName="users">
+            <column name="disabled" type="boolean"/>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>

@@ -18,12 +18,12 @@ public class PlaceService {
 
 	@Autowired
 	private PlaceRepository repository;
+	public static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
 	public Place suggestPlace(Place place) {
 
 		if (place.getName() == null
-				|| place.getAddress() == null
-				|| place.getOwnerId() == null) {
+				|| place.getAddress() == null) {
 			throw new BaseException(RestResponses.MISSING_REQUIRED_FIELD);
 		}
 
@@ -38,11 +38,10 @@ public class PlaceService {
 	public void update(BufferedReader reader, Integer id) {
 
 		Place place = findPlaceById(id);
-		ObjectMapper objectMapper = new ObjectMapper();
 
 		try {
 			// Read and map JSON to entity from DB, merged object as output
-			Place updatedPlace = objectMapper.readerForUpdating(place).readValue(reader);
+			Place updatedPlace = OBJECT_MAPPER.readerForUpdating(place).readValue(reader);
 
 			// Only admin or user who owns this place can update in case
 			// if the place is not approved yet
@@ -54,8 +53,7 @@ public class PlaceService {
 			// Required fields should be filled
 			if (updatedPlace.getName() == null
 					|| updatedPlace.getAddress() == null
-					|| updatedPlace.getId() == null
-					|| updatedPlace.getOwnerId() == null) {
+					|| updatedPlace.getId() == null) {
 				throw new BaseException(RestResponses.MISSING_REQUIRED_FIELD);
 			}
 
