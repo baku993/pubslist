@@ -45,8 +45,8 @@
 						break;
 					case 2:
 						filtered = this.places.filter(p =>
-							!p.approved && ((p.createdBy === this.getUser.id) ||
-							this.getUser.role.includes('ADMIN'))
+							!p.approved && (this.getUser.role.includes('ADMIN')
+							|| p.createdBy === this.getUser.id)
 						);
 						break;
 				}
