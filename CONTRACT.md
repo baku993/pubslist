@@ -177,6 +177,62 @@ possible responses:
 
 ```
 
+### Update a user
+```
+path: "/api/comments/{user_id}"
+method: "PATCH"
+body:
+right request example body:
+
+{
+    "name": "Best name"
+}
+
+possible responses:
+1. SUCCESS: status - 200
+
+
+2. AUTHORIZATION_FAILED: status - 401
+
+{
+  "timestamp": "2019-12-02 17:58:40.777",
+  "status": "Error",
+  "message": "Authorization failed"
+}
+
+3. MISSING_REQUIRED_FIELD: status - 400
+
+{
+    "timestamp": "2019-12-13 23:48:04.206",
+    "status": "error",
+    "message": "One or several required fields are not provided"
+}
+
+4. ACCESS DENIED: status - 403
+ 
+ {
+     "timestamp": "2019-12-13 23:28:43.66",
+     "status": "Error",
+     "message": "Access Forbidden"
+ }
+
+5. MALFORMED JSON: status - 400
+
+{
+  "timestamp": "2019-12-02 17:56:38.146",
+  "status": "Error",
+  "message": "Json is malformed"
+}
+
+6. NO_USER_FOUND: status - 406
+
+{
+  "timestamp": "2019-12-02 17:56:38.146",
+  "status": "Error",
+  "message": "User is not found"
+}
+```
+
 ### Get all places
 ```
 path: "/api/places"

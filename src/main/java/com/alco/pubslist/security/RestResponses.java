@@ -10,7 +10,7 @@ public enum RestResponses {
 	AUTHENTICATION_FAILED(401, "Authentication failed for provided credentials"),
 	AUTHORIZATION_FAILED(401, "Authorization failed"),
 	USERNAME_IS_ALREADY_USED(400, "Username is already in use"),
-	NO_USER_FOUND(404, "User is not found"),
+	NO_USER_FOUND(406, "User is not found"),
 	ACCESS_DENIED(403, "Access Forbidden"),
 	AUTHENTICATION_SUCCESS(200, "Authentication Successful");
 
