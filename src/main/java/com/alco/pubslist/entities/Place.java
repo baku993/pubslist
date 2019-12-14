@@ -109,9 +109,9 @@ public class Place extends Auditable {
 		this.disabled = disabled;
 	}
 
-	public boolean isPlaceOwnedByUser(Integer userId) {
+	public boolean isPlaceOwnedByUser(String username) {
 
-		return getCreatedBy().equals(userId);
+		return getCreatedBy().equals(username);
 	}
 
 	public String getDescription() {

@@ -50,8 +50,8 @@ public class Comment extends Auditable {
 		this.placeId = placeId;
 	}
 
-	public boolean isCommentWrittenByUser(Integer userId) {
+	public boolean isCommentWrittenByUser(String username) {
 
-		return getCreatedBy().equals(userId);
+		return getCreatedBy().equals(username);
 	}
 }

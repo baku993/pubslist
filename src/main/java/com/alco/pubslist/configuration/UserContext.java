@@ -31,4 +31,10 @@ public class UserContext {
 		return Integer.parseInt(SecurityContextHolder
 				.getContext().getAuthentication().getDetails().toString());
 	}
+
+	public static String getUsername() {
+
+		return SecurityContextHolder
+				.getContext().getAuthentication().getName();
+	}
 }

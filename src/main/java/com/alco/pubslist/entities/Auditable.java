@@ -15,26 +15,26 @@ public abstract class Auditable {
 	private LocalDateTime createdOn;
 
 	@Column(name = "created_by")
-	private Integer createdBy;
+	private String createdBy;
 
 	@Column(name = "updated_on")
 	private LocalDateTime updatedOn;
 
 	@Column(name = "updated_by")
-	private Integer updatedBy;
+	private String updatedBy;
 
 	@PrePersist
 	public void setCreatedOn() {
 
 		this.setCreatedOn(LocalDateTime.now());
-		this.setCreatedBy(UserContext.getUserId());
+		this.setCreatedBy(UserContext.getUsername());
 	}
 
 	@PreUpdate
 	public void setUpdatedOn() {
 
 		this.setUpdatedOn(LocalDateTime.now());
-		this.setUpdatedBy(UserContext.getUserId());
+		this.setUpdatedBy(UserContext.getUsername());
 	}
 
 	public LocalDateTime getCreatedOn() {
@@ -47,12 +47,12 @@ public abstract class Auditable {
 		this.createdOn = createdOn;
 	}
 
-	public Integer getCreatedBy() {
+	public String getCreatedBy() {
 
 		return createdBy;
 	}
 
-	public void setCreatedBy(Integer createdBy) {
+	public void setCreatedBy(String createdBy) {
 
 		this.createdBy = createdBy;
 	}
@@ -67,12 +67,12 @@ public abstract class Auditable {
 		this.updatedOn = updatedOn;
 	}
 
-	public Integer getUpdatedBy() {
+	public String getUpdatedBy() {
 
 		return updatedBy;
 	}
 
-	public void setUpdatedBy(Integer updatedBy) {
+	public void setUpdatedBy(String updatedBy) {
 
 		this.updatedBy = updatedBy;
 	}

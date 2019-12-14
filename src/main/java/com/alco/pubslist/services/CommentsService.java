@@ -44,7 +44,7 @@ public class CommentsService {
 
 			// Only admin or user who owns this place can update in case
 			// if the place is not approved yet
-			if (!comment.isCommentWrittenByUser(UserContext.getUserId())) {
+			if (!comment.isCommentWrittenByUser(UserContext.getUsername())) {
 				throw new BaseException(RestResponses.ACCESS_DENIED);
 			}
 
@@ -67,7 +67,7 @@ public class CommentsService {
 
 		// Only admin or user who owns the comment can delete it
 		if (!UserContext.isAdmin()
-				&& !comment.isCommentWrittenByUser(UserContext.getUserId())) {
+				&& !comment.isCommentWrittenByUser(UserContext.getUsername())) {
 			throw new BaseException(RestResponses.ACCESS_DENIED);
 		}
 
