@@ -22,7 +22,8 @@ public class CommentsService {
 
 	public Comment addComment(Comment comment) {
 
-		if (comment.getText() == null) {
+		if (comment.getText() == null
+				|| comment.getPlaceId() == null) {
 			throw new BaseException(RestResponses.MISSING_REQUIRED_FIELD);
 		}
 
@@ -50,6 +51,7 @@ public class CommentsService {
 
 			// Required fields should be filled
 			if (comment.getText() == null
+					|| comment.getPlaceId() == null
 					|| comment.getId() == null) {
 				throw new BaseException(RestResponses.MISSING_REQUIRED_FIELD);
 			}
