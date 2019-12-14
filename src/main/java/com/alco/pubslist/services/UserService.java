@@ -1,13 +1,18 @@
 package com.alco.pubslist.services;
 
 import com.alco.pubslist.Helper;
+import com.alco.pubslist.configuration.UserContext;
 import com.alco.pubslist.entities.User;
 import com.alco.pubslist.exceptions.BaseException;
 import com.alco.pubslist.repository.UserRepository;
 import com.alco.pubslist.security.RestResponses;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import java.io.BufferedReader;
+import java.io.IOException;
 
 @Component
 public class UserService {
@@ -17,6 +22,7 @@ public class UserService {
 
 	@Value("pubslist.salt")
 	private String salt;
+	public static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
 	public User save(User user) {
 
@@ -40,6 +46,35 @@ public class UserService {
 	public User findById(Integer userId) {
 
 		return repository.findById(userId).orElseThrow(() -> new BaseException(RestResponses.NO_USER_FOUND));
+	}
+
+	public void update(BufferedReader reader, Integer id) {
+
+		User user = findById(id);
+
+		try {
+			// Read and map JSON to entity from DB, merged object as output
+			User updatedUser = OBJECT_MAPPER.readerForUpdating(user).readValue(reader);
+
+			// Only admin or user who owns this place can update in case
+			// if the place is not approved yet
+			if (!UserContext.isAdmin()
+					&& !user.getId().equals(UserContext.getUserId())) {
+				throw new BaseException(RestResponses.ACCESS_DENIED);
+			}
+
+			// Required fields should be filled
+			if (updatedUser.getUsername() == null
+					|| updatedUser.getRole() == null
+					|| updatedUser.getPassword() == null) {
+				throw new BaseException(RestResponses.MISSING_REQUIRED_FIELD);
+			}
+
+			repository.save(updatedUser);
+		}
+		catch (IOException e) {
+			throw new BaseException(RestResponses.MALFORMED_JSON);
+		}
 	}
 
 	public User findByUsername(String username) {return repository.findDistinctFirstByUsername(username);}

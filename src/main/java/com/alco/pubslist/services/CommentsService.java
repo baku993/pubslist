@@ -23,7 +23,7 @@ public class CommentsService {
 	public Comment addComment(Comment comment) {
 
 		if (comment.getText() == null
-				|| comment.getPlaceId() == null) {
+				|| comment.getUserId() == null) {
 			throw new BaseException(RestResponses.MISSING_REQUIRED_FIELD);
 		}
 
@@ -69,7 +69,7 @@ public class CommentsService {
 
 		// Only admin or user who owns the comment can delete it
 		if (!UserContext.isAdmin()
-				&& !comment.isCommentWrittenByUser(UserContext.getUserId())) {
+				&& !comment.isCommentWrittenByUser(UserContext.getUsername())) {
 			throw new BaseException(RestResponses.ACCESS_DENIED);
 		}
 
