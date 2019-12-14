@@ -1,9 +1,6 @@
 package com.alco.pubslist.entities;
 
-import com.alco.pubslist.configuration.UserContext;
-
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -13,7 +10,7 @@ import static javax.persistence.GenerationType.SEQUENCE;
 
 @Entity
 @Table(name = "comments")
-public class Comment {
+public class Comment extends Auditable {
 
 	@Id
 	@GeneratedValue(strategy = SEQUENCE)
@@ -23,12 +20,6 @@ public class Comment {
 	@Column(name = "place_id")
 	private Integer placeId;
 
-	@Column(name = "user_id")
-	private Integer userId;
-
-	@Embedded
-	private Audit audit = new Audit();
-
 	public Integer getId() {
 
 		return id;
@@ -37,16 +28,6 @@ public class Comment {
 	public void setId(Integer id) {
 
 		this.id = id;
-	}
-
-	public Integer getUserId() {
-
-		return userId;
-	}
-
-	public void setUserId(Integer userId) {
-
-		this.userId = userId;
 	}
 
 	public String getText() {
@@ -69,18 +50,8 @@ public class Comment {
 		this.placeId = placeId;
 	}
 
-	public Audit getAudit() {
+	public boolean isCommentWrittenByUser(String username) {
 
-		return audit;
-	}
-
-	public void setAudit(Audit audit) {
-
-		this.audit = audit;
-	}
-
-	public boolean isCommentWrittenByUser(Integer userId) {
-
-		return userId.equals(UserContext.getUserId());
+		return getCreatedBy().equals(username);
 	}
 }

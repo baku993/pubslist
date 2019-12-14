@@ -3,38 +3,38 @@ package com.alco.pubslist.entities;
 import com.alco.pubslist.configuration.UserContext;
 
 import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import java.time.LocalDateTime;
 
-@Embeddable
-public class Audit {
+@MappedSuperclass
+public abstract class Auditable {
 
 	@Column(name = "created_on")
 	private LocalDateTime createdOn;
 
 	@Column(name = "created_by")
-	private Integer createdBy;
+	private String createdBy;
 
 	@Column(name = "updated_on")
 	private LocalDateTime updatedOn;
 
 	@Column(name = "updated_by")
-	private Integer updatedBy;
+	private String updatedBy;
 
 	@PrePersist
 	public void setCreatedOn() {
 
 		this.setCreatedOn(LocalDateTime.now());
-		this.setCreatedBy(UserContext.getUserId());
+		this.setCreatedBy(UserContext.getUsername());
 	}
 
 	@PreUpdate
 	public void setUpdatedOn() {
 
 		this.setUpdatedOn(LocalDateTime.now());
-		this.setUpdatedBy(UserContext.getUserId());
+		this.setUpdatedBy(UserContext.getUsername());
 	}
 
 	public LocalDateTime getCreatedOn() {
@@ -47,12 +47,12 @@ public class Audit {
 		this.createdOn = createdOn;
 	}
 
-	public Integer getCreatedBy() {
+	public String getCreatedBy() {
 
 		return createdBy;
 	}
 
-	public void setCreatedBy(Integer createdBy) {
+	public void setCreatedBy(String createdBy) {
 
 		this.createdBy = createdBy;
 	}
@@ -67,12 +67,12 @@ public class Audit {
 		this.updatedOn = updatedOn;
 	}
 
-	public Integer getUpdatedBy() {
+	public String getUpdatedBy() {
 
 		return updatedBy;
 	}
 
-	public void setUpdatedBy(Integer updatedBy) {
+	public void setUpdatedBy(String updatedBy) {
 
 		this.updatedBy = updatedBy;
 	}

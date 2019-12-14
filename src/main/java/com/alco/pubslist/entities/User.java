@@ -33,6 +33,9 @@ public class User {
 	@Enumerated(EnumType.STRING)
 	private UserRole role = UserRole.USER;
 
+	@Column
+	private boolean disabled;
+
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	@Column(name = "password")
 	private String password;
@@ -99,5 +102,15 @@ public class User {
 	public void setPassword(String password) {
 
 		this.password = password;
+	}
+
+	public boolean isDisabled() {
+
+		return disabled;
+	}
+
+	public void setDisabled(boolean disabled) {
+
+		this.disabled = disabled;
 	}
 }

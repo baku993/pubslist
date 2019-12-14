@@ -22,8 +22,7 @@ public class CommentsService {
 
 	public Comment addComment(Comment comment) {
 
-		if (comment.getText() == null
-				|| comment.getUserId() == null) {
+		if (comment.getText() == null) {
 			throw new BaseException(RestResponses.MISSING_REQUIRED_FIELD);
 		}
 
@@ -45,13 +44,12 @@ public class CommentsService {
 
 			// Only admin or user who owns this place can update in case
 			// if the place is not approved yet
-			if (!comment.isCommentWrittenByUser(UserContext.getUserId())) {
+			if (!comment.isCommentWrittenByUser(UserContext.getUsername())) {
 				throw new BaseException(RestResponses.ACCESS_DENIED);
 			}
 
 			// Required fields should be filled
 			if (comment.getText() == null
-					|| comment.getUserId() == null
 					|| comment.getId() == null) {
 				throw new BaseException(RestResponses.MISSING_REQUIRED_FIELD);
 			}
@@ -69,7 +67,7 @@ public class CommentsService {
 
 		// Only admin or user who owns the comment can delete it
 		if (!UserContext.isAdmin()
-				&& !comment.isCommentWrittenByUser(UserContext.getUserId())) {
+				&& !comment.isCommentWrittenByUser(UserContext.getUsername())) {
 			throw new BaseException(RestResponses.ACCESS_DENIED);
 		}
 
