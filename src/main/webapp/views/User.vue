@@ -1,6 +1,6 @@
 <template>
 
-	<div class='user'>
+	<div class="user">
 		<v-container>
 			<v-row align='center' justify='center'>
 				<v-col cols='12' sm='8' md='4'>
@@ -23,7 +23,7 @@
 										name='firstname'
 										type='text'
 										required
-										:rules='nameRules'
+										:rules=nameRules
 										hint='More than 6 characters, letters only'
 										v-model='firstName'/>
 
@@ -32,7 +32,7 @@
 										name='lastname'
 										type='text'
 										required
-										:rules='nameRules'
+										:rules=nameRules
 										hint='More than 6 characters, letters only'
 										v-model='lastName'/>
 
@@ -43,30 +43,29 @@
 										disabled
 										v-model='original.role'/>
 
-								<v-checkbox v-model='disabled' label='Disabled?'/>
+								<v-checkbox v-model="disabled" label="Disabled?"/>
 							</v-form>
 						</v-card-text>
 						<v-card-actions>
 							<v-spacer/>
-							<v-btn @click='saveUser' :class='Object.keys(this.updated) ? &apos;green&apos; : &apos;grey&apos;'>Save
-							</v-btn>
+							<v-btn @click='saveUser' :class="Object.keys(this.updated) ? 'green' : 'grey'">Saveª</v-btn>
 							<v-btn @click='goBack'>Cancel</v-btn>
 						</v-card-actions>
 					</v-card>
 				</v-col>
 			</v-row>
 		</v-container>
-		<v-alert type='success' v-if='isSaved' dense prominent>
+		<v-alert type="success" v-if="isSaved" dense prominent>
 
-			<v-row align='center'>
-				<v-col class='grow'>User has been saved successfully</v-col>
-				<v-col class='shrink'>
-					<v-btn @click='goBack' class='grey'>Go back</v-btn>
+			<v-row align="center">
+				<v-col class="grow">User has been saved successfully</v-col>
+				<v-col class="shrink">
+					<v-btn @click="goBack" class="grey">Go back</v-btn>
 				</v-col>
 			</v-row>
 		</v-alert>
 
-		<v-alert type='error' v-if='isError' dismissible dense prominent>
+		<v-alert type="error" v-if="isError" dismissible dense prominent>
 			Oops. Something wrong happen
 		</v-alert>
 	</div>
@@ -96,7 +95,7 @@
 				],
 				isError: false,
 				isSaved: false
-			};
+			}
 		},
 		watch: {
 			firstName: function(val) {
