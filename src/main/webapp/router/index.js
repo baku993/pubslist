@@ -27,6 +27,25 @@ const routes = [
 		}
 	},
 	{
+		path: '/admin',
+		name: 'admin',
+		meta: {
+			requiresAuth: true
+		},
+		component: () =>
+				import(/* webpackChunkName: "admin" */ '../views/Admin.vue')
+	},
+	{
+		path: '/user/:id',
+		name: 'user',
+		meta: {
+			requiresAuth: true
+		},
+		props: true,
+		component: () =>
+				import(/* webpackChunkName: "user" */ '../views/User.vue')
+	},
+	{
 		path: '/about',
 		name: 'about',
 		meta: {
@@ -36,7 +55,7 @@ const routes = [
 		// this generates a separate chunk (about.[hash].js) for this route
 		// which is lazy-loaded when the route is visited.
 		component: () =>
-      import(/* webpackChunkName: "about" */ '../views/About.vue')
+				import(/* webpackChunkName: "about" */ '../views/About.vue')
 	},
 	// All unknown routes should go to Login
 	{
@@ -55,9 +74,13 @@ router.beforeEach((to, from, next) => {
 	const currentUser = store.state.isUserLogged;
 	const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
 
-	if (requiresAuth && !currentUser) next('login');
-	else if (!requiresAuth && currentUser) next('home');
-	else next();
+	if (requiresAuth && !currentUser) {
+		next('login');
+	} else if (!requiresAuth && currentUser) {
+		next('home');
+	} else {
+		next();
+	}
 });
 
 export default router;
