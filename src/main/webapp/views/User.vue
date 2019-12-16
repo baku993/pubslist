@@ -48,7 +48,7 @@
 						</v-card-text>
 						<v-card-actions>
 							<v-spacer/>
-							<v-btn @click='saveUser' :class="Object.keys(this.updated) ? 'green' : 'grey'">Saveª</v-btn>
+							<v-btn @click='saveUser' :class="Object.keys(this.updated) ? 'green' : 'grey'">Save</v-btn>
 							<v-btn @click='goBack'>Cancel</v-btn>
 						</v-card-actions>
 					</v-card>
