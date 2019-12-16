@@ -15,7 +15,7 @@
 					:key='user.id'
 					@click='editUser(user.id)'>
 
-					<v-avatar class='account' size='62' ref='avatar' :color='randomColor()'>
+					<v-avatar class='account' size='48' ref='avatar' :color='randomColor()'>
 						<span class='white--text font-weight-bold'>{{getUserAvatar(user)}}</span>
 					</v-avatar>
 
@@ -24,7 +24,7 @@
 				</v-list-item-content>
 
 				<v-list-item-action class='icons'>
-					<v-icon hover v-if='user.disabled'>remove_circle_outline</v-icon>
+					<v-icon hover v-if='user.disabled' color='red'>remove_circle_outline</v-icon>
 				</v-list-item-action>
 			</v-list-item>
 		</v-list>
@@ -53,7 +53,7 @@
 		methods: {
 			...mapGetters([GET_USER]),
 			getUserAvatar(user) {
-				let avatar = 'Avatar';
+				let avatar;
 				if (user.avatar) {
 					avatar = (user.avatar);
 				} else {
