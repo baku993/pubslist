@@ -6,6 +6,7 @@ public final class SecurityConstants {
 	public static final String SIGN_UP_URL = "/api/signup";
 	public static final String PLACES_URL = "/api/places";
 	public static final String COMMENTS_URL = "/api/comments";
+	public static final String ROLLS_URL = "/api/rolls";
 	public static final String USERS_URL = "/api/users";
 	public static final String USER_URL = "/api/user";
 

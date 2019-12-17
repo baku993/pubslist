@@ -1,5 +1,7 @@
 package com.alco.pubslist.security.filters;
 
+import com.alco.pubslist.security.MultiReadServletRequestWrapper;
+import org.apache.commons.io.IOUtils;
 import org.springframework.web.filter.GenericFilterBean;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 
@@ -17,10 +19,12 @@ public class LoggingFilter extends GenericFilterBean {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 
+		MultiReadServletRequestWrapper requestWrapper = new MultiReadServletRequestWrapper(
+				(HttpServletRequest) request);
 		if (logger.isDebugEnabled()) {
-			logRequest((HttpServletRequest) request);
+			logRequest(requestWrapper);
 		}
-		chain.doFilter(request, response);
+		chain.doFilter(requestWrapper, response);
 	}
 
 	private void logRequest(HttpServletRequest request) {
@@ -41,10 +45,12 @@ public class LoggingFilter extends GenericFilterBean {
 								.append(":	")
 								.append(request.getHeader(name))
 								.append("\n"));
-		msg.append(headers)
-				.append("Body: \n")
-				.append(new String(requestWrapper.getContentAsByteArray()));
-
+		try {
+			msg.append(headers)
+					.append("Body: \n")
+					.append(IOUtils.toString(requestWrapper.getReader()));
+		}
+		catch (IOException ignore) {}
 		logger.debug(msg);
 	}
 

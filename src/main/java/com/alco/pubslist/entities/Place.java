@@ -1,5 +1,6 @@
 package com.alco.pubslist.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
@@ -30,10 +31,17 @@ public class Place extends Auditable {
 	@Column(name = "description")
 	private String description;
 
+	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY)
 	@Cascade(value = CascadeType.DELETE)
 	@JoinColumn(name = "place_id")
 	private List<Comment> comments;
+
+	@JsonIgnore
+	@OneToMany(fetch = FetchType.LAZY)
+	@Cascade(value = CascadeType.DELETE)
+	@JoinColumn(name = "place_id")
+	private List<Roll> rolls;
 
 	private boolean approved;
 
