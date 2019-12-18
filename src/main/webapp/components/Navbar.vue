@@ -7,7 +7,7 @@
 			<div class='nav__menu'>
 				<router-link exact active-class='router-active-link' to='/home'>Home</router-link>
 				|
-				<div class="admin" v-if="getUser.role && getUser.role.includes('ADMIN')">
+				<div class='admin' v-if='getUser.role && getUser.role.includes(&apos;ADMIN&apos;)'>
 					<router-link exact active-class='router-active-link'
 								 to='/admin'>Admin</router-link>
 					|

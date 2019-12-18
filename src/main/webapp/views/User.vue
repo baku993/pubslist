@@ -48,7 +48,7 @@
 						</v-card-text>
 						<v-card-actions>
 							<v-spacer/>
-							<v-btn @click='saveUser' :class='this.valid ? &apos;green&apos; : &apos;grey&apos; '>Save</v-btn>
+							<v-btn @click='saveUser' :class='this.valid ? &apos;green&apos; : &apos;grey&apos;'>Save</v-btn>
 							<v-btn @click='goBack'>Close</v-btn>
 						</v-card-actions>
 					</v-card>
