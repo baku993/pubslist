@@ -37,4 +37,13 @@
     <changeSet id="Tieimur" author="12">
         <dropColumn tableName="places" columnName="owner_id"/>
     </changeSet>
+    <changeSet author="Tieimur" id="13">
+        <createTable tableName="rolls">
+            <column name="place_id" type="integer"/>
+            <column name="rolled_at" type="timestamp"/>
+            <column name="rolled_by" type="varchar(255)"/>
+            <column name="id" type="integer" autoIncrement="true"/>
+        </createTable>
+        <addPrimaryKey columnNames="id" tableName="rolls"/>
+    </changeSet>
 </databaseChangeLog>
