@@ -70,8 +70,8 @@ public class PlaceService {
 
 		// Only admin or user who owns this place can update in case
 		// if the place is not approved yet
-		if (!UserContext.isAdmin()
-				&& (place.isApproved() || !place.isPlaceOwnedByUser(UserContext.getUsername()))) {
+		if (place.isApproved() || (!UserContext.isAdmin()
+				&& (!place.isPlaceOwnedByUser(UserContext.getUsername())))) {
 			throw new BaseException(RestResponses.ACCESS_DENIED);
 		}
 

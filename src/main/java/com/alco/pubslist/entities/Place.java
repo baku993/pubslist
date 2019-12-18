@@ -37,12 +37,6 @@ public class Place extends Auditable {
 	@JoinColumn(name = "place_id")
 	private List<Comment> comments;
 
-	@JsonIgnore
-	@OneToMany(fetch = FetchType.LAZY)
-	@Cascade(value = CascadeType.DELETE)
-	@JoinColumn(name = "place_id")
-	private List<Roll> rolls;
-
 	private boolean approved;
 
 	private boolean disabled;
