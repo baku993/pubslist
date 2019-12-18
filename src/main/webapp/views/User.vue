@@ -48,23 +48,25 @@
 						</v-card-text>
 						<v-card-actions>
 							<v-spacer/>
-							<v-btn @click='saveUser' :class='this.valid ? "green" : "grey"'>Save</v-btn>
+							<v-btn @click='saveUser' :class='this.valid && Object.keys(this.updated).length > 0 ? "green" : "grey"'>Save</v-btn>
 							<v-btn @click='goBack'>Close</v-btn>
 						</v-card-actions>
 					</v-card>
 				</v-col>
 			</v-row>
 		</v-container>
-		<v-alert type='success' v-if='isSaved' dense prominent dismissible>
+		<v-snackbar timeout='4000' color='success' v-model='isSaved' bottom='true' dense prominent dismissible>
 
-			<v-row align='center'>
-				<v-col class='grow'>User has been saved successfully</v-col>
+			<v-row>
+				<v-col style='text-align: center' class='grow'>User has been saved successfully</v-col>
 			</v-row>
-		</v-alert>
+		</v-snackbar>
 
-		<v-alert type='error' v-if='isError' dismissible dense prominent>
-			Oops. Something wrong happen
-		</v-alert>
+		<v-snackbar timeout='4000' color='error' v-model='isError' bottom='true' dismissible dense prominent>
+			<v-row>
+				<v-col style='text-align: center' class='grow'>Oops. Something wrong happen</v-col>
+			</v-row>
+		</v-snackbar>
 	</div>
 
 </template>
@@ -86,7 +88,6 @@
 				valid: false,
 				nameRules: [
 					v => !!v || 'Name is required',
-					v => (v && v.length >= 6) || 'Name must be more than 6 characters',
 					v => /^[A-Za-z]+$/.test(v) || 'Only letters are allowed',
 					v => (v && v.length < 14) || 'Name should be less than 14 characters'
 				],
@@ -116,7 +117,7 @@
 
 				this.validateForm();
 
-				if (this.valid && Object.keys(this.updated) > 0) {
+				if (this.valid && Object.keys(this.updated).length > 0) {
 					// Save user
 					authApi.patch('/api/users/' + this.id, this.updated).then(() => {
 						this.isSaved = true;
