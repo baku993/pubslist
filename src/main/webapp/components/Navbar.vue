@@ -7,6 +7,11 @@
 			<div class='nav__menu'>
 				<router-link exact active-class='router-active-link' to='/home'>Home</router-link>
 				|
+				<div class='admin' v-if='getUser.role && getUser.role.includes("ADMIN")'>
+					<router-link exact active-class='router-active-link'
+								 to='/admin'>Admin</router-link>
+					|
+				</div>
 				<router-link exact active-class='router-active-link' to='/about'>About</router-link>
 			</div>
 			<v-menu bottom offset-y>
@@ -115,6 +120,10 @@
 			&.router-active-link {
 				color: #42b983;
 			}
+		}
+
+		.admin {
+			display: inline;
 		}
 	}
 </style>

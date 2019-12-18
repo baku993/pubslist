@@ -30,14 +30,22 @@ public class UsersController {
 	@Secured("ROLE_ADMIN")
 	@GetMapping(USERS_URL)
 	@ResponseBody
-	Iterable<User> all() {
+	public Iterable<User> all() {
 
 		return userService.findAll();
 	}
 
+	@Secured("ROLE_ADMIN")
+	@ResponseBody
+	@GetMapping(USER_URL + "/{id}")
+	public User findById(@PathVariable("id") Integer id) {
+
+		return userService.findById(id);
+	}
+
 	@GetMapping(USER_URL)
 	@ResponseBody
-	User getCurrentUser() {
+	public User getCurrentUser() {
 
 		return userService.findById(UserContext.getUserId());
 	}
@@ -51,7 +59,7 @@ public class UsersController {
 	}
 
 	@PostMapping(SIGN_UP_URL)
-	ResponseEntity save(@RequestBody User newUser) {
+	public ResponseEntity save(@RequestBody User newUser) {
 
 		userService.save(newUser);
 
