@@ -64,9 +64,7 @@ public class UserService {
 			}
 
 			// Required fields should be filled
-			if (updatedUser.getUsername() == null
-					|| updatedUser.getRole() == null
-					|| updatedUser.getPassword() == null) {
+			if (updatedUser.getName() == null || updatedUser.getSurname() == null) {
 				throw new BaseException(RestResponses.MISSING_REQUIRED_FIELD);
 			}
 
