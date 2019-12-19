@@ -29,6 +29,12 @@ public class PlaceController {
 		return service.findAll();
 	}
 
+	@GetMapping(PLACES_URL + "/{id}")
+	public Place getById(@PathVariable("id") Integer id) {
+
+		return service.findById(id);
+	}
+
 	@PostMapping(PLACES_URL)
 	Place save(@RequestBody Place newPlace) {
 
