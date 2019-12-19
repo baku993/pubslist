@@ -1,7 +1,7 @@
 const FileManagerPlugin = require('filemanager-webpack-plugin');
 
 module.exports = {
-	lintOnSave: false,
+	lintOnSave: true,
 	outputDir: __dirname + '/src/main/webapp/dist',
 	devServer: {
 		proxy: {
