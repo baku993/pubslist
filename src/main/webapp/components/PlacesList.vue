@@ -7,8 +7,7 @@
       outlined
       v-for='p in places'
       :key='p.id'
-      @click='openPlace(p.id)'
-    >
+      @click='openPlace(p.id)'>
       <v-list-item three-line>
         <v-list-item-avatar tile size='80' color='grey'></v-list-item-avatar>
 
@@ -46,7 +45,7 @@
 			},
 			openPlace(id) {
 				// should open a place
-				console.log('Open place', id);
+				this.$emit('open', id);
 			}
 		}
 	};

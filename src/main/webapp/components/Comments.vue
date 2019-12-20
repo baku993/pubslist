@@ -1,9 +1,10 @@
 <template>
 
 	<div class='comments'>
+		<v-divider/>
+
 		<div class='headline'>Comments</div>
 
-		<v-divider/>
 	</div>
 	
 </template>
@@ -17,8 +18,13 @@
 
 <style scoped lang="scss">
 
+	.comments {
+		width: 100%;
+		padding: 5px;
+	}
+
 	.headline {
-		margin-bottom: 50px;
+		margin-top: 50px;
 
 	}
 

@@ -1,6 +1,27 @@
 <template>
 
 	<v-form v-model='valid' ref='form'>
+		<v-text-field
+				label='Name'
+				name='name'
+				type='text'
+				counter
+				hint='Specify name for the place'
+				required
+				v-model='data.name'/>
+
+		<v-textarea
+				label='Address'
+				name='address'
+				required
+				hint='Specify address for the place'
+				v-model='data.address'></v-textarea>
+
+		<v-textarea
+				label='Description'
+				name='description'
+				hint='Specify description for the place, optional'
+				v-model='data.description'></v-textarea>
 	</v-form>
 	
 </template>

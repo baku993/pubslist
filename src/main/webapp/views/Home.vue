@@ -11,6 +11,7 @@
 		<places-list
 				@liked='addToLiked'
 				@vote='voteForPlace'
+				@open='openPlace'
 				:places='filteredPlaces'
 		></places-list>
 	</div>
@@ -59,6 +60,9 @@
 			},
 			addToLiked(id) {
 				console.log('Add to liked places', id);
+			},
+			openPlace(id) {
+				this.$router.push({name: 'place', params: { id: id } });
 			}
 		},
 		created() {
