@@ -1,17 +1,21 @@
 <template>
 
-	<v-container class='fill-height' fluid>
-		<v-card class='d-flex place-card'>
+	<v-container class='fill-height'>
+		<v-card class='d-flex place-card mx-auto'>
 			<v-toolbar color='primary' flat class='flex-fill toolbar'>
 				<v-toolbar-title class='headline mb-1'>{{id ? 'Edit place' : 'Suggest a place'}}</v-toolbar-title>
 				<v-spacer/>
 			</v-toolbar>
 
+			<v-img max-height='200' min-height='200'
+				   src='../assets/dummy.jpg'
+				   class='white--text place-image align-end flex-fill'>
+				<v-card-title class='headline'>{{place.name}}</v-card-title>
+			</v-img>
+
 			<!-- Image & buttons -->
 			<v-row align='center' class='flex-fill jumbotron'>
-				<v-img max-width='300' max-height='200' min-height='200' min-width='300' color='grey'
-					   class='justify-start place-image'></v-img>
-				<v-card-actions class='justify-end actions'>
+				<v-card-actions class='actions'>
 					<div class='common'>
 						<v-btn icon @click='addToFavorites(p.id)'>
 							<v-icon>mdi-heart</v-icon>
@@ -79,12 +83,12 @@
 			},
 			canApprove() {
 				// Current user is admin and place is not approved
-				return this.place && !this.place.approved && this.getUser && this.getUser.role.includes('ADMIN');
+				return this.place && !this.place.approved && this.getUser.role && this.getUser.role.includes('ADMIN');
 			},
 			canDelete() {
 				// Place is not approved and user is owner or user is admin
-				return this.place && !this.place.approved && this.getUser && (this.getUser.role.includes('ADMIN') ||
-					this.getUser.username === this.place.createdBy);
+				return this.place && !this.place.approved && this.getUser.role && (this.getUser.role.includes('ADMIN')
+					|| this.getUser.username === this.place.createdBy);
 			},
 			comments() {
 				return this.place.comments || [];
@@ -172,17 +176,13 @@
 
 	.place-image {
 		background-color: grey;
-		margin: 5px;
-		border-radius: 4px;
+		display: flex;
 	}
 
 	.actions {
 		display: flex;
-		flex-direction: column;
-
-		.common {
-			margin-bottom: 50px;
-		}
+		width: 100%;
+		justify-content: space-around;
 	}
 
 </style>
