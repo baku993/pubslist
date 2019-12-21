@@ -30,7 +30,7 @@ public class Place extends Auditable {
 	private String description;
 
 	@JsonIgnore
-	@OneToMany(fetch = FetchType.EAGER)
+	@OneToMany(fetch = FetchType.LAZY)
 	@Cascade(value = CascadeType.DELETE)
 	@JoinColumn(name = "place_id")
 	private List<Comment> comments;

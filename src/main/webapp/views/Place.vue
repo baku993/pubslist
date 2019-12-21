@@ -45,7 +45,11 @@
 			</v-card-text>
 
 			<!--Comments-->
-			<comments :comments='comments'></comments>
+			<comments :comments='comments'
+					  :user='getUser'
+					  @add='addNewComment'
+					  @delete='deleteComment'
+			></comments>
 		</v-card>
 
 	</v-container>
@@ -69,7 +73,8 @@
 			return {
 				place: {},
 				isEditing: false,
-				valid: false
+				valid: false,
+				comments: []
 			};
 		},
 		computed: {
@@ -89,9 +94,6 @@
 				// Place is not approved and user is owner or user is admin
 				return this.place && !this.place.approved && this.getUser.role && (this.getUser.role.includes('ADMIN')
 					|| this.getUser.username === this.place.createdBy);
-			},
-			comments() {
-				return this.place.comments || [];
 			}
 		},
 		methods: {
@@ -135,6 +137,40 @@
 				// Should be valid already
 				// Update fields
 				console.log(fields);
+			},
+			addNewComment(value) {
+				// Construct new comment
+				const comment = {
+					text: value,
+					placeId: this.id
+				};
+
+				// Send value to the server
+				authApi.post('/api/comments', comment).then(() => {
+					// If successful, show notification
+					console.log('Added comment');
+					this.loadComments();
+				}).catch(error => {
+					console.error(error);
+				});
+			},
+			deleteComment(id) {
+				authApi.delete('/api/comments/' + id).then(() => {
+					// If successful, show notification
+					console.log('Deleted comment');
+					this.comments = this.comments.filter(c => c.id !== id);
+				}).catch(error => {
+					console.error(error);
+				});
+			},
+			loadComments() {
+				// Load comments
+				authApi.get('/api/comments/' + this.id).then(resp => {
+					this.comments = resp.data;
+				}).catch(error => {
+					// Add user notification here
+					console.log(error);
+				});
 			}
 		},
 		created() {
@@ -142,6 +178,7 @@
 				// Load place
 				authApi.get('/api/places/' + this.id).then(resp => {
 					this.place = resp.data;
+					this.loadComments();
 				}).catch(error => {
 					// Add user notification here
 					console.log(error);

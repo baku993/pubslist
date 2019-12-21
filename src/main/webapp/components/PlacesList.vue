@@ -9,12 +9,13 @@
       :key='p.id'
       @click='openPlace(p.id)'>
       <v-list-item three-line>
-        <v-list-item-avatar tile size='80' color='grey'></v-list-item-avatar>
+        <v-list-item-avatar tile size='80'>
+          <v-img src='../assets/dummy.jpg' class='white--text place-image align-end flex-fill'>
+          </v-img>
+        </v-list-item-avatar>
 
         <v-list-item-content>
-          <v-list-item-title class='headline mb-1'>{{
-            p.name
-          }}</v-list-item-title>
+          <v-list-item-title class='headline mb-1'>{{p.name }}</v-list-item-title>
           <div class='overline mb-4'>
             Created by: <span>{{ p.createdBy }}</span>
           </div>
