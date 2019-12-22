@@ -1,6 +1,6 @@
 <template>
 
-	<v-container class='fill-height'>
+	<v-container class='fill-height flex-column'>
 		<v-card class='d-flex place-card mx-auto'>
 			<v-toolbar color='primary' flat class='flex-fill toolbar'>
 				<v-toolbar-title class='headline mb-1'>{{id ? 'Edit place' : 'Suggest a place'}}</v-toolbar-title>
@@ -17,10 +17,10 @@
 			<v-row align='center' class='flex-fill jumbotron'>
 				<v-card-actions class='actions'>
 					<div class='common'>
-						<v-btn icon @click='addToFavorites(p.id)'>
+						<v-btn icon @click='addToFavorites()'>
 							<v-icon>mdi-heart</v-icon>
 						</v-btn>
-						<v-btn text @click='vote(p.id)'>Vote</v-btn>
+						<v-btn text @click='vote()'>Vote</v-btn>
 						<v-chip class='ma-2'>{{place.votes || 0}}</v-chip>
 					</div>
 					<div class='manage'>
@@ -48,9 +48,11 @@
 			<comments :comments='comments'
 					  :user='getUser'
 					  @add='addNewComment'
-					  @delete='deleteComment'
-			></comments>
+					  @delete='deleteComment'>
+			</comments>
 		</v-card>
+
+		<notifications :error='errorMessage' :success='successMessage'></notifications>
 
 	</v-container>
 
@@ -64,17 +66,20 @@
 	import Comments from '../components/Comments';
 	import {mapGetters} from 'vuex';
 	import {GET_USER} from '../constants';
+	import Notifications from '../components/Notifications';
 
 	export default {
 		name: 'place',
 		props: ['id'],
-		components: {Comments, PlaceData},
+		components: {Notifications, Comments, PlaceData},
 		data() {
 			return {
 				place: {},
 				isEditing: false,
 				valid: false,
-				comments: []
+				comments: [],
+				successMessage: '',
+				errorMessage: '',
 			};
 		},
 		computed: {
@@ -98,38 +103,39 @@
 		},
 		methods: {
 			save() {
-				console.log('Save');
 				if (this.id) {
 					authApi.patch('/api/places', this.place).then(() => {
-						console.log('Updated');
+						this.successMessage = 'Place has been successfully updated';
 					}).catch(error => {
-						console.error(error);
+						this.errorMessage = error.message;
 					});
 				} else {
 					authApi.post('/api/places', this.place).then(() => {
-						console.log('Updated');
+						this.successMessage = 'Place has been successfully created';
 					}).catch(error => {
-						console.error(error);
+						this.errorMessage = error.message;
 					});
 				}
 			},
-			addToFavorites(id) {
-				console.log('Favorites', id);
+			addToFavorites() {
+				console.log('Favorites', this.id);
+				this.successMessage = 'Place has been added to favorites';
 			},
-			vote(id) {
-				console.log('Vote', id);
+			vote() {
+				console.log('Vote', this.id);
+				this.successMessage = 'You voted for this place';
 			},
 			close() {
 				this.$router.back();
 			},
 			approvePlace() {
-				console.log('Approved');
+				this.successMessage = 'Place has been successfully approved';
 			},
 			deletePlace() {
 				authApi.delete('/api/places' + this.id).then(() => {
-					console.log('Deleted');
+					this.successMessage = 'Place has been successfully deleted';
 				}).catch(error => {
-					console.error(error);
+					this.errorMessage = error.message;
 				});
 			},
 			updateFields(fields) {
@@ -148,19 +154,19 @@
 				// Send value to the server
 				authApi.post('/api/comments', comment).then(() => {
 					// If successful, show notification
-					console.log('Added comment');
+					this.successMessage = 'Comment has been added';
 					this.loadComments();
 				}).catch(error => {
-					console.error(error);
+					this.errorMessage = error.message;
 				});
 			},
 			deleteComment(id) {
 				authApi.delete('/api/comments/' + id).then(() => {
 					// If successful, show notification
-					console.log('Deleted comment');
+					this.successMessage = 'Comment has been deleted';
 					this.comments = this.comments.filter(c => c.id !== id);
 				}).catch(error => {
-					console.error(error);
+					this.errorMessage = error.message;
 				});
 			},
 			loadComments() {
@@ -168,8 +174,7 @@
 				authApi.get('/api/comments/' + this.id).then(resp => {
 					this.comments = resp.data;
 				}).catch(error => {
-					// Add user notification here
-					console.log(error);
+					this.errorMessage = error.message;
 				});
 			}
 		},
@@ -180,8 +185,7 @@
 					this.place = resp.data;
 					this.loadComments();
 				}).catch(error => {
-					// Add user notification here
-					console.log(error);
+					this.errorMessage = error.message;
 				});
 			}
 		}

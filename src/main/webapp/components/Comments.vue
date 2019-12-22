@@ -48,7 +48,7 @@
 			send() {
 
 				// Emit event
-				this.$emit('add', this.newComment);
+				if (this.newComment) this.$emit('add', this.newComment);
 
 				// Clean the field
 				this.newComment = '';
