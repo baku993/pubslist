@@ -1,5 +1,3 @@
-const FileManagerPlugin = require('filemanager-webpack-plugin');
-
 module.exports = {
 	lintOnSave: true,
 	outputDir: __dirname + '/src/main/webapp/dist',
@@ -20,20 +18,6 @@ module.exports = {
 		},
 		entry: {
 			app: './src/main/webapp/main.js'
-		},
-		plugins: [
-			new FileManagerPlugin({
-				onEnd: [
-					{
-						copy: [
-							{
-								source: __dirname + '/src/main/webapp/dist',
-								destination: __dirname + '/build/resources/main/static'
-							}
-						]
-					}
-				]
-			})
-		]
+		}
 	}
 };
