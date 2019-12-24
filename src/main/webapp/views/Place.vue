@@ -6,7 +6,6 @@
 				<v-toolbar-title class='headline mb-1'>{{id ? 'Edit place' : 'Suggest a place'}}</v-toolbar-title>
 				<v-spacer/>
 			</v-toolbar>
-
 			<v-img max-height='200' min-height='200'
 				   src='../assets/dummy.jpg'
 				   class='white--text place-image align-end flex-fill'>
@@ -51,9 +50,8 @@
 					  @delete='deleteComment'>
 			</comments>
 		</v-card>
-
+		<confirm-dialog ref='confirm'></confirm-dialog>
 		<notifications :error='errorMessage' :success='successMessage'></notifications>
-
 	</v-container>
 
 </template>
@@ -67,19 +65,22 @@
 	import {mapGetters} from 'vuex';
 	import {GET_USER} from '../constants';
 	import Notifications from '../components/Notifications';
+	import ConfirmDialog from '../components/ConfirmDialog';
 
 	export default {
 		name: 'place',
 		props: ['id'],
-		components: {Notifications, Comments, PlaceData},
+		components: {ConfirmDialog, Notifications, Comments, PlaceData},
 		data() {
 			return {
 				place: {},
 				isEditing: false,
 				valid: false,
+				dialog: false,
 				comments: [],
 				successMessage: '',
 				errorMessage: '',
+				confirmationText: ''
 			};
 		},
 		computed: {
@@ -93,11 +94,11 @@
 			},
 			canApprove() {
 				// Current user is admin and place is not approved
-				return this.place && !this.place.approved && this.getUser.role && this.getUser.role.includes('ADMIN');
+				return !this.place.approved && this.getUser.role && this.getUser.role.includes('ADMIN');
 			},
 			canDelete() {
 				// Place is not approved and user is owner or user is admin
-				return this.place && !this.place.approved && this.getUser.role && (this.getUser.role.includes('ADMIN')
+				return !this.place.approved && (this.getUser.role.includes('ADMIN')
 					|| this.getUser.username === this.place.createdBy);
 			}
 		},
@@ -129,13 +130,29 @@
 				this.$router.back();
 			},
 			approvePlace() {
-				this.successMessage = 'Place has been successfully approved';
+				this.$refs.confirm.open('Approve', 'Are you sure?').then((confirm) => {
+					if (confirm){
+						authApi.patch('/api/places/'+ this.id, { approved: true }).then(() => {
+							this.place.approved = true;
+							this.$forceUpdate();
+							this.successMessage = 'Place has been successfully updated';
+						}).catch(error => {
+							this.errorMessage = error.message;
+						});
+					}
+				});
 			},
 			deletePlace() {
-				authApi.delete('/api/places' + this.id).then(() => {
-					this.successMessage = 'Place has been successfully deleted';
-				}).catch(error => {
-					this.errorMessage = error.message;
+				this.$refs.confirm.open('Delete', 'Are you sure?').then((confirm) => {
+					if (confirm){
+						authApi.delete('/api/places/' + this.id).then(() => {
+							this.successMessage = 'Place has been successfully deleted';
+							this.dialog = true;
+							this.close();
+						}).catch(error => {
+							this.errorMessage = error.message;
+						});
+					}
 				});
 			},
 			updateFields(fields) {
@@ -176,6 +193,9 @@
 				}).catch(error => {
 					this.errorMessage = error.message;
 				});
+			},
+			showTestCard () {
+				this.$dialog.show(TestCard);
 			}
 		},
 		created() {
