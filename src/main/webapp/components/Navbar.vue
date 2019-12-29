@@ -12,6 +12,8 @@
 								 to='/admin'>Admin</router-link>
 					|
 				</div>
+				<router-link exact active-class='router-active-link' to='/drum'>Drum</router-link>
+				|
 				<router-link exact active-class='router-active-link' to='/about'>About</router-link>
 			</div>
 			<v-menu bottom offset-y>
