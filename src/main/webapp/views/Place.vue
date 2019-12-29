@@ -120,7 +120,7 @@
 						this.isEditing = false;
 						this.valid=false;
 					}).catch(error => {
-						this.errorMessage = error.message;s;
+						this.errorMessage = error.message;
 					});
 				}
 			},
@@ -197,9 +197,6 @@
 				}).catch(error => {
 					this.errorMessage = error.message;
 				});
-			},
-			showTestCard () {
-				this.$dialog.show(TestCard);
 			}
 		},
 		created() {
