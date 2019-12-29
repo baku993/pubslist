@@ -40,7 +40,7 @@
 
 				<!--Form with fields-->
 				<place-data ref='placedata' @updateFields='updateFields' :valid='valid'
-							:readonly='this.id!=&apos;&apos; && !this.isEditing'></place-data>
+							:readonly='this.id!="" && !this.isEditing'></place-data>
 
 			</v-card-text>
 
