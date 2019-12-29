@@ -37,6 +37,15 @@ const routes = [
 		}
 	},
 	{
+		path: '/place/',
+		name: 'newplace',
+		component: Place,
+		props: {id:''},
+		meta: {
+			requiresAuth: true
+		}
+	},
+	{
 		path: '/admin',
 		name: 'admin',
 		meta: {

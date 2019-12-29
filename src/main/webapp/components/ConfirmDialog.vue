@@ -1,5 +1,5 @@
 <template>
-	<v-dialog @keydown.esc='cancel' v-model='dialog'>
+	<v-dialog @keydown.esc='cancel' v-model='dialog' width='400'>
 		<v-card>
 			<v-toolbar dark dense flat>
 				<v-toolbar-title class='white--text'>{{ title }}</v-toolbar-title>
