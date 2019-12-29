@@ -15,7 +15,7 @@
 				:places='filteredPlaces'
 		></places-list>
 		<div class='floating'>
-			<v-btn absolute dark fab bottom right color='primary' @click='openPlace(&apos;&apos;)'>
+			<v-btn absolute dark fab bottom right color='primary' @click='openPlace("")'>
 				<v-icon>mdi-plus</v-icon>
 			</v-btn>
 		</div>
