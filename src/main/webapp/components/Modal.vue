@@ -18,9 +18,9 @@
 
 					<div class='modal-footer'>
 						<slot name='footer'>
-							<button class='modal-default-button btn' @click='$emit(&apos;close&apos;)'>
+							<v-btn color='primary' @click='$emit("close")'>
 								<span>Поехали</span>
-							</button>
+							</v-btn>
 						</slot>
 					</div>
 				</div>
@@ -71,15 +71,6 @@
 
 	.modal-body {
 		margin: 20px 0;
-	}
-
-	.modal-default-button {
-
-		&.btn {
-			display: inline-block;
-			margin: 0;
-
-		}
 	}
 
 	.modal-footer {
