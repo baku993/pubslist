@@ -28,9 +28,10 @@
 						</v-btn>
 						<v-btn color='red darken-2' v-if='canDelete' @click='deletePlace'>Delete
 						</v-btn>
-						<v-btn color='green darken-2' v-if='!isEditing' @click='isEditing = !isEditing'>Edit
+						<v-btn color='green darken-2' v-if='id && !isEditing' @click='isEditing = !isEditing'>Edit
 						</v-btn>
-						<v-btn v-else @click='save' :class='{ grey: !valid, green: valid }' :disabled='!valid'>Save
+						<v-btn v-else @click='save' :class='{ grey: !valid, green: valid }'
+							   :disabled='!valid'>Save
 						</v-btn>
 						<v-btn @click='close'>Close</v-btn>
 					</div>
@@ -93,11 +94,13 @@
 			},
 			canApprove() {
 				// Current user is admin and place is not approved
-				return this.place && !this.place.approved && this.getUser.role && this.getUser.role.includes('ADMIN');
+				return this.id && this.place && !this.place.approved && this.getUser.role &&
+					this.getUser.role.includes('ADMIN');
 			},
 			canDelete() {
 				// Place is not approved and user is owner or user is admin
-				return this.place && !this.place.approved && this.getUser.role && (this.getUser.role.includes('ADMIN')
+				return this.id && this.place && !this.place.approved && this.getUser.role &&
+					(this.getUser.role.includes('ADMIN')
 					|| this.getUser.username === this.place.createdBy);
 			}
 		},
