@@ -97,4 +97,9 @@
 			background-color: inherit !important;
 		}
 	}
+
+	.floating {
+		height: 100px;
+		position: relative;
+	}
 </style>
