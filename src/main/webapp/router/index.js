@@ -40,7 +40,7 @@ const routes = [
 		path: '/place/',
 		name: 'newplace',
 		component: Place,
-		props: {id:''},
+		props: { id: null },
 		meta: {
 			requiresAuth: true
 		}
