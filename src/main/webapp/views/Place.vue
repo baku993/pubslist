@@ -19,8 +19,8 @@
 						<v-btn v-show='false' icon @click='addToFavorites()'>
 							<v-icon>mdi-heart</v-icon>
 						</v-btn>
-						<v-btn text v-show='false'  @click='vote()'>Vote</v-btn>
-						<v-chip v-show='false'  class='ma-2'>{{place.votes || 0}}</v-chip>
+						<v-btn text v-show='false' @click='vote()'>Vote</v-btn>
+						<v-chip v-show='false' class='ma-2'>{{place.votes || 0}}</v-chip>
 					</div>
 					<div class='manage'>
 						<v-btn color='blue darken-2' v-if='canApprove' @click='approvePlace'>Approve
@@ -98,7 +98,7 @@
 					|| this.getUser.username === this.place.createdBy);
 			},
 			fieldsData() {
-				return  {
+				return {
 					name: this.place.name,
 					address: this.place.address,
 					description: this.place.description
@@ -118,7 +118,7 @@
 					authApi.post('/api/places', this.updated).then(() => {
 						this.successMessage = 'Place has been successfully created';
 						this.isEditing = false;
-						this.valid=false;
+						this.valid = false;
 					}).catch(error => {
 						this.errorMessage = error.message;
 					});
@@ -141,8 +141,8 @@
 			},
 			approvePlace() {
 				this.$refs.confirm.open('Approve', 'Are you sure?').then((confirm) => {
-					if (confirm){
-						authApi.patch('/api/places/'+ this.id, { approved: true }).then(() => {
+					if (confirm) {
+						authApi.patch('/api/places/' + this.id, {approved: true}).then(() => {
 							this.place.approved = true;
 							this.$forceUpdate();
 							this.successMessage = 'Place has been successfully updated';
@@ -154,7 +154,7 @@
 			},
 			deletePlace() {
 				this.$refs.confirm.open('Delete', 'Are you sure?').then((confirm) => {
-					if (confirm){
+					if (confirm) {
 						authApi.delete('/api/places/' + this.id).then(() => {
 							this.successMessage = 'Place has been successfully deleted';
 							this.dialog = true;
