@@ -23,11 +23,11 @@
 						<v-chip v-show='false'  class='ma-2'>{{place.votes || 0}}</v-chip>
 					</div>
 					<div class='manage'>
-						<v-btn color='blue darken-2' v-if='canApprove&&this.id' @click='approvePlace'>Approve
+						<v-btn color='blue darken-2' v-if='canApprove' @click='approvePlace'>Approve
 						</v-btn>
-						<v-btn color='red darken-2' v-if='canDelete&&this.id' @click='deletePlace'>Delete
+						<v-btn color='red darken-2' v-if='canDelete' @click='deletePlace'>Delete
 						</v-btn>
-						<v-btn color='green darken-2' v-if='!isEditing&&this.id' @click='isEditing = !isEditing'>Edit
+						<v-btn color='green darken-2' v-if='!isEditing && id' @click='isEditing = !isEditing'>Edit
 						</v-btn>
 						<v-btn v-else @click='save' :class='{ grey: !valid, green: valid }'
 							   :disabled='!valid'>Save
@@ -39,8 +39,8 @@
 			<v-card-text>
 
 				<!--Form with fields-->
-				<place-data ref='placedata' @updateFields='updateFields' :valid='valid'
-							:readonly='this.id!="" && !this.isEditing'></place-data>
+				<place-data ref='placedata' @updateFields='updateFields' :valid='valid' :data='fieldsData'
+							:readonly='id && !isEditing'></place-data>
 
 			</v-card-text>
 
@@ -90,15 +90,13 @@
 			...mapGetters([GET_USER]),
 			canApprove() {
 				// Current user is admin and place is not approved
-				return !this.place.approved && this.getUser.role && this.getUser.role.includes('ADMIN');
+				return this.id && !this.place.approved && this.getUser.role && this.getUser.role.includes('ADMIN');
 			},
 			canDelete() {
 				// Place is not approved and user is owner or user is admin
-				return !this.place.approved && (this.getUser.role.includes('ADMIN')
+				return this.id && !this.place.approved && (this.getUser.role.includes('ADMIN')
 					|| this.getUser.username === this.place.createdBy);
-			}
-		},
-		methods: {
+			},
 			fieldsData() {
 				return  {
 					name: this.place.name,
@@ -106,6 +104,8 @@
 					description: this.place.description
 				};
 			},
+		},
+		methods: {
 			save() {
 				if (this.id) {
 					authApi.patch('/api/places/' + this.id, this.updated).then(() => {
@@ -204,7 +204,6 @@
 				// Load place
 				authApi.get('/api/places/' + this.id).then(resp => {
 					this.place = resp.data;
-					this.$refs.placedata.assignDefaults(this.fieldsData());
 					this.loadComments();
 				}).catch(error => {
 					this.errorMessage = error.message;

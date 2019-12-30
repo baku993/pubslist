@@ -1,6 +1,6 @@
 <template>
 
-	<v-form v-model='valid' ref='form' >
+	<v-form v-model='valid' ref='form'>
 		<v-text-field
 				@input='validateForm'
 				:readonly='readonly'
@@ -38,13 +38,13 @@
 				hint='Specify description for the place, optional'
 				v-model='description'/>
 	</v-form>
-	
+
 </template>
 
 <script>
 	export default {
 		name: 'place-data',
-		props: ['readonly'],
+		props: ['readonly', 'data'],
 		data() {
 			return {
 				name: '',
@@ -64,32 +64,29 @@
 		},
 		methods: {
 			validateForm() {
-				this.$emit('updateFields',this.updated,this.$refs.form.validate());
-			},
-			assignDefaults(fields){
-				this.original.name = fields.name;
-				this.original.address = fields.address;
-				this.original.description = fields.description;
-				this.name = fields.name;
-				this.address = fields.address;
-				this.description = fields.description;
+				this.$emit('updateFields', this.updated, this.$refs.form.validate());
 			}
 		},
 		watch: {
-			name: function(val) {
-				if (this.original.name !== val) {
+			name: function(val, old) {
+				if (old !== val) {
 					this.updated['name'] = val;
 				}
 			},
-			address: function(val) {
-				if (this.original.address !== val) {
+			address: function(val, old) {
+				if (old !== val) {
 					this.updated['address'] = val;
 				}
 			},
-			description: function(val) {
-				if (this.original.description !== val) {
+			description: function(val, old) {
+				if (old !== val) {
 					this.updated['description'] = val;
 				}
+			},
+			data: function(val) {
+				this.name = val.name;
+				this.address = val.address;
+				this.description = val.description;
 			}
 		}
 	};
