@@ -27,9 +27,9 @@
 						</v-btn>
 						<v-btn color='red darken-2' v-if='canDelete' @click='deletePlace'>Delete
 						</v-btn>
-						<v-btn color='green darken-2' v-if='!isEditing && id' @click='isEditing = !isEditing'>Edit
+						<v-btn color='green darken-2' v-if='canEdit' @click='isEditing = !isEditing'>Edit
 						</v-btn>
-						<v-btn v-else @click='save' :class='{ grey: !valid, green: valid }'
+						<v-btn v-else-if='canSave' @click='save' :class='{ grey: !valid, green: valid }'
 							   :disabled='!valid'>Save
 						</v-btn>
 						<v-btn @click='close'>Close</v-btn>
@@ -97,6 +97,19 @@
 				return this.id && !this.place.approved && (this.getUser.role.includes('ADMIN')
 					|| this.getUser.username === this.place.createdBy);
 			},
+			canSave() {
+				// Place is not approved and user is owner or user is admin
+				return this.getUser.role.includes('ADMIN') ||
+					!this.place.approved && this.getUser.username === this.place.createdBy;
+
+			},
+			canEdit() {
+				// Place is not approved and user is owner or user is admin
+				return this.id && !this.isEditing &&
+					(this.getUser.role.includes('ADMIN') ||
+					(!this.place.approved && this.getUser.username === this.place.createdBy));
+
+			},
 			fieldsData() {
 				return {
 					name: this.place.name,
@@ -111,6 +124,7 @@
 					authApi.patch('/api/places/' + this.id, this.updated).then(() => {
 						this.successMessage = 'Place has been successfully updated';
 						this.isEditing = false;
+						this.valid = false;
 					}).catch(error => {
 						this.errorMessage = error.message;
 					});
