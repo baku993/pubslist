@@ -24,8 +24,8 @@
       </v-list-item>
 
       <v-card-actions>
-        <v-btn text @click='vote(p.id)'>Vote</v-btn>
-        <v-btn icon @click='addToFavorites(p.id)'>
+        <v-btn text v-show='false' @click='vote(p.id)'>Vote</v-btn>
+        <v-btn icon v-show='false' @click='addToFavorites(p.id)'>
           <v-icon>mdi-heart</v-icon>
         </v-btn>
       </v-card-actions>

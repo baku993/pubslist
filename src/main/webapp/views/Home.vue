@@ -15,7 +15,7 @@
 				:places='filteredPlaces'
 		></places-list>
 		<div class='floating'>
-			<v-btn absolute dark fab bottom right color='primary' @click='openPlace("")'>
+			<v-btn absolute dark fab bottom right color='primary' @click='newPlace'>
 				<v-icon>mdi-plus</v-icon>
 			</v-btn>
 		</div>
@@ -67,7 +67,10 @@
 				console.log('Add to liked places', id);
 			},
 			openPlace(id) {
-				this.$router.push({name: 'place', params: {id: id}});
+				this.$router.push({name: 'place', params: { id: id } });
+			},
+			newPlace() {
+				this.$router.push({name: 'newplace'});
 			}
 		},
 		created() {

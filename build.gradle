@@ -72,5 +72,11 @@ task frontend(type: Exec) {
     commandLine "npm", "run", "build"
 }
 
-rootProject.tasks.getByName('processResources').dependsOn frontend
+task copyWebApp(type: Copy) {
+    dependsOn frontend
+    from 'src/main/webapp/dist'
+    into 'build/resources/main/static/.'
+}
+
+rootProject.tasks.getByName('processResources').dependsOn copyWebApp
 

@@ -20,7 +20,10 @@
 					</v-avatar>
 
 				<v-list-item-content>
-					<v-list-item-title>{{user.name + ' ' + user.surname}}</v-list-item-title>
+					<v-list-item-title>
+						{{user.name + ' ' + user.surname}}
+						<span v-if='user.id === getUser().id' style='font-weight: 700'>(You)</span>
+					</v-list-item-title>
 				</v-list-item-content>
 
 				<v-list-item-action class='icons'>
@@ -71,7 +74,7 @@
 		created() {
 			// Load all users
 			authApi.get('/api/users').then(resp => {
-				this.users = resp.data.filter(u => u.id !== this.getUser().id);
+				this.users = resp.data;
 			}).catch(error => {
 				// Add user notification here
 				console.log(error);
