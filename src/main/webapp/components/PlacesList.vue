@@ -7,15 +7,15 @@
       outlined
       v-for='p in places'
       :key='p.id'
-      @click='openPlace(p.id)'
-    >
+      @click='openPlace(p.id)'>
       <v-list-item three-line>
-        <v-list-item-avatar tile size='80' color='grey'></v-list-item-avatar>
+        <v-list-item-avatar tile size='80'>
+          <v-img src='../assets/dummy.jpg' class='white--text place-image align-end flex-fill'>
+          </v-img>
+        </v-list-item-avatar>
 
         <v-list-item-content>
-          <v-list-item-title class='headline mb-1'>{{
-            p.name
-          }}</v-list-item-title>
+          <v-list-item-title class='headline mb-1'>{{p.name }}</v-list-item-title>
           <div class='overline mb-4'>
             Created by: <span>{{ p.createdBy }}</span>
           </div>
@@ -24,8 +24,8 @@
       </v-list-item>
 
       <v-card-actions>
-        <v-btn text @click='vote(p.id)'>Vote</v-btn>
-        <v-btn icon @click='addToFavorites(p.id)'>
+        <v-btn text v-show='false' @click='vote(p.id)'>Vote</v-btn>
+        <v-btn icon v-show='false' @click='addToFavorites(p.id)'>
           <v-icon>mdi-heart</v-icon>
         </v-btn>
       </v-card-actions>
@@ -46,7 +46,7 @@
 			},
 			openPlace(id) {
 				// should open a place
-				console.log('Open place', id);
+				this.$emit('open', id);
 			}
 		}
 	};

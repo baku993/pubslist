@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -28,7 +27,6 @@ public class Place extends Auditable {
 	private String latitude;
 	private String longitude;
 	private Integer votes;
-	@Column(name = "description")
 	private String description;
 
 	@JsonIgnore

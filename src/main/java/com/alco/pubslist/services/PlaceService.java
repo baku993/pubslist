@@ -37,7 +37,7 @@ public class PlaceService {
 
 	public void update(BufferedReader reader, Integer id) {
 
-		Place place = findPlaceById(id);
+		Place place = findById(id);
 
 		try {
 			// Read and map JSON to entity from DB, merged object as output
@@ -66,7 +66,7 @@ public class PlaceService {
 
 	public void delete(Integer id) {
 
-		Place place = findPlaceById(id);
+		Place place = findById(id);
 
 		// Only admin or user who owns this place can update in case
 		// if the place is not approved yet
@@ -78,7 +78,7 @@ public class PlaceService {
 		repository.deleteById(id);
 	}
 
-	private Place findPlaceById(Integer id) {
+	public Place findById(Integer id) {
 
 		Optional<Place> optionalPlace = repository.findById(id);
 

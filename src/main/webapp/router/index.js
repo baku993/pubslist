@@ -3,6 +3,7 @@ import VueRouter from 'vue-router';
 import Home from '../views/Home.vue';
 import Login from '../views/Login.vue';
 import SignUp from '../views/SignUp.vue';
+import Place from '../views/Place.vue';
 import store from '../store/index';
 
 Vue.use(VueRouter);
@@ -22,6 +23,24 @@ const routes = [
 		path: '/home',
 		name: 'home',
 		component: Home,
+		meta: {
+			requiresAuth: true
+		}
+	},
+	{
+		path: '/place/:id',
+		name: 'place',
+		component: Place,
+		props: true,
+		meta: {
+			requiresAuth: true
+		}
+	},
+	{
+		path: '/place/',
+		name: 'newplace',
+		component: Place,
+		props: { id: null },
 		meta: {
 			requiresAuth: true
 		}

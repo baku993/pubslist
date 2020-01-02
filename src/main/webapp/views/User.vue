@@ -55,18 +55,7 @@
 				</v-col>
 			</v-row>
 		</v-container>
-		<v-snackbar timeout='4000' color='success' v-model='isSaved' bottom='true' dense prominent dismissible>
-
-			<v-row>
-				<v-col style='text-align: center' class='grow'>User has been saved successfully</v-col>
-			</v-row>
-		</v-snackbar>
-
-		<v-snackbar timeout='4000' color='error' v-model='isError' bottom='true' dismissible dense prominent>
-			<v-row>
-				<v-col style='text-align: center' class='grow'>Oops. Something wrong happen</v-col>
-			</v-row>
-		</v-snackbar>
+		<notifications :error='errorMessage' :success='successMessage'></notifications>
 	</div>
 
 </template>
@@ -74,9 +63,11 @@
 <script>
 
 	import authApi from '../auth/authApi';
+	import Notifications from '../components/Notifications';
 
 	export default {
 		name: 'user',
+		components: {Notifications},
 		props: ['id'],
 		data() {
 			return {
@@ -91,8 +82,8 @@
 					v => /^[A-Za-z]+$/.test(v) || 'Only letters are allowed',
 					v => (v && v.length < 14) || 'Name should be less than 14 characters'
 				],
-				isError: false,
-				isSaved: false
+				errorMessage: '',
+				successMessage: ''
 			};
 		},
 		watch: {
@@ -120,12 +111,10 @@
 				if (this.valid && Object.keys(this.updated).length > 0) {
 					// Save user
 					authApi.patch('/api/users/' + this.id, this.updated).then(() => {
-						this.isSaved = true;
 						this.updated = {};
+						this.successMessage = 'User has been saved successfully';
 					}).catch(error => {
-						// Add user notification here
-						console.log(error);
-						this.isError = true;
+						this.errorMessage = error.message;
 					});
 				}
 
@@ -145,9 +134,7 @@
 				this.disabled = resp.data.disabled;
 				this.original = resp.data;
 			}).catch(error => {
-				// Add user notification here
-				console.log(error);
-				this.isError = true;
+				this.errorMessage = error.message;
 			});
 		}
 	};
