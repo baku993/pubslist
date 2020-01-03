@@ -3,6 +3,7 @@ import VueRouter from 'vue-router';
 import Home from '../views/Home.vue';
 import Login from '../views/Login.vue';
 import SignUp from '../views/SignUp.vue';
+import Drum from '../views/Drum.vue';
 import Place from '../views/Place.vue';
 import store from '../store/index';
 
@@ -23,6 +24,14 @@ const routes = [
 		path: '/home',
 		name: 'home',
 		component: Home,
+		meta: {
+			requiresAuth: true
+		}
+	},
+	{
+		path: '/drum',
+		name: 'drum',
+		component: Drum,
 		meta: {
 			requiresAuth: true
 		}
