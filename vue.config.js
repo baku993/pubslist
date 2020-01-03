@@ -19,5 +19,13 @@ module.exports = {
 		entry: {
 			app: './src/main/webapp/main.js'
 		}
+	},
+	pwa: {
+		name: 'Pubs List',
+		themeColor: '#916d13',
+		msTileColor: '#9a9a9a',
+		iconPaths: {
+			msTileImage: 'img/icons/mstile-150x150.png'
+		}
 	}
 };
