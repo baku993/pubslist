@@ -36,6 +36,9 @@ public class User {
 	@Column
 	private boolean disabled;
 
+	@Column
+	private String image;
+
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	@Column(name = "password")
 	private String password;
@@ -112,5 +115,15 @@ public class User {
 	public void setDisabled(boolean disabled) {
 
 		this.disabled = disabled;
+	}
+
+	public String getImage() {
+
+		return image;
+	}
+
+	public void setImage(String image) {
+
+		this.image = image;
 	}
 }

@@ -16,7 +16,8 @@
 					@click='editUser(user.id)'>
 
 					<v-avatar class='account' size='48' ref='avatar' :color='randomColor()'>
-						<span class='white--text font-weight-bold'>{{getUserAvatar(user)}}</span>
+						<span v-if='user.image==null' class='white--text font-weight-bold'>{{getUserAvatar(user)}}</span>
+						<img v-else :src='getUserAvatar(user)'/>
 					</v-avatar>
 
 				<v-list-item-content>
@@ -57,8 +58,8 @@
 			...mapGetters([GET_USER]),
 			getUserAvatar(user) {
 				let avatar;
-				if (user.avatar) {
-					avatar = (user.avatar);
+				if (user.image) {
+					avatar = (user.image);
 				} else {
 					avatar = user.name.charAt(0).toUpperCase() + user.surname.charAt(0).toUpperCase();
 				}

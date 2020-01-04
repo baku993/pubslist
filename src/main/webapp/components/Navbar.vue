@@ -17,7 +17,8 @@
 			<v-menu bottom offset-y>
 				<template v-slot:activator='{ on }'>
 					<v-avatar class='account' size='62' v-on='on' ref='avatar'>
-						<span class='white--text font-weight-bold'>{{getUserAvatar}}</span>
+							<span v-if='getUser.image==null' class='white--text font-weight-bold'>{{getUserAvatar}}</span>
+							<img v-else :src='getUser.image' alt='getUser.image' class='img'/>
 					</v-avatar>
 				</template>
 				<v-list>
@@ -50,7 +51,7 @@
 			getUserAvatar() {
 				let avatar = 'Avatar';
 				if (Object.keys(this.getUser).length > 0) {
-					avatar = (this.getUser.avatar || this.getUser.name.charAt(0).toUpperCase() +
+					avatar = (this.getUser.name.charAt(0).toUpperCase() +
 						this.getUser.surname.charAt(0).toUpperCase());
 				}
 				return avatar;
@@ -124,6 +125,15 @@
 
 		.admin {
 			display: inline;
+		}
+
+		.avatar{
+			display: inline-block;
+			height: 62px;
+			width: 62px;
+			border-radius: 62px;
+			position: absolute;
+			overflow: hidden;
 		}
 	}
 </style>

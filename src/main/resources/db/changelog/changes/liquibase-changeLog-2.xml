@@ -46,4 +46,12 @@
         </createTable>
         <addPrimaryKey columnNames="id" tableName="rolls"/>
     </changeSet>
+    <changeSet id="14" author="Tieimur">
+        <addColumn tableName="users">
+            <column name="image" type="text"></column>
+        </addColumn>
+        <addColumn tableName="places">
+            <column name="image" type="text"></column>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>

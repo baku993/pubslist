@@ -12,6 +12,7 @@
 								</v-toolbar>
 								<v-card-text>
 									<v-form v-model='valid' ref='form'>
+										<div><img :src='this.image' alt='' class='user-image'/></div>
 										<v-text-field
 												label='Username'
 												name='username'
@@ -56,8 +57,10 @@
 												:rules='[v => v === this.password || "Passwords are not equal"]'
 												hint='More than 6 characters, a-z, at least 1 uppercase and 1 special character'
 												required/>
+										<image-uploader @onImageUpload='onImageUpload'/>
 									</v-form>
 								</v-card-text>
+
 								<v-card-actions>
 									<v-btn text color='green darken-2' @click='goToLogin'>Have account? Login</v-btn>
 									<v-spacer/>
@@ -77,6 +80,7 @@
 									<v-btn @click='signUp' :class='{ grey: !valid, green: valid }'>Sign Up</v-btn>
 								</v-card-actions>
 							</v-card>
+
 						</v-col>
 					</v-row>
 				</v-container>
@@ -87,11 +91,14 @@
 
 <script>
 	import axios from 'axios';
+	import ImageUploader from '../components/ImageUploader';
 
 	export default {
 		name: 'signup',
+		components: {ImageUploader},
 		data: function() {
 			return {
+				image: null,
 				password: '',
 				username: '',
 				firstName: '',
@@ -113,7 +120,10 @@
 					v => /^[A-Za-z0-9]+$/.test(v) || 'Only letters and numbers allowed',
 					v =>
 						(v && v.length < 14) || 'Username should be less than 14 characters'
-				]
+				],
+				imageRules: [
+					value => !value || value.size < 2000000 || 'Avatar size should be less than 2 MB!',
+				],
 			};
 		},
 		methods: {
@@ -126,7 +136,8 @@
 							username: this.username,
 							password: this.password,
 							name: this.firstName,
-							surname: this.lastName
+							surname: this.lastName,
+							image: this.image
 						})
 						.then(
 							() => {
@@ -146,6 +157,9 @@
 			},
 			clearForm() {
 				this.$refs.form.reset();
+			},
+			onImageUpload(dataUrl) {
+				this.image = dataUrl;
 			}
 		}
 	};
@@ -154,5 +168,10 @@
 <style scoped>
 	.login {
 		display: block;
+	}
+
+	.user-image {
+		max-height: 100%;
+		max-width: 100%;
 	}
 </style>

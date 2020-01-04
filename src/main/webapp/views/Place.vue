@@ -7,7 +7,8 @@
 				<v-spacer/>
 			</v-toolbar>
 			<v-img max-height='200' min-height='200'
-				   src='../assets/dummy.jpg'
+				   :src='getImage()'
+				   alt=''
 				   class='white--text place-image align-end flex-fill'>
 				<v-card-title class='headline'>{{place.name}}</v-card-title>
 			</v-img>
@@ -76,6 +77,7 @@
 		data() {
 			return {
 				place: {},
+				image: null,
 				isEditing: false,
 				valid: false,
 				dialog: false,
@@ -116,7 +118,7 @@
 					address: this.place.address,
 					description: this.place.description
 				};
-			},
+			}
 		},
 		methods: {
 			save() {
@@ -140,6 +142,9 @@
 			},
 			updateFields(fields, isValid) {
 				this.updated = fields;
+				if (this.updated['image']) {
+					this.image = this.updated['image'];
+				}
 				this.valid = isValid;
 			},
 			addToFavorites() {
@@ -211,6 +216,9 @@
 				}).catch(error => {
 					this.errorMessage = error.message;
 				});
+			},
+			getImage() {
+				return this.image ? this.image : require('../assets/dummy.jpg');
 			}
 		},
 		created() {
@@ -218,6 +226,7 @@
 				// Load place
 				authApi.get('/api/places/' + this.id).then(resp => {
 					this.place = resp.data;
+					this.image = resp.data.image;
 					this.loadComments();
 				}).catch(error => {
 					this.errorMessage = error.message;

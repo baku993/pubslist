@@ -37,18 +37,25 @@
 				rows='2'
 				hint='Specify description for the place, optional'
 				v-model='description'/>
+
+		<image-uploader v-if='!readonly' @onImageUpload='onImageUpload' :valid='valid'/>
 	</v-form>
 
 </template>
 
 <script>
+
+	import ImageUploader from '../components/ImageUploader';
+
 	export default {
 		name: 'place-data',
+		components: {ImageUploader},
 		props: ['readonly', 'data'],
 		data() {
 			return {
 				name: '',
 				address: '',
+				image: null,
 				description: '',
 				original: {},
 				updated: {},
@@ -65,6 +72,14 @@
 		methods: {
 			validateForm() {
 				this.$emit('updateFields', this.updated, this.$refs.form.validate());
+			},
+			onImageUpload(dataUrl, isValid) {
+				if (this.image !== dataUrl) {
+					this.updated['image'] = dataUrl;
+				}
+				this.image = dataUrl;
+				this.valid = isValid;
+				this.validateForm();
 			}
 		},
 		watch: {
