@@ -12,13 +12,12 @@
 				@liked='addToLiked'
 				@vote='voteForPlace'
 				@open='openPlace'
-				:places='filteredPlaces'
-		></places-list>
-		<div class='floating'>
-			<v-btn absolute dark fab bottom right color='primary' @click='newPlace'>
-				<v-icon>mdi-plus</v-icon>
-			</v-btn>
-		</div>
+				:places='filteredPlaces'>
+		</places-list>
+
+		<v-btn absolute dark fab bottom right color='primary' @click='newPlace'>
+			<v-icon>mdi-plus</v-icon>
+		</v-btn>
 	</div>
 </template>
 
@@ -67,7 +66,7 @@
 				console.log('Add to liked places', id);
 			},
 			openPlace(id) {
-				this.$router.push({name: 'place', params: { id: id } });
+				this.$router.push({name: 'place', params: {id: id}});
 			},
 			newPlace() {
 				this.$router.push({name: 'newplace'});
@@ -85,21 +84,23 @@
 </script>
 
 <style lang="scss">
-	.tabs {
-		margin-top: 50px;
-		padding-bottom: 20px;
-	}
 
-	.tabs__elem {
-		justify-content: center;
+	.home {
 
-		& .v-tabs-bar {
-			background-color: inherit !important;
-		}
-	}
-
-	.floating {
-		height: 100px;
+		min-height: 85%;
 		position: relative;
+
+		.tabs {
+			margin-top: 50px;
+			padding-bottom: 20px;
+		}
+
+		.tabs__elem {
+			justify-content: center;
+
+			& .v-tabs-bar {
+				background-color: inherit !important;
+			}
+		}
 	}
 </style>
