@@ -2,7 +2,7 @@
 	<v-row class='toolbar'>
 		<div class='nav'>
 			<div class='nav__logo'>
-				<img alt='Vue logo' src='../assets/logo.png'/>
+				<img alt='Pubs logo' src='../assets/logo.png'/>
 			</div>
 			<div class='nav__menu'>
 				<router-link exact active-class='router-active-link' to='/home'>Home</router-link>
@@ -12,6 +12,8 @@
 								 to='/admin'>Admin</router-link>
 					|
 				</div>
+				<router-link exact active-class='router-active-link' to='/drum'>Drum</router-link>
+				|
 				<router-link exact active-class='router-active-link' to='/about'>About</router-link>
 			</div>
 			<v-menu bottom offset-y>
