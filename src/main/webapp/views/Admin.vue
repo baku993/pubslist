@@ -10,6 +10,7 @@
 
 		<!--List of users-->
 		<v-list v-if='tabSelected === 0'>
+
 			<v-list-item
 					v-for='user in users'
 					:key='user.id'
@@ -30,6 +31,7 @@
 				<v-list-item-action class='icons'>
 					<v-icon hover v-if='user.disabled' color='red'>remove_circle_outline</v-icon>
 				</v-list-item-action>
+
 			</v-list-item>
 		</v-list>
 
