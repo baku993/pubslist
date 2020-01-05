@@ -25,6 +25,7 @@
 	import 'gsap/TweenMax';
 	import Modal from './Modal.vue';
 	import messages from './../messages.json';
+	import authApi from '../auth/authApi';
 
 	function clickButton(selector) {
 		document.querySelector(selector).click();
@@ -96,15 +97,27 @@
 				this.wheel.stopAnimation(false);
 				this.wheel.rotationAngle = 0;
 				this.wheel.draw();
-				this.isSpinning = true;
-				this.$nextTick(() => this.wheel.startAnimation());
+				this.getPlace();
 			},
 			showResult() {
 				this.isSpinning = false;
-				const segment = this.wheel.getIndicatedSegment();
-				this.selectedPlace = this.places.filter((place) => place.name === segment.text)[0];
 				this.winMessage = this.randomMessage(this.selectedPlace.name);
 				this.showModal = true;
+			},
+			spin(segmentNumber) {
+				this.wheel.animation.stopAngle = this.wheel.getRandomForSegment(segmentNumber);
+				this.isSpinning = true;
+				this.$nextTick(() => this.wheel.startAnimation());
+				this.$emit('updateRolls');
+			},
+			getPlace(){
+				authApi.get('/api/rolls/manual').then(resp => {
+					this.selectedPlace = resp.data.place;
+					this.spin(this.places.findIndex(x => x.id === this.selectedPlace.id)+1);
+				}).catch(error => {
+					// Add user notification here
+					console.log(error);
+				});
 			},
 			toSegment(place, index) {
 				return {

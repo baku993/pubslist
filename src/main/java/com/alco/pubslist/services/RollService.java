@@ -45,6 +45,11 @@ public class RollService {
 
 	}
 
+	public Iterable<Roll> findAll() {
+
+		return repository.findAll();
+	}
+
 	private Place getRandomPlace() {
 
 		List<Place> approvedPlaces = StreamSupport
