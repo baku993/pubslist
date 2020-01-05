@@ -11,6 +11,9 @@
 						</v-toolbar>
 						<v-card-text>
 							<v-form v-model='valid' ref='form'>
+								<div>
+									<img :src='this.image' alt='' class='user-image'/>
+								</div>
 								<v-text-field
 										label='User name'
 										name='username'
@@ -19,6 +22,7 @@
 										v-model='original.username'/>
 
 								<v-text-field
+										@input='validateForm'
 										label='First name'
 										name='firstname'
 										type='text'
@@ -28,6 +32,7 @@
 										v-model='firstName'/>
 
 								<v-text-field
+										@input='validateForm'
 										label='Last name'
 										name='lastname'
 										type='text'
@@ -44,18 +49,20 @@
 										v-model='original.role'/>
 
 								<v-checkbox v-model='disabled' label='Disabled?'/>
+								<image-uploader @onImageUpload='onImageUpload'/>
 							</v-form>
+
 						</v-card-text>
 						<v-card-actions>
 							<v-spacer/>
-							<v-btn @click='saveUser' :class='this.valid && Object.keys(this.updated).length > 0 ? "green" : "grey"'>Save</v-btn>
+							<v-btn @click='saveUser' :disabled='!(this.valid && Object.keys(this.updated).length > 0)' class='green'>Save</v-btn>
 							<v-btn @click='goBack'>Close</v-btn>
 						</v-card-actions>
 					</v-card>
 				</v-col>
 			</v-row>
 		</v-container>
-		<notifications :error='errorMessage' :success='successMessage'></notifications>
+		<notifications :error='errorMessage' :success='successMessage'/>
 	</div>
 
 </template>
@@ -64,15 +71,17 @@
 
 	import authApi from '../auth/authApi';
 	import Notifications from '../components/Notifications';
+	import ImageUploader from '../components/ImageUploader';
 
 	export default {
 		name: 'user',
-		components: {Notifications},
+		components: {ImageUploader, Notifications},
 		props: ['id'],
 		data() {
 			return {
 				firstName: '',
 				lastName: '',
+				image: null,
 				disabled: false,
 				original: {},
 				updated: {},
@@ -101,6 +110,11 @@
 				if (this.original.disabled !== val) {
 					this.updated['disabled'] = val;
 				}
+			},
+			image: function(val) {
+				if (this.original.image !== val) {
+					this.updated['image'] = val;
+				}
 			}
 		},
 		methods: {
@@ -124,6 +138,9 @@
 			},
 			validateForm() {
 				return this.$refs.form.validate();
+			},
+			onImageUpload(dataUrl) {
+				this.image = dataUrl;
 			}
 		},
 		created() {
@@ -131,8 +148,10 @@
 			authApi.get('/api/user/' + this.id).then(resp => {
 				this.firstName = resp.data.name;
 				this.lastName = resp.data.surname;
+				this.image = resp.data.image;
 				this.disabled = resp.data.disabled;
 				this.original = resp.data;
+				this.$forceUpdate();
 			}).catch(error => {
 				this.errorMessage = error.message;
 			});
@@ -148,6 +167,11 @@
 		align-items: center;
 		justify-content: space-evenly;
 		height: 90%;
+	}
+
+	.user-image {
+		max-height: 100%;
+		max-width: 100%;
 	}
 
 </style>

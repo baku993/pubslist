@@ -10,7 +10,7 @@
       @click='openPlace(p.id)'>
       <v-list-item three-line>
         <v-list-item-avatar tile size='80'>
-          <v-img src='../assets/dummy.jpg' class='white--text place-image align-end flex-fill'>
+          <v-img :src='getUserAvatar(p)' class='white--text place-image align-end flex-fill'>
           </v-img>
         </v-list-item-avatar>
 
@@ -38,6 +38,15 @@
 		name: 'placesList',
 		props: ['places'],
 		methods: {
+			getUserAvatar(user) {
+				let avatar;
+				if (user.image) {
+					avatar = (user.image);
+				} else {
+					avatar = require('../assets/dummy.jpg');
+				}
+				return avatar;
+			},
 			addToFavorites(id) {
 				this.$emit('liked', id);
 			},

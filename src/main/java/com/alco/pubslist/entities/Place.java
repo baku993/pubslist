@@ -28,6 +28,7 @@ public class Place extends Auditable {
 	private String longitude;
 	private Integer votes;
 	private String description;
+	private String image;
 
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY)
@@ -139,4 +140,13 @@ public class Place extends Auditable {
 		return comments;
 	}
 
+	public String getImage() {
+
+		return image;
+	}
+
+	public void setImage(String image) {
+
+		this.image = image;
+	}
 }
