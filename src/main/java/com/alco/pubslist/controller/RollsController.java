@@ -25,4 +25,10 @@ public class RollsController {
 
 		return service.manualRoll();
 	}
+
+	@GetMapping(ROLLS_URL)
+	public Iterable<Roll> all() {
+
+		return service.findAll();
+	}
 }

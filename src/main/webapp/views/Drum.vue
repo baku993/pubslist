@@ -2,7 +2,17 @@
 	<div class='drum'>
 		<h1>I feel lucky</h1>
 
-		<wheel :places='places'></wheel>
+		<wheel :places='places' @updateRolls='updateRolls'/>
+
+		<span>Rolls History</span>
+
+		<v-data-table
+				:headers='headers'
+				:items='rolls'
+				disable-sort
+				class='elevation-1'
+				loading-text='Loading... Please wait'
+		/>
 	</div>
 </template>
 
@@ -16,8 +26,33 @@
 		components: {Wheel},
 		data() {
 			return {
-				places: []
+				places: [],
+				headers: [
+					{
+						text: 'Place Name',
+						align: 'left',
+						sortable: false,
+						value: 'place.name',
+					},
+					{ text: 'Roll Date', value: 'rolledAt' },
+					{ text: 'Rolled By', value: 'rolledBy' }],
+				rolls: []
 			};
+		},
+		methods: {
+			updateRolls(){
+				authApi.get('/api/rolls').then(resp => {
+					this.rolls = resp.data.sort(function(a,b){
+						return Date.parse(b.rolledAt) - Date.parse(a.rolledAt);
+					}).map(function(roll){
+						roll.rolledAt = new Date(roll.rolledAt).toLocaleString();
+						return roll;
+					});
+				}).catch(error => {
+					// Add user notification here
+					console.log(error);
+				});
+			}
 		},
 		created() {
 			authApi.get('/api/places').then(resp => {
@@ -26,6 +61,7 @@
 				// Add user notification here
 				console.log(error);
 			});
+			this.updateRolls();
 		}
 	};
 </script>
