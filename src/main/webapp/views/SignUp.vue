@@ -98,7 +98,6 @@
 				username: '',
 				firstName: '',
 				lastName: '',
-				notifications: [],
 				valid: false,
 				passwordRules: [
 					v => !!v || 'Password is required',

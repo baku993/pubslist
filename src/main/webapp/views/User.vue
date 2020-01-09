@@ -84,7 +84,6 @@
 				image: null,
 				disabled: false,
 				original: {},
-				notifications: [],
 				updated: {},
 				valid: false,
 				nameRules: [
