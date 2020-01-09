@@ -114,9 +114,8 @@
 				authApi.get('/api/rolls/manual').then(resp => {
 					this.selectedPlace = resp.data.place;
 					this.spin(this.places.findIndex(x => x.id === this.selectedPlace.id)+1);
-				}).catch(error => {
-					// Add user notification here
-					console.log(error);
+				}).catch(() => {
+					this.$toastr.e('Ups... Something went wrong');
 				});
 			},
 			toSegment(place, index) {
@@ -185,15 +184,6 @@
 		padding: 10px 10px 20px 0;
 		display: block;
 		width: 100%;
-
-
-	}
-
-	.modal-dialog {
-		border-radius: 50%;
-		width: 600px;
-		height: 600px;
-		border: 15px solid #000;
 	}
 
 	a:hover {

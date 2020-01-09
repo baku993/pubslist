@@ -76,7 +76,6 @@
 								<span>Clear the form</span>
 							</v-tooltip>
 							<v-btn @click='signUp' :class='{ grey: !valid, green: valid }'>Sign Up</v-btn>
-							<notifications :alerts='notifications'/>
 						</v-card-actions>
 					</v-card>
 				</v-col>
@@ -140,8 +139,8 @@
 							() => {
 								this.$router.replace('login');
 							},
-							error => {
-								this.notifications.push({'type':'error','message':error.message});
+							() => {
+								this.$toastr.e('Ups... Something went wrong');
 							}
 						);
 				}

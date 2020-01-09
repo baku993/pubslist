@@ -247,7 +247,7 @@ possible responses:
     {
         "id": 27,
         "name": "SOme place",
-        "address": "adsadas",
+        "url": "adsadas",
         "latitude": null,
         "longitude": null,
         "ownerId": 16,
@@ -277,12 +277,12 @@ possible responses:
 path: "/api/places"
 method: "POST"
 body:
-required fields: [name, address]
+required fields: [name, url]
 right request example body:
 
 {
 	"name": "Tref",
-	"address": "Lufsdorfskaya",
+	"url": "Lufsdorfskaya",
 	"description": "Coolest place in the city"
 }
 
@@ -320,12 +320,12 @@ possible responses:
 path: "/api/places/{place_id}"
 method: "PATCH"
 body:
-required fields: [name, address]
+required fields: [name, url]
 right request example body:
 
 {
 	"name": "Tref",
-	"address": "Lufsdorfskaya",
+	"address": "url",
 	"description": "Coolest place in the city"
 }
 
@@ -424,9 +424,7 @@ possible responses:
     {
         "id": 27,
         "name": "SOme place",
-        "address": "adsadas",
-        "latitude": null,
-        "longitude": null,
+        "url": "adsadas",
         "ownerId": 16,
         "description": null,
         "approved": false,

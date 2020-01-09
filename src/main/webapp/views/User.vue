@@ -62,7 +62,6 @@
 				</v-col>
 			</v-row>
 		</v-container>
-		<notifications :alerts='notifications'/>
 	</div>
 
 </template>
@@ -70,12 +69,13 @@
 <script>
 
 	import authApi from '../auth/authApi';
-	import Notifications from '../components/Notifications';
+	import {GET_USER} from '../constants';
 	import ImageUploader from '../components/ImageUploader';
+	import {mapGetters} from 'vuex';
 
 	export default {
 		name: 'user',
-		components: {ImageUploader, Notifications},
+		components: {ImageUploader},
 		props: ['id'],
 		data() {
 			return {
@@ -127,9 +127,9 @@
 					// Save user
 					authApi.patch('/api/users/' + this.id, this.updated).then(() => {
 						this.updated = {};
-						this.notifications.push({'type':'success','message':'User has been saved successfully'});
+						this.$toastr.s('User has been saved successfully');
 					}).catch(error => {
-						this.notifications.push({'type':'error','message':error.message});
+						this.$toastr.e(error.message);
 					});
 				}
 
@@ -154,7 +154,7 @@
 				this.original = resp.data;
 				this.$forceUpdate();
 			}).catch(error => {
-				this.notifications.push({'type':'error','message':error.message});
+				this.$toastr.e(error.message);
 			});
 		}
 	};

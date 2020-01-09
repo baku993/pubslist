@@ -70,10 +70,8 @@
 				.then(async response => {
 					await self.$store.dispatch(SET_USER_ACTION, response.data);
 					self.$refs.avatar.$el.style.backgroundColor = color;
-				})
-				.catch(error => {
-					// Add user notification here
-					console.log(error);
+				}).catch(() => {
+					this.$toastr.e('Ups... Something went wrong');
 				});
 		}
 	};

@@ -54,7 +54,6 @@
 				this.$emit('vote', id);
 			},
 			openPlace(id) {
-				// should open a place
 				this.$emit('open', id);
 			}
 		}

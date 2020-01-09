@@ -24,7 +24,7 @@
 				filled
 				auto-grow
 				rows='2'
-				hint='Specify address for the place'
+				hint='Specify url for the place'
 				v-model='url'/>
 
 		<v-textarea
@@ -65,7 +65,7 @@
 					v => (v && v.length < 25) || 'Name should be less than 25 characters'
 				],
 				urlRules: [
-					v => !!v || 'Address is required'
+					v => !!v || 'Url is required'
 				]
 			};
 		},
@@ -88,7 +88,7 @@
 					this.updated['name'] = val;
 				}
 			},
-			address: function(val, old) {
+			url: function(val, old) {
 				if (old !== val) {
 					this.updated['url'] = val;
 				}

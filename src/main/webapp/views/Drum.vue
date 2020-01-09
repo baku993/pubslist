@@ -48,18 +48,16 @@
 						roll.rolledAt = new Date(roll.rolledAt).toLocaleString();
 						return roll;
 					});
-				}).catch(error => {
-					// Add user notification here
-					console.log(error);
+				}).catch(() => {
+					this.$toastr.e('Ups... Something went wrong');
 				});
 			}
 		},
 		created() {
 			authApi.get('/api/places').then(resp => {
 				this.places = resp.data.filter(p => p.approved);
-			}).catch(error => {
-				// Add user notification here
-				console.log(error);
+			}).catch(() => {
+				this.$toastr.e('Ups... Something went wrong');
 			});
 			this.updateRolls();
 		}
