@@ -76,6 +76,7 @@
 								<span>Clear the form</span>
 							</v-tooltip>
 							<v-btn @click='signUp' :class='{ grey: !valid, green: valid }'>Sign Up</v-btn>
+							<notifications :alerts='notifications'/>
 						</v-card-actions>
 					</v-card>
 				</v-col>
@@ -98,6 +99,7 @@
 				username: '',
 				firstName: '',
 				lastName: '',
+				notifications: [],
 				valid: false,
 				passwordRules: [
 					v => !!v || 'Password is required',
@@ -138,8 +140,8 @@
 							() => {
 								this.$router.replace('login');
 							},
-							err => {
-								console.error('Oops. ' + err.message);
+							error => {
+								this.notifications.push({'type':'error','message':error.message});
 							}
 						);
 				}

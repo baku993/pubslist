@@ -11,7 +11,7 @@
 						</v-toolbar>
 						<v-card-text>
 							<v-form v-model='valid' ref='form'>
-								<div>
+								<div class='crop'>
 									<img :src='this.image' alt='' class='user-image'/>
 								</div>
 								<v-text-field
@@ -62,7 +62,7 @@
 				</v-col>
 			</v-row>
 		</v-container>
-		<notifications :error='errorMessage' :success='successMessage'/>
+		<notifications :alerts='notifications'/>
 	</div>
 
 </template>
@@ -84,6 +84,7 @@
 				image: null,
 				disabled: false,
 				original: {},
+				notifications: [],
 				updated: {},
 				valid: false,
 				nameRules: [
@@ -126,9 +127,9 @@
 					// Save user
 					authApi.patch('/api/users/' + this.id, this.updated).then(() => {
 						this.updated = {};
-						this.successMessage = 'User has been saved successfully';
+						this.notifications.push({'type':'success','message':'User has been saved successfully'});
 					}).catch(error => {
-						this.errorMessage = error.message;
+						this.notifications.push({'type':'error','message':error.message});
 					});
 				}
 
@@ -153,7 +154,7 @@
 				this.original = resp.data;
 				this.$forceUpdate();
 			}).catch(error => {
-				this.errorMessage = error.message;
+				this.notifications.push({'type':'error','message':error.message});
 			});
 		}
 	};
@@ -170,8 +171,17 @@
 	}
 
 	.user-image {
-		max-height: 100%;
-		max-width: 100%;
+		max-height: 200%;
+		max-width: 200%;
+		margin-left: auto;
+		margin-right: auto;
+		display: block;
+	}
+
+	.crop {
+		overflow: hidden;
+		min-width: 100%;
+		max-height: 400px;
 	}
 
 </style>

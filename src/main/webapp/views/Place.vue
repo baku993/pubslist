@@ -54,7 +54,7 @@
 			</comments>
 		</v-card>
 		<confirm-dialog ref='confirm'></confirm-dialog>
-		<notifications :error='errorMessage' :success='successMessage'></notifications>
+		<notifications :alerts='notifications'/>
 	</v-container>
 
 </template>
@@ -82,6 +82,7 @@
 				valid: false,
 				dialog: false,
 				updated: {},
+				notifications: [],
 				comments: [],
 				successMessage: '',
 				errorMessage: '',
@@ -115,7 +116,7 @@
 			fieldsData() {
 				return {
 					name: this.place.name,
-					address: this.place.address,
+					url: this.place.url,
 					description: this.place.description
 				};
 			}
@@ -124,19 +125,19 @@
 			save() {
 				if (this.id) {
 					authApi.patch('/api/places/' + this.id, this.updated).then(() => {
-						this.successMessage = 'Place has been successfully updated';
+						this.notifications.push({'type':'success','message':'Place has been successfully updated'});
 						this.isEditing = false;
 						this.valid = false;
 					}).catch(error => {
-						this.errorMessage = error.message;
+						this.notifications.push({'type':'error','message':error.message});
 					});
 				} else {
 					authApi.post('/api/places', this.updated).then(() => {
-						this.successMessage = 'Place has been successfully created';
+						this.notifications.push({'type':'success','message':'Place has been successfully created'});
 						this.isEditing = false;
 						this.valid = false;
 					}).catch(error => {
-						this.errorMessage = error.message;
+						this.notifications.push({'type':'error','message':error.message});
 					});
 				}
 			},
@@ -149,11 +150,11 @@
 			},
 			addToFavorites() {
 				console.log('Favorites', this.id);
-				this.successMessage = 'Place has been added to favorites';
+				this.notifications.push({'type':'success','message':'Place has been added to favorites'});
 			},
 			vote() {
 				console.log('Vote', this.id);
-				this.successMessage = 'You voted for this place';
+				this.notifications.push({'type':'success','message':'You voted for this place'});
 			},
 			close() {
 				this.$router.back();
@@ -164,9 +165,9 @@
 						authApi.patch('/api/places/' + this.id, {approved: true}).then(() => {
 							this.place.approved = true;
 							this.$forceUpdate();
-							this.successMessage = 'Place has been successfully updated';
+							this.notifications.push({'type':'success','message':'Place has been successfully updated'});
 						}).catch(error => {
-							this.errorMessage = error.message;
+							this.notifications.push({'type':'error','message':error.message});
 						});
 					}
 				});
@@ -175,11 +176,11 @@
 				this.$refs.confirm.open('Delete', 'Are you sure?').then((confirm) => {
 					if (confirm) {
 						authApi.delete('/api/places/' + this.id).then(() => {
-							this.successMessage = 'Place has been successfully deleted';
+							this.notifications.push({'type':'success','message':'Place has been successfully deleted'});
 							this.dialog = true;
 							this.close();
 						}).catch(error => {
-							this.errorMessage = error.message;
+							this.notifications.push({'type':'error','message':error.message});
 						});
 					}
 				});
@@ -194,19 +195,19 @@
 				// Send value to the server
 				authApi.post('/api/comments', comment).then(() => {
 					// If successful, show notification
-					this.successMessage = 'Comment has been added';
+					this.notifications.push({'type':'success','message':'Comment has been added'});
 					this.loadComments();
 				}).catch(error => {
-					this.errorMessage = error.message;
+					this.notifications.push({'type':'error','message':error.message});
 				});
 			},
 			deleteComment(id) {
 				authApi.delete('/api/comments/' + id).then(() => {
 					// If successful, show notification
-					this.successMessage = 'Comment has been deleted';
+					this.notifications.push({'type':'success','message':'Comment has been deleted'});
 					this.comments = this.comments.filter(c => c.id !== id);
 				}).catch(error => {
-					this.errorMessage = error.message;
+					this.notifications.push({'type':'error','message':error.message});
 				});
 			},
 			loadComments() {
@@ -214,7 +215,7 @@
 				authApi.get('/api/comments/' + this.id).then(resp => {
 					this.comments = resp.data;
 				}).catch(error => {
-					this.errorMessage = error.message;
+					this.notifications.push({'type':'error','message':error.message});
 				});
 			},
 			getImage() {
@@ -229,7 +230,7 @@
 					this.image = resp.data.image;
 					this.loadComments();
 				}).catch(error => {
-					this.errorMessage = error.message;
+					this.notifications.push({'type':'error','message':error.message});
 				});
 			}
 		},

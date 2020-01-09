@@ -3,13 +3,13 @@
 	<div class='notif'>
 		<v-snackbar color='success' :value='isSuccess' bottom elevation='6'>
 			<v-row>
-				<v-col class='grow align-center'>{{success}}</v-col>
+				<v-col class='grow align-center'>{{message}}</v-col>
 			</v-row>
 		</v-snackbar>
 
 		<v-snackbar color='error' :value='isError' bottom elevation='6'>
 			<v-row>
-				<v-col class='grow align-center'>{{error}}</v-col>
+				<v-col class='grow align-center'>{{message}}</v-col>
 			</v-row>
 		</v-snackbar>
 	</div>
@@ -19,31 +19,54 @@
 <script>
 	export default {
 		name: 'notifications',
-		props: ['error', 'success'],
+		props: ['alerts'],
 		data() {
 			return {
+				point: [],
 				isSuccess: false,
+				isShowing: false,
 				isError: false,
-				timeout: {},
+				index: 0,
+				message: '',
+				timeoutId: false,
 				timeoutTime: 4000
 			};
 		},
 		watch: {
-			error: function() {
-				this.isError = true;
-			},
-			success: function() {
-				this.isSuccess = true;
+			alerts: function() {
+				if (!this.isShowing){
+					this.isShowing = true;
+					this.checkNotifications();
+				}
+
 			}
 		},
-
-		updated() {
-			this.timeout = setTimeout(() => {
-				clearTimeout(this.timeout);
-				this.isSuccess = false;
-				this.isError = false;
-
-			}, this.timeoutTime);
+		methods: {
+			checkNotifications() {
+				if (this.alerts[this.index]['type'] === 'error') {
+					this.isError = true;
+				} else {
+					this.isSuccess = true;
+				}
+				this.message = this.alerts[this.index]['message'];
+				this.waitToHide();
+			},
+			waitToHide() {
+				// Waiting for to hide notification
+				this.timeoutId = setTimeout(() => {
+					this.isSuccess = false;
+					this.isError = false;
+					this.index = this.index + 1;
+					// Waiting to show next notification in queue
+					setTimeout(() => {
+						if (this.alerts.length > this.index) {
+							this.checkNotifications();
+						} else {
+							this.isShowing = false;
+						}
+					},500);
+				},this.timeoutTime);
+			}
 		}
 	};
 </script>

@@ -54,4 +54,9 @@
             <column name="image" type="text"></column>
         </addColumn>
     </changeSet>
+    <changeSet id="15" author="Tieimur">
+        <renameColumn tableName="places" oldColumnName="address" newColumnName="url"/>
+        <dropColumn tableName="places" columnName="latitude"/>
+        <dropColumn tableName="places" columnName="longitude"/>
+    </changeSet>
 </databaseChangeLog>

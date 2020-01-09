@@ -10,7 +10,7 @@
 		<v-btn color='primary' id='showResult' @click.prevent='showResult()'>
 			<span>Посмотреть результат</span></v-btn>
 
-		<modal v-if='showModal' @close='showModal = false'>
+		<modal v-if='showModal' @close='showModal = false' >
 			<h3 slot='header'>И так...</h3>
 			<div slot='body'>
 				<p v-html='winMessage'></p>
@@ -66,7 +66,7 @@
 				'animation': // Definition of the animation
 					{
 						'type': 'spinToStop',
-						'duration': 1,
+						'duration': 3,
 						'spins': 8,
 						'callbackFinished': 'window.clickButton(\'#showResult\')'
 					}
@@ -187,6 +187,13 @@
 		width: 100%;
 
 
+	}
+
+	.modal-dialog {
+		border-radius: 50%;
+		width: 600px;
+		height: 600px;
+		border: 15px solid #000;
 	}
 
 	a:hover {
