@@ -1,6 +1,5 @@
 <template>
 	<div class='home'>
-		<div class='headline'>Your favorite places</div>
 		<div class='tabs'>
 			<v-tabs class='tabs__elem d-flex'>
 				<v-tab @click='tabSelected = 0'>All</v-tab>
