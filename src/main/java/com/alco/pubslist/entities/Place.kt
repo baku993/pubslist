@@ -28,8 +28,10 @@ class Place : Auditable() {
 	@JoinColumn(name = "place_id")
 	val comments: List<Comment>? = null
 
+	@Column(name = "approved")
 	var isApproved = false
 
+	@Column(name = "disabled")
 	var isDisabled = false
 
 	fun isPlaceOwnedByUser(username: String): Boolean {

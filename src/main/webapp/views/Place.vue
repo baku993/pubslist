@@ -192,7 +192,7 @@
 				// Send value to the server
 				authApi.post('/api/comments', comment).then(() => {
 					// If successful, show notification
-					this.$toastr.e('Comment has been added');
+					this.$toastr.s('Comment has been added');
 					this.loadComments();
 				}).catch(() => {
 					this.$toastr.e('Ups... Something went wrong');
@@ -201,7 +201,7 @@
 			deleteComment(id) {
 				authApi.delete('/api/comments/' + id).then(() => {
 					// If successful, show notification
-					this.$toastr.e('Comment has been deleted');
+					this.$toastr.s('Comment has been deleted');
 					this.comments = this.comments.filter(c => c.id !== id);
 				}).catch(() => {
 					this.$toastr.e('Ups... Something went wrong');

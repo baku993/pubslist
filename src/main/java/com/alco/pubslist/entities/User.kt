@@ -23,7 +23,7 @@ class User {
 	@Enumerated(EnumType.STRING)
 	var role = UserRole.USER
 
-	@Column
+	@Column(name = "disabled")
 	var isDisabled = false
 
 	@Column
