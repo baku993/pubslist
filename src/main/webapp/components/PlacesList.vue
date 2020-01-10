@@ -3,19 +3,19 @@
     <v-card
       hover
       class='place'
-      max-width='344'
+      max-width='400'
       outlined
       v-for='p in places'
       :key='p.id'
       @click='openPlace(p.id)'>
       <v-list-item three-line>
-        <v-list-item-avatar tile size='80'>
-          <v-img :src='getUserAvatar(p)' class='white--text place-image align-end flex-fill'>
-          </v-img>
+        <v-list-item-avatar tile size='110'>
+          <v-img :src='getUserAvatar(p)' class='white--text place-image align-end flex-fill'/>
         </v-list-item-avatar>
-
         <v-list-item-content>
-          <v-list-item-title class='headline mb-1'>{{p.name }}</v-list-item-title>
+          <div>
+            <v-list-item-title class='headline mb-1 text-in-item'>{{p.name }}</v-list-item-title>
+          </div>
           <div class='overline mb-4'>
             Created by: <span>{{ p.createdBy }}</span>
           </div>
@@ -54,7 +54,6 @@
 				this.$emit('vote', id);
 			},
 			openPlace(id) {
-				// should open a place
 				this.$emit('open', id);
 			}
 		}
@@ -73,6 +72,12 @@
 
   & .v-list-item {
     height: 125px;
+    width: 400px;
   }
 }
+
+  .text-in-item{
+    text-overflow: ellipsis;
+    width: 250px;
+  }
 </style>

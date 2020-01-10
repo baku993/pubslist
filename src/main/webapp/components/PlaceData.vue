@@ -17,15 +17,15 @@
 		<v-textarea
 				@input='validateForm'
 				:readonly='readonly'
-				:rules='addressRules'
-				label='Address'
-				name='address'
+				:rules='urlRules'
+				label='Url'
+				name='url'
 				required
 				filled
 				auto-grow
 				rows='2'
-				hint='Specify address for the place'
-				v-model='address'/>
+				hint='Specify url for the place'
+				v-model='url'/>
 
 		<v-textarea
 				@input='validateForm'
@@ -54,7 +54,7 @@
 		data() {
 			return {
 				name: '',
-				address: '',
+				url: '',
 				image: null,
 				description: '',
 				original: {},
@@ -64,8 +64,8 @@
 					v => !!v || 'Name is required',
 					v => (v && v.length < 25) || 'Name should be less than 25 characters'
 				],
-				addressRules: [
-					v => !!v || 'Address is required'
+				urlRules: [
+					v => !!v || 'Url is required'
 				]
 			};
 		},
@@ -88,9 +88,9 @@
 					this.updated['name'] = val;
 				}
 			},
-			address: function(val, old) {
+			url: function(val, old) {
 				if (old !== val) {
-					this.updated['address'] = val;
+					this.updated['url'] = val;
 				}
 			},
 			description: function(val, old) {
@@ -100,7 +100,7 @@
 			},
 			data: function(val) {
 				this.name = val.name;
-				this.address = val.address;
+				this.url = val.url;
 				this.description = val.description;
 			}
 		}

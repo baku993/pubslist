@@ -78,9 +78,8 @@
 			// Load all users
 			authApi.get('/api/users').then(resp => {
 				this.users = resp.data;
-			}).catch(error => {
-				// Add user notification here
-				console.log(error);
+			}).catch(() => {
+				this.$toastr.e('Ups... Something went wrong');
 			});
 		}
 	};

@@ -1,6 +1,5 @@
 <template>
 	<div class='home'>
-		<div class='headline'>Your favorite places</div>
 		<div class='tabs'>
 			<v-tabs class='tabs__elem d-flex'>
 				<v-tab @click='tabSelected = 0'>All</v-tab>
@@ -60,9 +59,11 @@
 		},
 		methods: {
 			voteForPlace(id) {
+				// There should a voting logic
 				console.log('Vote for place', id);
 			},
 			addToLiked(id) {
+				// There should a logic for liking
 				console.log('Add to liked places', id);
 			},
 			openPlace(id) {
@@ -75,9 +76,8 @@
 		created() {
 			authApi.get('/api/places').then(resp => {
 				this.places = resp.data;
-			}).catch(error => {
-				// Add user notification here
-				console.log(error);
+			}).catch(() => {
+				this.$toastr.e('Ups... Something went wrong');
 			});
 		}
 	};

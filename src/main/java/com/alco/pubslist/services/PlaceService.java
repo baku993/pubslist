@@ -23,7 +23,7 @@ public class PlaceService {
 	public Place suggestPlace(Place place) {
 
 		if (place.getName() == null
-				|| place.getAddress() == null) {
+				|| place.getUrl() == null) {
 			throw new BaseException(RestResponses.MISSING_REQUIRED_FIELD);
 		}
 
@@ -52,7 +52,7 @@ public class PlaceService {
 
 			// Required fields should be filled
 			if (updatedPlace.getName() == null
-					|| updatedPlace.getAddress() == null
+					|| updatedPlace.getUrl() == null
 					|| updatedPlace.getId() == null) {
 				throw new BaseException(RestResponses.MISSING_REQUIRED_FIELD);
 			}

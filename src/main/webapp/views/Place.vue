@@ -41,7 +41,7 @@
 
 				<!--Form with fields-->
 				<place-data ref='placedata' @updateFields='updateFields' :valid='valid' :data='fieldsData'
-							:readonly='id && !isEditing'></place-data>
+							:readonly='id && !isEditing'/>
 
 			</v-card-text>
 
@@ -53,8 +53,7 @@
 					  @delete='deleteComment'>
 			</comments>
 		</v-card>
-		<confirm-dialog ref='confirm'></confirm-dialog>
-		<notifications :error='errorMessage' :success='successMessage'></notifications>
+		<confirm-dialog ref='confirm'/>
 	</v-container>
 
 </template>
@@ -67,13 +66,12 @@
 	import Comments from '../components/Comments';
 	import {mapGetters} from 'vuex';
 	import {GET_USER} from '../constants';
-	import Notifications from '../components/Notifications';
 	import ConfirmDialog from '../components/ConfirmDialog';
 
 	export default {
 		name: 'place',
 		props: ['id'],
-		components: {ConfirmDialog, Notifications, Comments, PlaceData},
+		components: {ConfirmDialog, Comments, PlaceData},
 		data() {
 			return {
 				place: {},
@@ -115,7 +113,7 @@
 			fieldsData() {
 				return {
 					name: this.place.name,
-					address: this.place.address,
+					url: this.place.url,
 					description: this.place.description
 				};
 			}
@@ -124,19 +122,19 @@
 			save() {
 				if (this.id) {
 					authApi.patch('/api/places/' + this.id, this.updated).then(() => {
-						this.successMessage = 'Place has been successfully updated';
+						this.$toastr.e('Place has been successfully updated');
 						this.isEditing = false;
 						this.valid = false;
-					}).catch(error => {
-						this.errorMessage = error.message;
+					}).catch(() => {
+						this.$toastr.e('Ups... Something went wrong');
 					});
 				} else {
 					authApi.post('/api/places', this.updated).then(() => {
-						this.successMessage = 'Place has been successfully created';
+						this.$toastr.e('Place has been successfully created');
 						this.isEditing = false;
 						this.valid = false;
-					}).catch(error => {
-						this.errorMessage = error.message;
+					}).catch(() => {
+						this.$toastr.e('Ups... Something went wrong');
 					});
 				}
 			},
@@ -148,12 +146,12 @@
 				this.valid = isValid;
 			},
 			addToFavorites() {
-				console.log('Favorites', this.id);
-				this.successMessage = 'Place has been added to favorites';
+				// Add logic for adding to favorites
+				this.$toastr.e('Place has been added to favorites');
 			},
 			vote() {
-				console.log('Vote', this.id);
-				this.successMessage = 'You voted for this place';
+				// Add logic for voting to favorites
+				this.$toastr.e('You voted for this place');
 			},
 			close() {
 				this.$router.back();
@@ -164,9 +162,9 @@
 						authApi.patch('/api/places/' + this.id, {approved: true}).then(() => {
 							this.place.approved = true;
 							this.$forceUpdate();
-							this.successMessage = 'Place has been successfully updated';
-						}).catch(error => {
-							this.errorMessage = error.message;
+							this.$toastr.e('Place has been successfully updated');
+						}).catch(() => {
+							this.$toastr.e('Ups... Something went wrong');
 						});
 					}
 				});
@@ -175,11 +173,11 @@
 				this.$refs.confirm.open('Delete', 'Are you sure?').then((confirm) => {
 					if (confirm) {
 						authApi.delete('/api/places/' + this.id).then(() => {
-							this.successMessage = 'Place has been successfully deleted';
+							this.$toastr.e('Place has been successfully deleted');
 							this.dialog = true;
 							this.close();
-						}).catch(error => {
-							this.errorMessage = error.message;
+						}).catch(() => {
+							this.$toastr.e('Ups... Something went wrong');
 						});
 					}
 				});
@@ -194,27 +192,27 @@
 				// Send value to the server
 				authApi.post('/api/comments', comment).then(() => {
 					// If successful, show notification
-					this.successMessage = 'Comment has been added';
+					this.$toastr.e('Comment has been added');
 					this.loadComments();
-				}).catch(error => {
-					this.errorMessage = error.message;
+				}).catch(() => {
+					this.$toastr.e('Ups... Something went wrong');
 				});
 			},
 			deleteComment(id) {
 				authApi.delete('/api/comments/' + id).then(() => {
 					// If successful, show notification
-					this.successMessage = 'Comment has been deleted';
+					this.$toastr.e('Comment has been deleted');
 					this.comments = this.comments.filter(c => c.id !== id);
-				}).catch(error => {
-					this.errorMessage = error.message;
+				}).catch(() => {
+					this.$toastr.e('Ups... Something went wrong');
 				});
 			},
 			loadComments() {
 				// Load comments
 				authApi.get('/api/comments/' + this.id).then(resp => {
 					this.comments = resp.data;
-				}).catch(error => {
-					this.errorMessage = error.message;
+				}).catch(() => {
+					this.$toastr.e('Ups... Something went wrong');
 				});
 			},
 			getImage() {
@@ -228,8 +226,8 @@
 					this.place = resp.data;
 					this.image = resp.data.image;
 					this.loadComments();
-				}).catch(error => {
-					this.errorMessage = error.message;
+				}).catch(() => {
+					this.$toastr.e('Ups... Something went wrong');
 				});
 			}
 		},

@@ -72,7 +72,11 @@
 								self.$router.replace('home');
 							},
 							err => {
-								console.error('Oops. ' + err.message);
+								if (err.response.status === 401){
+									this.$toastr.e('Username or Password is incorrect');
+								} else {
+									this.$toastr.e('Ups... Something went wrong');
+								}
 							}
 						);
 				}

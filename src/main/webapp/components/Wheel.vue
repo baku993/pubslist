@@ -10,7 +10,7 @@
 		<v-btn color='primary' id='showResult' @click.prevent='showResult()'>
 			<span>Посмотреть результат</span></v-btn>
 
-		<modal v-if='showModal' @close='showModal = false'>
+		<modal v-if='showModal' @close='showModal = false' >
 			<h3 slot='header'>И так...</h3>
 			<div slot='body'>
 				<p v-html='winMessage'></p>
@@ -66,7 +66,7 @@
 				'animation': // Definition of the animation
 					{
 						'type': 'spinToStop',
-						'duration': 1,
+						'duration': 3,
 						'spins': 8,
 						'callbackFinished': 'window.clickButton(\'#showResult\')'
 					}
@@ -114,9 +114,8 @@
 				authApi.get('/api/rolls/manual').then(resp => {
 					this.selectedPlace = resp.data.place;
 					this.spin(this.places.findIndex(x => x.id === this.selectedPlace.id)+1);
-				}).catch(error => {
-					// Add user notification here
-					console.log(error);
+				}).catch(() => {
+					this.$toastr.e('Ups... Something went wrong');
 				});
 			},
 			toSegment(place, index) {
@@ -185,8 +184,6 @@
 		padding: 10px 10px 20px 0;
 		display: block;
 		width: 100%;
-
-
 	}
 
 	a:hover {

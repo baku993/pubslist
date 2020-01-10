@@ -5,8 +5,10 @@ import router from './router';
 import vuetify from './VuetifyConf';
 import store from './store/index';
 import {SET_TOKEN_ACTION, USER_TOKEN_KEY} from './constants';
+import Toastr from 'vue-toastr';
 
 Vue.config.productionTip = false;
+
 
 // Check token in session storage
 if (window.sessionStorage) {
@@ -26,4 +28,8 @@ function initApp() {
 		store,
 		render: h => h(App)
 	}).$mount('#app');
+	Vue.use(Toastr, {
+		defaultPosition: 'toast-bottom-center',
+		defaultProgressBar: false
+	});
 }

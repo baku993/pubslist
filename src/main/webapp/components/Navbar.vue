@@ -5,7 +5,7 @@
 				<img alt='Pubs logo' src='../assets/logo.png'/>
 			</div>
 			<div class='nav__menu'>
-				<router-link exact active-class='router-active-link' to='/home'>Home</router-link>
+				<router-link exact active-class='router-active-link' to='/home'>Places</router-link>
 				|
 				<div class='admin' v-if='getUser.role && getUser.role.includes("ADMIN")'>
 					<router-link exact active-class='router-active-link'
@@ -13,8 +13,6 @@
 					|
 				</div>
 				<router-link exact active-class='router-active-link' to='/drum'>Drum</router-link>
-				|
-				<router-link exact active-class='router-active-link' to='/about'>About</router-link>
 			</div>
 			<v-menu bottom offset-y>
 				<template v-slot:activator='{ on }'>
@@ -72,10 +70,8 @@
 				.then(async response => {
 					await self.$store.dispatch(SET_USER_ACTION, response.data);
 					self.$refs.avatar.$el.style.backgroundColor = color;
-				})
-				.catch(error => {
-					// Add user notification here
-					console.log(error);
+				}).catch(() => {
+					this.$toastr.e('Ups... Something went wrong');
 				});
 		}
 	};

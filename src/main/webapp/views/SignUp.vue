@@ -43,7 +43,7 @@
 										type='password'
 										:rules='passwordRules'
 										counter
-										hint='More than 6 characters, a-z, at least 1 uppercase and 1 special character'
+										hint='Provide password'
 										required
 										v-model='password'/>
 
@@ -53,7 +53,7 @@
 										name='confirm_password'
 										type='password'
 										:rules='[v => v === this.password || "Passwords are not equal"]'
-										hint='More than 6 characters, a-z, at least 1 uppercase and 1 special character'
+										hint='Confirm password'
 										required/>
 
 								<image-uploader @onImageUpload='onImageUpload'/>
@@ -138,8 +138,8 @@
 							() => {
 								this.$router.replace('login');
 							},
-							err => {
-								console.error('Oops. ' + err.message);
+							() => {
+								this.$toastr.e('Ups... Something went wrong');
 							}
 						);
 				}

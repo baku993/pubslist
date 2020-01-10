@@ -11,7 +11,7 @@
 						</v-toolbar>
 						<v-card-text>
 							<v-form v-model='valid' ref='form'>
-								<div>
+								<div class='crop'>
 									<img :src='this.image' alt='' class='user-image'/>
 								</div>
 								<v-text-field
@@ -62,7 +62,6 @@
 				</v-col>
 			</v-row>
 		</v-container>
-		<notifications :error='errorMessage' :success='successMessage'/>
 	</div>
 
 </template>
@@ -70,12 +69,13 @@
 <script>
 
 	import authApi from '../auth/authApi';
-	import Notifications from '../components/Notifications';
+	import {GET_USER} from '../constants';
 	import ImageUploader from '../components/ImageUploader';
+	import {mapGetters} from 'vuex';
 
 	export default {
 		name: 'user',
-		components: {ImageUploader, Notifications},
+		components: {ImageUploader},
 		props: ['id'],
 		data() {
 			return {
@@ -126,9 +126,9 @@
 					// Save user
 					authApi.patch('/api/users/' + this.id, this.updated).then(() => {
 						this.updated = {};
-						this.successMessage = 'User has been saved successfully';
+						this.$toastr.s('User has been saved successfully');
 					}).catch(error => {
-						this.errorMessage = error.message;
+						this.$toastr.e(error.message);
 					});
 				}
 
@@ -153,7 +153,7 @@
 				this.original = resp.data;
 				this.$forceUpdate();
 			}).catch(error => {
-				this.errorMessage = error.message;
+				this.$toastr.e(error.message);
 			});
 		}
 	};
@@ -170,8 +170,17 @@
 	}
 
 	.user-image {
-		max-height: 100%;
-		max-width: 100%;
+		max-height: 200%;
+		max-width: 200%;
+		margin-left: auto;
+		margin-right: auto;
+		display: block;
+	}
+
+	.crop {
+		overflow: hidden;
+		min-width: 100%;
+		max-height: 400px;
 	}
 
 </style>
