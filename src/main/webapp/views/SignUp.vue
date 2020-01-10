@@ -53,7 +53,7 @@
 										name='confirm_password'
 										type='password'
 										:rules='[v => v === this.password || "Passwords are not equal"]'
-										hint='Provide password'
+										hint='Confirm password'
 										required/>
 
 								<image-uploader @onImageUpload='onImageUpload'/>
