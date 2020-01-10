@@ -48,7 +48,7 @@
 										disabled
 										v-model='original.role'/>
 
-								<v-checkbox v-model='disabled' label='Disabled?'/>
+								<v-checkbox v-model='disabled' label='Disabled?' v-show='false'/>
 								<image-uploader @onImageUpload='onImageUpload'/>
 							</v-form>
 
