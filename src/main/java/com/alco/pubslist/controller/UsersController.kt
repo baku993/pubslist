@@ -33,7 +33,7 @@ class UsersController {
 	@get:ResponseBody
 	@get:GetMapping(SecurityConstants.USER_URL)
 	val currentUser: User
-		get() = userService!!.findById(UserContext.getUserId())
+		get() = userService!!.findById(UserContext.userId)
 
 	@PatchMapping(SecurityConstants.USERS_URL + "/{id}")
 	@Throws(IOException::class)

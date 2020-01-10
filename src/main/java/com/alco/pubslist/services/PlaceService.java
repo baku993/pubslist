@@ -40,11 +40,11 @@ public class PlaceService {
 		Place place = findById(id);
 
 		try {
-			// Read and map JSON to entity from DB, merged object as output
+			// Read and map JSON to entity from DB, merge in object as output
 			Place updatedPlace = OBJECT_MAPPER.readerForUpdating(place).readValue(reader);
 
 			// Only admin or user who owns this place can update in case
-			// if the place is not approved yet
+			// if the place has not approved yet
 			if (!UserContext.isAdmin()
 					&& (place.isApproved() || !place.isPlaceOwnedByUser(UserContext.getUsername()))) {
 				throw new BaseException(RestResponses.ACCESS_DENIED);
@@ -69,7 +69,7 @@ public class PlaceService {
 		Place place = findById(id);
 
 		// Only admin or user who owns this place can update in case
-		// if the place is not approved yet
+		// if the place has not approved yet
 		if (place.isApproved() || (!UserContext.isAdmin()
 				&& (!place.isPlaceOwnedByUser(UserContext.getUsername())))) {
 			throw new BaseException(RestResponses.ACCESS_DENIED);

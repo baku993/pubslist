@@ -2,6 +2,7 @@ package com.alco.pubslist.exceptions;
 
 import com.alco.pubslist.security.RestResponses;
 import com.google.gson.JsonObject;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,8 +29,8 @@ public class ExceptionsAdvice extends ResponseEntityExceptionHandler {
 	}
 
 	@Override
-	protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
-			HttpHeaders headers, HttpStatus status, WebRequest request) {
+	protected ResponseEntity<Object> handleHttpMessageNotReadable(@NotNull HttpMessageNotReadableException ex,
+			HttpHeaders headers, @NotNull HttpStatus status, @NotNull WebRequest request) {
 
 		headers.add("Content-Type", "application/json");
 

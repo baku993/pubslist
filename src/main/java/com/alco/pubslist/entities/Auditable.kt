@@ -25,13 +25,13 @@ abstract class Auditable {
 	@PrePersist
 	fun setCreatedOn() {
 		createdOn = LocalDateTime.now()
-		createdBy = UserContext.getUsername()
+		createdBy = UserContext.username
 	}
 
 	@PreUpdate
 	fun setUpdatedOn() {
 		updatedOn = LocalDateTime.now()
-		updatedBy = UserContext.getUsername()
+		updatedBy = UserContext.username
 	}
 
 }

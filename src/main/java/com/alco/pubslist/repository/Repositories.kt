@@ -13,7 +13,7 @@ import java.util.*
  */
 
 interface RollRepository : CrudRepository<Roll?, Int?> {
-	fun findFirstByRolledByOrderByRolledAtDesc(username: String?): Optional<Roll?>?
+	fun findFirstByRolledByOrderByRolledAtDesc(username: String?): Optional<Roll?>
 }
 
 interface UserRepository : CrudRepository<User?, Int?> {

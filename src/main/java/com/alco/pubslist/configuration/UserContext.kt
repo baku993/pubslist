@@ -1,6 +1,7 @@
-package com.alco.pubslist.configuration;
+package com.alco.pubslist.configuration
 
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.context.SecurityContextHolder
 
 /**
  * Contains helper methods related to current user
@@ -8,33 +9,27 @@ import org.springframework.security.core.context.SecurityContextHolder;
  * @author victor
  * @date 07.12.2019
  */
-public class UserContext {
-
+object UserContext {
 	/**
 	 * Checks if user is admin
 	 */
-	public static boolean isAdmin() {
-
-		return SecurityContextHolder
+	@JvmStatic
+	val isAdmin: Boolean
+		get() = SecurityContextHolder
 				.getContext()
-				.getAuthentication()
-				.getAuthorities()
+				.authentication
+				.authorities
 				.stream()
-				.anyMatch(r -> r.getAuthority().equals("ROLE_ADMIN"));
-	}
+				.anyMatch { r: GrantedAuthority? -> r!!.authority == "ROLE_ADMIN" }
 
 	/**
 	 * Can be used to get current user id
 	 */
-	public static Integer getUserId() {
+	@JvmStatic
+	val userId: Int
+		get() = SecurityContextHolder.getContext().authentication.details.toString().toInt()
 
-		return Integer.parseInt(SecurityContextHolder
-				.getContext().getAuthentication().getDetails().toString());
-	}
-
-	public static String getUsername() {
-
-		return SecurityContextHolder
-				.getContext().getAuthentication().getName();
-	}
+	@JvmStatic
+	val username: String
+		get() = SecurityContextHolder.getContext().authentication.name
 }

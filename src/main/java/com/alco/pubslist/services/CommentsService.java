@@ -40,11 +40,11 @@ public class CommentsService {
 		Comment comment = findCommentById(id);
 
 		try {
-			// Read and map JSON to entity from DB, merged object as output
+			// Read and map JSON to entity from DB, merge in object as output
 			Comment editedComment = OBJECT_MAPPER.readerForUpdating(comment).readValue(reader);
 
 			// Only admin or user who owns this place can update in case
-			// if the place is not approved yet
+			// if the place has not approved yet
 			if (!comment.isCommentWrittenByUser(UserContext.getUsername())) {
 				throw new BaseException(RestResponses.ACCESS_DENIED);
 			}
