@@ -1,34 +1,27 @@
-package com.alco.pubslist.controller;
+package com.alco.pubslist.controller
 
-import com.alco.pubslist.entities.Roll;
-import com.alco.pubslist.services.RollService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import static com.alco.pubslist.security.SecurityConstants.ROLLS_URL;
+import com.alco.pubslist.entities.Roll
+import com.alco.pubslist.security.SecurityConstants
+import com.alco.pubslist.services.RollService
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RestController
 
 @RestController
-public class RollsController {
-
+class RollsController {
 	@Autowired
-	private RollService service;
+	private val service: RollService? = null
 
-	@GetMapping(ROLLS_URL + "/daily")
-	public Roll getDailyRoll() {
+	@get:GetMapping(SecurityConstants.ROLLS_URL + "/daily")
+	val dailyRoll: Roll
+		get() = service!!.rollOfTheDay()
 
-		return service.rollOfTheDay();
-	}
+	@get:GetMapping(SecurityConstants.ROLLS_URL + "/manual")
+	val manualRoll: Roll
+		get() = service!!.manualRoll()
 
-	@GetMapping(ROLLS_URL + "/manual")
-	public Roll getManualRoll() {
-
-		return service.manualRoll();
-	}
-
-	@GetMapping(ROLLS_URL)
-	public Iterable<Roll> all() {
-
-		return service.findAll();
+	@GetMapping(SecurityConstants.ROLLS_URL)
+	fun all(): Iterable<Roll> {
+		return service!!.findAll()
 	}
 }

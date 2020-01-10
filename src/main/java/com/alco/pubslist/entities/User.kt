@@ -33,4 +33,10 @@ class User {
 	@Column(name = "password")
 	var password: String? = null
 
+	enum class UserRole(val roleName: String) {
+		ADMIN("ROLE_ADMIN"),
+		USER("ROLE_USER");
+
+	}
+
 }

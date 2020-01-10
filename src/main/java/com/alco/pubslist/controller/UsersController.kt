@@ -1,68 +1,50 @@
-package com.alco.pubslist.controller;
+package com.alco.pubslist.controller
 
-import com.alco.pubslist.configuration.UserContext;
-import com.alco.pubslist.entities.User;
-import com.alco.pubslist.services.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-
-import static com.alco.pubslist.security.SecurityConstants.SIGN_UP_URL;
-import static com.alco.pubslist.security.SecurityConstants.USERS_URL;
-import static com.alco.pubslist.security.SecurityConstants.USER_URL;
+import com.alco.pubslist.configuration.UserContext
+import com.alco.pubslist.entities.User
+import com.alco.pubslist.security.SecurityConstants
+import com.alco.pubslist.services.UserService
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.ResponseEntity
+import org.springframework.security.access.annotation.Secured
+import org.springframework.web.bind.annotation.*
+import java.io.IOException
+import javax.servlet.http.HttpServletRequest
 
 @RestController
-public class UsersController {
-
+class UsersController {
 	@Autowired
-	private UserService userService;
+	private val userService: UserService? = null
 
 	@Secured("ROLE_ADMIN")
-	@GetMapping(USERS_URL)
+	@GetMapping(SecurityConstants.USERS_URL)
 	@ResponseBody
-	public Iterable<User> all() {
-
-		return userService.findAll();
+	fun all(): Iterable<User> {
+		return userService!!.findAll()
 	}
 
 	@Secured("ROLE_ADMIN")
 	@ResponseBody
-	@GetMapping(USER_URL + "/{id}")
-	public User findById(@PathVariable("id") Integer id) {
-
-		return userService.findById(id);
+	@GetMapping(SecurityConstants.USER_URL + "/{id}")
+	fun findById(@PathVariable("id") id: Int?): User {
+		return userService!!.findById(id)
 	}
 
-	@GetMapping(USER_URL)
-	@ResponseBody
-	public User getCurrentUser() {
+	@get:ResponseBody
+	@get:GetMapping(SecurityConstants.USER_URL)
+	val currentUser: User
+		get() = userService!!.findById(UserContext.getUserId())
 
-		return userService.findById(UserContext.getUserId());
+	@PatchMapping(SecurityConstants.USERS_URL + "/{id}")
+	@Throws(IOException::class)
+	fun partialUpdate(@PathVariable("id") id: Int?, request: HttpServletRequest): ResponseEntity<*> {
+		userService!!.update(request.reader, id)
+		return ResponseEntity.ok("")
 	}
 
-	@PatchMapping(USERS_URL + "/{id}")
-	public ResponseEntity<?> partialUpdate(@PathVariable("id") Integer id, HttpServletRequest request)
-			throws IOException {
-
-		userService.update(request.getReader(), id);
-		return ResponseEntity.ok("");
-	}
-
-	@PostMapping(SIGN_UP_URL)
-	public ResponseEntity save(@RequestBody User newUser) {
-
-		userService.save(newUser);
-
-		return ResponseEntity.ok("");
+	@PostMapping(SecurityConstants.SIGN_UP_URL)
+	fun save(@RequestBody newUser: User?): ResponseEntity<*> {
+		userService!!.save(newUser)
+		return ResponseEntity.ok("")
 	}
 }
