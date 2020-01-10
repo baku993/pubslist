@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Component
 public class CachedAuthenticationProvider implements AuthenticationProvider {
@@ -62,7 +63,7 @@ public class CachedAuthenticationProvider implements AuthenticationProvider {
 
 	private boolean isAuthenticated(String password, User user) {
 
-		return user.getPassword().equals(Helper.cacheData(password, salt));
+		return Objects.equals(user.getPassword(), Helper.cacheData(password, salt));
 	}
 
 }

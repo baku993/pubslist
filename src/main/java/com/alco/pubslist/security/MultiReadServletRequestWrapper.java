@@ -1,7 +1,5 @@
 package com.alco.pubslist.security;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.util.StreamUtils;
 
 import javax.servlet.ServletInputStream;
@@ -16,8 +14,6 @@ import java.io.InputStreamReader;
 public class MultiReadServletRequestWrapper extends HttpServletRequestWrapper {
 
 	private byte[] body;
-
-	public static final Logger log = LoggerFactory.getLogger(MultiReadServletRequestWrapper.class);
 
 	public MultiReadServletRequestWrapper(HttpServletRequest httpServletRequest) throws IOException {
 

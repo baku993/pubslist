@@ -4,7 +4,7 @@ import com.alco.pubslist.security.RestResponses;
 
 public class BaseException extends RuntimeException {
 
-	private Integer statusCode;
+	private final Integer statusCode;
 
 	public BaseException(RestResponses restResponse) {
 

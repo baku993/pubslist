@@ -21,6 +21,6 @@ public final class SecurityConstants {
 
 	private SecurityConstants() {
 
-		throw new IllegalStateException("Cannot create instance of static util class");
+		throw new IllegalStateException("Cannot create an instance of static util class");
 	}
 }

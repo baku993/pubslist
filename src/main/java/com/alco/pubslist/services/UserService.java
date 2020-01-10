@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.Objects;
 
 @Component
 public class UserService {
@@ -53,13 +54,13 @@ public class UserService {
 		User user = findById(id);
 
 		try {
-			// Read and map JSON to entity from DB, merged object as output
+			// Read and map JSON to entity from DB, merge in object as output
 			User updatedUser = OBJECT_MAPPER.readerForUpdating(user).readValue(reader);
 
 			// Only admin or user who owns this place can update in case
-			// if the place is not approved yet
+			// if the place has not approved yet
 			if (!UserContext.isAdmin()
-					&& !user.getId().equals(UserContext.getUserId())) {
+					&& !Objects.equals(user.getId(), UserContext.getUserId())) {
 				throw new BaseException(RestResponses.ACCESS_DENIED);
 			}
 
@@ -75,5 +76,4 @@ public class UserService {
 		}
 	}
 
-	public User findByUsername(String username) {return repository.findDistinctFirstByUsername(username);}
 }

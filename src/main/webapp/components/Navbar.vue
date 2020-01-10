@@ -21,11 +21,15 @@
 							<img v-else :src='getUser.image' alt='getUser.image' class='img'/>
 					</v-avatar>
 				</template>
-				<v-list>
-					<v-list-item v-for='(item, i) in items' :key='i' @click='logout'>
-						<v-list-item-title>{{ item }}</v-list-item-title>
+				<v-list dense two-line >
+					<v-list-item @click='openProfile'>
+						<v-list-item-title>Open Profile</v-list-item-title>
+					</v-list-item>
+					<v-list-item @click='logout'>
+						<v-list-item-title>Logout</v-list-item-title>
 					</v-list-item>
 				</v-list>
+
 			</v-menu>
 		</div>
 	</v-row>
@@ -43,7 +47,7 @@
 		props: [],
 		data() {
 			return {
-				items: ['Logout']
+				items: ['My Profile','Logout']
 			};
 		},
 		computed: {
@@ -60,6 +64,9 @@
 		methods: {
 			logout() {
 				this.$emit('logout');
+			},
+			openProfile() {
+				this.$router.push({name: 'user', params: { id: this.getUser.id } });
 			}
 		},
 		created() {

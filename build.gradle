@@ -3,6 +3,8 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.8.RELEASE'
     id 'java'
     id 'idea'
+    id 'org.jetbrains.kotlin.jvm' version '1.3.61'
+    id "org.jetbrains.kotlin.plugin.allopen" version "1.3.61"
 }
 
 jar {
@@ -49,6 +51,12 @@ dependencies {
     compile group: 'commons-codec', name: 'commons-codec', version: '1.9'
     compile group: 'org.springframework.session', name: 'spring-session', version: '1.3.5.RELEASE'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: '2.2.1.RELEASE'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    compile group: 'org.jetbrains.kotlin', name: 'kotlin-reflect', version: '1.2.41'
+}
+
+allOpen {
+    annotation('org.springframework.web.bind.annotation.RestController')
 }
 
 
