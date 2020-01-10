@@ -60,10 +60,12 @@
 		methods: {
 			voteForPlace(id) {
 				// There should a voting logic
+				// eslint-disable-next-line no-console
 				console.log('Vote for place', id);
 			},
 			addToLiked(id) {
 				// There should a logic for liking
+				// eslint-disable-next-line no-console
 				console.log('Add to liked places', id);
 			},
 			openPlace(id) {
