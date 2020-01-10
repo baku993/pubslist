@@ -133,6 +133,13 @@
 				}
 
 			},
+			getPath() {
+				if (this.id === this.getUser.id){
+					return '/api/user/';
+				} else {
+					return '/api/user/' + this.id;
+				}
+			},
 			goBack() {
 				this.$router.back();
 			},
@@ -143,9 +150,12 @@
 				this.image = dataUrl;
 			}
 		},
+		computed: {
+			...mapGetters([GET_USER])
+		},
 		created() {
 			// Fetch user
-			authApi.get('/api/user/' + this.id).then(resp => {
+			authApi.get(this.getPath()).then(resp => {
 				this.firstName = resp.data.name;
 				this.lastName = resp.data.surname;
 				this.image = resp.data.image;
