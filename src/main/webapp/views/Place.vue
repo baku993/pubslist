@@ -122,7 +122,7 @@
 			save() {
 				if (this.id) {
 					authApi.patch('/api/places/' + this.id, this.updated).then(() => {
-						this.$toastr.e('Place has been successfully updated');
+						this.$toastr.s('Place has been successfully updated');
 						this.isEditing = false;
 						this.valid = false;
 					}).catch(() => {
@@ -130,7 +130,7 @@
 					});
 				} else {
 					authApi.post('/api/places', this.updated).then(() => {
-						this.$toastr.e('Place has been successfully created');
+						this.$toastr.s('Place has been successfully created');
 						this.isEditing = false;
 						this.valid = false;
 					}).catch(() => {
@@ -147,11 +147,11 @@
 			},
 			addToFavorites() {
 				// Add logic for adding to favorites
-				this.$toastr.e('Place has been added to favorites');
+				this.$toastr.s('Place has been added to favorites');
 			},
 			vote() {
 				// Add logic for voting to favorites
-				this.$toastr.e('You voted for this place');
+				this.$toastr.s('You voted for this place');
 			},
 			close() {
 				this.$router.back();
@@ -162,7 +162,7 @@
 						authApi.patch('/api/places/' + this.id, {approved: true}).then(() => {
 							this.place.approved = true;
 							this.$forceUpdate();
-							this.$toastr.e('Place has been successfully updated');
+							this.$toastr.s('Place has been successfully updated');
 						}).catch(() => {
 							this.$toastr.e('Ups... Something went wrong');
 						});
@@ -173,7 +173,7 @@
 				this.$refs.confirm.open('Delete', 'Are you sure?').then((confirm) => {
 					if (confirm) {
 						authApi.delete('/api/places/' + this.id).then(() => {
-							this.$toastr.e('Place has been successfully deleted');
+							this.$toastr.s('Place has been successfully deleted');
 							this.dialog = true;
 							this.close();
 						}).catch(() => {
