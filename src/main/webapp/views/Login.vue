@@ -69,7 +69,11 @@
 						.then(
 							response => {
 								self.$store.dispatch('setUserToken', response.data.token);
-								self.$router.replace('home');
+								if (this.$route.query.from) {
+									this.$router.replace(this.$route.query.from);
+								} else {
+									this.$router.replace('home');
+								}
 							},
 							err => {
 								if (err.response.status === 401){

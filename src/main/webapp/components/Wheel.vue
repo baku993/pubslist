@@ -13,8 +13,9 @@
 		<modal v-if='showModal' @close='showModal = false' >
 			<h3 slot='header'>И так...</h3>
 			<div slot='body'>
-				<p v-html='winMessage'></p>
-				<a v-bind:href='selectedPlace.url' target='_blank'>Я низнаю гидэ ито?</a>
+				<p v-html='winMessage'/>
+				<a v-bind:href='roll.place.url' target='_blank'>Я низнаю гидэ ито?</a>
+				<sharing :roll='roll'/>
 			</div>
 		</modal>
 	</div>
@@ -26,6 +27,7 @@
 	import Modal from './Modal.vue';
 	import messages from './../messages.json';
 	import authApi from '../auth/authApi';
+	import Sharing from '../components/Sharing';
 
 	function clickButton(selector) {
 		document.querySelector(selector).click();
@@ -38,7 +40,8 @@
 		segments: [],
 		wheel: undefined,
 		components: {
-			modal: Modal
+			modal: Modal,
+			Sharing
 		},
 		props: {
 			'places': {
@@ -49,7 +52,7 @@
 		data: function() {
 			return {
 				showModal: false,
-				selectedPlace: undefined,
+				roll: undefined,
 				winMessage: 'Крутите барабан'
 			};
 		},
@@ -101,7 +104,7 @@
 			},
 			showResult() {
 				this.isSpinning = false;
-				this.winMessage = this.randomMessage(this.selectedPlace.name);
+				this.winMessage = this.randomMessage(this.roll.place.name);
 				this.showModal = true;
 			},
 			spin(segmentNumber) {
@@ -112,8 +115,9 @@
 			},
 			getPlace(){
 				authApi.get('/api/rolls/manual').then(resp => {
-					this.selectedPlace = resp.data.place;
-					this.spin(this.places.findIndex(x => x.id === this.selectedPlace.id)+1);
+					this.roll = resp.data;
+					this.roll.rolledAt = new Date(resp.data.rolledAt).toLocaleString();
+					this.spin(this.places.findIndex(x => x.id === this.roll.place.id)+1);
 				}).catch(() => {
 					this.$toastr.e('Ups... Something went wrong');
 				});

@@ -34,6 +34,7 @@ public class UserService {
 			throw new BaseException(RestResponses.USERNAME_IS_ALREADY_USED);
 		}
 
+		user.setUsername(user.getUsername().toLowerCase());
 		user.setPassword(Helper.cacheData(user.getPassword(), salt));
 
 		return repository.save(user);

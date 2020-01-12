@@ -5,12 +5,18 @@ import com.alco.pubslist.security.SecurityConstants
 import com.alco.pubslist.services.RollService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class RollsController {
 	@Autowired
 	private val service: RollService? = null
+
+	@GetMapping(SecurityConstants.ROLLS_URL + "/{id}")
+	fun getById(@PathVariable("id") id: Int?): Roll {
+		return service!!.findById(id)
+	}
 
 	@get:GetMapping(SecurityConstants.ROLLS_URL + "/daily")
 	val dailyRoll: Roll

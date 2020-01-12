@@ -3,7 +3,9 @@ package com.alco.pubslist.services;
 import com.alco.pubslist.configuration.UserContext;
 import com.alco.pubslist.entities.Place;
 import com.alco.pubslist.entities.Roll;
+import com.alco.pubslist.exceptions.BaseException;
 import com.alco.pubslist.repository.RollRepository;
+import com.alco.pubslist.security.RestResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -70,5 +72,12 @@ public class RollService {
 			Place rolledPlace = getRandomPlace();
 			rollOfTheDay = repository.save(new Roll(rolledPlace, SYSTEM_NAME));
 		}
+	}
+
+	public Roll findById(Integer id) {
+
+		Optional<Roll> optionalPlace = repository.findById(id);
+
+		return optionalPlace.orElseThrow(() -> new BaseException(RestResponses.NO_ROLL_FOUND));
 	}
 }

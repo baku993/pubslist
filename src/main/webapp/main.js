@@ -22,6 +22,7 @@ if (window.sessionStorage) {
 initApp();
 
 function initApp() {
+	const SocialSharing = require('vue-social-sharing');
 	new Vue({
 		router,
 		vuetify,
@@ -32,4 +33,5 @@ function initApp() {
 		defaultPosition: 'toast-bottom-center',
 		defaultProgressBar: false
 	});
+	Vue.use(SocialSharing);
 }

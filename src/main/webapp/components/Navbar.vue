@@ -47,7 +47,7 @@
 		props: [],
 		data() {
 			return {
-				items: ['My Profile','Logout']
+				items: ['My Profile','Logout'],
 			};
 		},
 		computed: {
