@@ -38,7 +38,7 @@
 		color: #2c3e50;
 	}
 
-	.theme--light.v-application {
-		background: inherit;
+	#app {
+		background: #ffffff;
 	}
 </style>

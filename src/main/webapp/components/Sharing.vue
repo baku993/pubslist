@@ -1,12 +1,13 @@
 <template>
-	<social-sharing v-bind:url='getUrl()'
-					v-bind:title='roll.place.name'
-					v-bind:description='"Are you ready to drink?\n "+roll.place.name
+	<social-sharing :url='getUrl()'
+					:title='roll.place.name'
+					:description='"Are you ready to drink?\n "+roll.place.name
 								+ " has been rolled at " + roll.rolledAt + " by " + roll.rolledBy'
-					v-bind:quote='"Are you ready to drink?\n "+roll.place.name
+					:quote='"Are you ready to drink?\n "+roll.place.name
 								+ " has been rolled at " + roll.rolledAt + " by " + roll.rolledBy'
 					hashtags='drinking, pub'
-					inline-template>
+					inline-template
+	class='social-sharing'>
 		<div>
 			<network network='telegram'>
 				<img height='40px' width='40px' :src='require("../assets/telegram.png")'/>
@@ -32,3 +33,9 @@
 		}
 	};
 </script>
+<style lang="scss">
+	.social-sharing img {
+		border-radius: 40%;
+		margin-outside: 5px;
+	}
+</style>

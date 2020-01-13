@@ -2,7 +2,7 @@
 	<v-row class='toolbar'>
 		<div class='nav'>
 			<div class='nav__logo'>
-				<img alt='Pubs logo' src='../assets/logo.png'/>
+				<img alt='Pubs logo' src='../assets/logo.png' @click='gotoHome()'/>
 			</div>
 			<div class='nav__menu'>
 				<router-link exact active-class='router-active-link' to='/home'>Places</router-link>
@@ -65,6 +65,9 @@
 			logout() {
 				this.$emit('logout');
 			},
+			gotoHome() {
+				this.$router.push('home');
+			},
 			openProfile() {
 				this.$router.push({name: 'user', params: { id: this.getUser.id } });
 			}
@@ -113,6 +116,7 @@
 			top: 10px;
 			height: 60px;
 			position: absolute;
+			cursor: pointer;
 		}
 
 		&__menu {

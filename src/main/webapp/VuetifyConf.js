@@ -12,6 +12,14 @@ Vue.use(Vuetify);
 const opts = {
 	icons: {
 		iconfont: 'mdi'
+	},
+	theme: {
+		dark: false,
+		themes: {
+			light: {
+				background: '#ffffff',
+			}
+		}
 	}
 };
 
