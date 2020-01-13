@@ -88,8 +88,6 @@
 <style lang="scss">
 
 	.home {
-
-		min-height: 85%;
 		position: relative;
 
 		.tabs {

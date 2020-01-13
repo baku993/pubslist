@@ -6,6 +6,7 @@ import SignUp from '../views/SignUp.vue';
 import Drum from '../views/Drum.vue';
 import Place from '../views/Place.vue';
 import store from '../store/index';
+import Roll from '../views/Roll.vue';
 
 Vue.use(VueRouter);
 
@@ -40,6 +41,15 @@ const routes = [
 		path: '/place/:id',
 		name: 'place',
 		component: Place,
+		props: true,
+		meta: {
+			requiresAuth: true
+		}
+	},
+	{
+		path: '/roll/:id',
+		name: 'roll',
+		component: Roll,
 		props: true,
 		meta: {
 			requiresAuth: true
@@ -103,7 +113,8 @@ router.beforeEach((to, from, next) => {
 	const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
 
 	if (requiresAuth && !currentUser) {
-		next('login');
+		const loginPath = window.location.pathname;
+		next({name:'login', query:{from:loginPath}});
 	} else if (!requiresAuth && currentUser) {
 		next('home');
 	} else {

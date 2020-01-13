@@ -9,9 +9,9 @@
 		<v-data-table
 				:headers='headers'
 				:items='rolls'
-				disable-sort
 				class='elevation-1'
 				loading-text='Loading... Please wait'
+				@click:row='handleClick'
 		/>
 	</div>
 </template>
@@ -51,6 +51,9 @@
 				}).catch(() => {
 					this.$toastr.e('Ups... Something went wrong');
 				});
+			},
+			handleClick(value){
+				this.$router.push({name: 'roll', params: {id: value.id}});
 			}
 		},
 		created() {

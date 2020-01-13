@@ -16,9 +16,11 @@ class Roll {
 	@JoinColumn(name = "place_id")
 	var place: Place? = null
 
-	private var rolledAt: LocalDateTime? = null
+	@Column(name = "rolled_at")
+	var rolledAt: LocalDateTime? = null
 
-	private var rolledBy: String? = null
+	@Column(name = "rolled_by")
+	var rolledBy: String? = null
 
 	constructor()
 

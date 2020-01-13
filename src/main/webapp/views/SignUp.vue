@@ -103,8 +103,8 @@
 					v => !!v || 'Password is required',
 					v => (v && v.length >= 6) || 'Name must be more than 6 characters',
 					v =>
-						/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)/.test(v) ||
-						'At least one uppercase, one lowercase, one special character, one digit required',
+						/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])/.test(v) ||
+						'At least one uppercase, one lowercase, one digit required',
 					v =>
 						(v && v.length < 14) || 'Username should be less than 14 characters',
 					v => v === this.password || 'Password are not equal'
@@ -112,7 +112,7 @@
 				usernameRules: [
 					v => !!v || 'Username is required',
 					v => (v && v.length >= 6) || 'Username must be more than 6 characters',
-					v => /^[A-Za-z0-9]+$/.test(v) || 'Only letters and numbers allowed',
+					v => /^[a-z0-9]+$/.test(v) || 'Only lowercase letters and numbers allowed',
 					v =>
 						(v && v.length < 14) || 'Username should be less than 14 characters'
 				],
@@ -138,8 +138,13 @@
 							() => {
 								this.$router.replace('login');
 							},
-							() => {
-								this.$toastr.e('Ups... Something went wrong');
+							(error) => {
+								if(error.response.status === 400
+									&& error.response.data.message === 'Username is already in use'){
+									this.$toastr.e('Username is already in use');
+								} else {
+									this.$toastr.e('Ups... Something went wrong');
+								}
 							}
 						);
 				}

@@ -91,7 +91,7 @@
 
 		.tabs__elem {
 			margin-bottom: 50px;
-
+			justify-content: center;
 		}
 
 		.icons {

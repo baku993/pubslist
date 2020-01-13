@@ -65,7 +65,9 @@
 					v => (v && v.length < 25) || 'Name should be less than 25 characters'
 				],
 				urlRules: [
-					v => !!v || 'Url is required'
+					v => !!v || 'Url is required',
+					v => /^(https?|chrome):\/\/[^\s$.?#].[^\s]*$/.test(v) ||
+						'The string is not an url',
 				]
 			};
 		},
