@@ -2,7 +2,9 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import {
 	IS_DARK,
+	IS_LOADING,
 	SET_DARK_ACTION,
+	SET_LOADING_ACTION,
 	SET_LOGGED_ACTION,
 	SET_TOKEN_ACTION,
 	SET_USER_ACTION,
@@ -13,6 +15,7 @@ Vue.use(Vuex);
 
 const state = {
 	isUserLogged: false,
+	isLoading: false,
 	userToken: '',
 	user: {},
 	isDark: false
@@ -41,6 +44,9 @@ const mutations = {
 	},
 	setDarkTheme(state, value) {
 		state.isDark = value;
+	},
+	setIsLoading(state, value) {
+		state.isLoading = value;
 	}
 };
 
@@ -61,6 +67,12 @@ const actions = {
 			sessionStorage.setItem(IS_DARK, value);
 		}
 		commit(SET_DARK_ACTION, value);
+	},
+	setIsLoading: ({ commit }, value) => {
+		if (isStorageSupported) {
+			sessionStorage.setItem(IS_LOADING, value);
+		}
+		commit(SET_LOADING_ACTION, value);
 	},
 	setUserToken: ({ commit }, userToken) => {
 		if (!userToken) {
@@ -83,7 +95,8 @@ const getters = {
 	isUserLogged: state => state.isUserLogged,
 	getUserToken: state => state.userToken,
 	getUser: state => state.user,
-	isDarkTheme: state => state.isDark
+	isDarkTheme: state => state.isDark,
+	isLoading: state => state.isLoading
 };
 
 const store = new Vuex.Store({
