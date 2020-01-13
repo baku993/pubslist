@@ -85,8 +85,8 @@
 </template>
 
 <script>
-	import axios from 'axios';
 	import ImageUploader from '../components/ImageUploader';
+	import authApi from '../auth/authApi';
 
 	export default {
 		name: 'signup',
@@ -126,7 +126,7 @@
 				this.validateForm();
 
 				if (this.valid) {
-					axios
+					authApi
 						.post('api/signup', {
 							username: this.username,
 							password: this.password,

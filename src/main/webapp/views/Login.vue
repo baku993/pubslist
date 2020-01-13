@@ -44,7 +44,7 @@
 </template>
 
 <script>
-	import axios from 'axios';
+	import authApi from '../auth/authApi';
 
 	export default {
 		name: 'login',
@@ -61,7 +61,7 @@
 				const self = this;
 
 				if (this.valid) {
-					axios
+					authApi
 						.post('api/login', {
 							username: this.username,
 							password: this.password
