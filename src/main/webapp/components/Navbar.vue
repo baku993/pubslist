@@ -21,9 +21,12 @@
 							<img v-else :src='getUser.image' alt='getUser.image' class='img'/>
 					</v-avatar>
 				</template>
-				<v-list dense two-line >
+				<v-list nav>
 					<v-list-item @click='openProfile'>
-						<v-list-item-title>Open Profile</v-list-item-title>
+						<v-list-item-title >Open Profile</v-list-item-title>
+					</v-list-item>
+					<v-list-item>
+						<v-switch :label='`Dark Theme`' v-model='isDark'/>
 					</v-list-item>
 					<v-list-item @click='logout'>
 						<v-list-item-title>Logout</v-list-item-title>
@@ -38,20 +41,15 @@
 <script>
 
 	import authApi from '../auth/authApi';
-	import {GET_USER, SET_USER_ACTION} from '../constants';
-	import {mapGetters} from 'vuex';
+	import {GET_USER, IS_DARK, SET_DARK_ACTION, SET_USER_ACTION} from '../constants';
+	import {mapActions, mapGetters} from 'vuex';
 	import randomColor from 'randomcolor';
 
 	export default {
 		name: 'navbar',
 		props: [],
-		data() {
-			return {
-				items: ['My Profile','Logout'],
-			};
-		},
 		computed: {
-			...mapGetters([GET_USER]),
+			...mapGetters([GET_USER, IS_DARK]),
 			getUserAvatar() {
 				let avatar = 'Avatar';
 				if (Object.keys(this.getUser).length > 0) {
@@ -59,18 +57,26 @@
 						this.getUser.surname.charAt(0).toUpperCase());
 				}
 				return avatar;
+			} ,
+			isDark: {
+				get() {return this.isDarkTheme;},
+				set(value) {
+					this.setDarkTheme(value);
+					this.$vuetify.theme.dark = value;
+				}
 			}
 		},
 		methods: {
+			...mapActions([SET_DARK_ACTION]),
 			logout() {
 				this.$emit('logout');
 			},
 			gotoHome() {
-				this.$router.push('home');
+				this.$router.push('/home');
 			},
 			openProfile() {
 				this.$router.push({name: 'user', params: { id: this.getUser.id } });
-			}
+			},
 		},
 		created() {
 
@@ -83,6 +89,8 @@
 				}).catch(() => {
 					this.$toastr.e('Ups... Something went wrong');
 				});
+
+			if (this.isDark) this.$vuetify.theme.dark = true;
 		}
 	};
 </script>

@@ -1,14 +1,24 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import {SET_LOGGED_ACTION, SET_TOKEN_ACTION, SET_USER_ACTION, USER_TOKEN_KEY} from '../constants';
+import {
+	IS_DARK,
+	SET_DARK_ACTION,
+	SET_LOGGED_ACTION,
+	SET_TOKEN_ACTION,
+	SET_USER_ACTION,
+	USER_TOKEN_KEY
+} from '../constants';
 
 Vue.use(Vuex);
 
 const state = {
 	isUserLogged: false,
 	userToken: '',
-	user: {}
+	user: {},
+	isDark: false
 };
+// Check token in session storage
+const isStorageSupported = window.sessionStorage;
 
 // mutations are operations that actually mutates the state.
 // each mutation handler gets the entire state tree as the
@@ -28,6 +38,9 @@ const mutations = {
 	setUserToken(state, userToken) {
 		state.userToken = userToken;
 		state.isUserLogged = true;
+	},
+	setDarkTheme(state, value) {
+		state.isDark = value;
 	}
 };
 
@@ -43,9 +56,13 @@ const actions = {
 	setUser: ({ commit }, value) => {
 		commit(SET_USER_ACTION, value);
 	},
+	setDarkTheme: ({ commit }, value) => {
+		if (isStorageSupported) {
+			sessionStorage.setItem(IS_DARK, value);
+		}
+		commit(SET_DARK_ACTION, value);
+	},
 	setUserToken: ({ commit }, userToken) => {
-		// Check token in session storage
-		const isStorageSupported = window.sessionStorage;
 		if (!userToken) {
 			if (isStorageSupported) {
 				sessionStorage.removeItem(USER_TOKEN_KEY);
@@ -65,7 +82,8 @@ const actions = {
 const getters = {
 	isUserLogged: state => state.isUserLogged,
 	getUserToken: state => state.userToken,
-	getUser: state => state.user
+	getUser: state => state.user,
+	isDarkTheme: state => state.isDark
 };
 
 const store = new Vuex.Store({
